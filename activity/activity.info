@@ -1,0 +1,11 @@
+[Activity]
+name = FollowMe
+activity_version = 1
+host_version = 1
+bundle_id = uy.edu.fing.followme
+service_name = uy.edu.fing.followme
+class = activity.Activity
+update_url = 
+show_launcher = yes
+icon = followme
+license = GPLv2+
