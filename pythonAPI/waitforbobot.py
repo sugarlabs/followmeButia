@@ -1,7 +1,7 @@
 #!/usr/bin/python
 ###########################################
 # This program is part of butiaAPI Toolkit
-# License: bla bla bla
+# License: GPL
 #
 # wait a litles seconds for bobot to connect correctly to butia
 #

@@ -34,10 +34,10 @@ import gtk
 import pygame
 import pygame.camera
 from sugar.activity import activity
-import sugar.graphics.toolbutton
+from sugar.graphics.toolbutton import ToolButton
 import sugargame.canvas
 import followme
-
+from gettext import gettext as _
 
 class Activity(activity.Activity):
 
@@ -49,7 +49,11 @@ class Activity(activity.Activity):
 		# guardo el umbral por defecto
 		self.umbral = (25, 25, 25)
 		# seteo el tamanio inicial de muestra
-		self.tamaniom = (960, 720)
+		self.tamaniom = (960.0, 720.0)
+		# por defecto no se muestra la grilla
+		self.mostrar_grilla = False
+		# por defecto mostramos la captura en pantalla
+		self.mostrar = True
 		# creamos una isntancia del FollowMe
 		self.actividad = followme.FollowMe()
 		# construimos la barra
@@ -63,11 +67,11 @@ class Activity(activity.Activity):
 
 	def build_toolbar(self):        
 		# ponemos un boton de parar de calibrar
-		parar = sugar.graphics.toolbutton.ToolButton('media-playback-stop')
+		parar = ToolButton('media-playback-stop')
 		# ponemos como mensaje Parar
-		parar.set_tooltip("Parar")
+		parar.set_tooltip(_('Parar'))
 		# ponemos la combinacion Ctrl + Espacio
-		parar.set_accelerator(('<ctrl>space'))
+		parar.set_accelerator('<ctrl>space')
 		# conectamos el boton con el evento click
 		parar.connect('clicked', self.parar_ejecutar)
 		# obteenmos la barra
@@ -77,7 +81,7 @@ class Activity(activity.Activity):
 		# creamos la etiqueta para calibrar
                 self.etiqueta1 = gtk.Label()
 		# le ponemos el texto Calibrar
-                self.etiqueta1.set_text(' Calibrar ')
+                self.etiqueta1.set_text(_(' Calibrar '))
 		# agrego la etiqueta al item
 		item1.add(self.etiqueta1)
 		# inserto el item en la barra
@@ -89,7 +93,7 @@ class Activity(activity.Activity):
 		# creo la etiqueta de los pixeles
 		self.etiqueta2 = gtk.Label()
 		# le coloco el texto Pixeles
-		self.etiqueta2.set_text(' Pixeles ')
+		self.etiqueta2.set_text(_(' Pixeles '))
 		# agrego la etiqueta al item
 		item2.add(self.etiqueta2)
 		# coloco el item en la barra
@@ -123,7 +127,7 @@ class Activity(activity.Activity):
 		# creo la etiqueta para umbral
                 self.etiqueta5 = gtk.Label()
 		# le coloco el texto Umbral
-                self.etiqueta5.set_text(' Umbral:  Rojo ')
+                self.etiqueta5.set_text(_(' Umbral:  Rojo '))
 		# agrego la etiqueta al item
                 item5.add(self.etiqueta5)
 		# inserto el item en la barra
@@ -149,7 +153,7 @@ class Activity(activity.Activity):
 		# creo la etiqueta para el verde
                 self.etiqueta7 = gtk.Label()
 		# le coloco G de verde
-		self.etiqueta7.set_text('  Verde ')
+		self.etiqueta7.set_text(_('  Verde '))
 		# coloco la etiqueta en el item
 		item7.add(self.etiqueta7)
 		# coloco el item en la barra
@@ -175,7 +179,7 @@ class Activity(activity.Activity):
 		# creo la etiqueta para el azul
                 self.etiqueta9 = gtk.Label()
 		# coloco el texto B
-                self.etiqueta9.set_text('  Azul ')
+                self.etiqueta9.set_text(_('  Azul '))
                 # inserto la etiqueta en el item
 		item9.add(self.etiqueta9)
 		# inserto el item en la barra
@@ -197,7 +201,7 @@ class Activity(activity.Activity):
 		# inserto el item en la barra
                 barra.insert(item10, 10)
 		# obtengo la caja de la actividad
-		caja = sugar.activity.activity.ActivityToolbox(self)
+		caja = activity.ActivityToolbox(self)
 		# obtengo la barra de Actividad
 		barra_actividad = caja.get_activity_toolbar()
 		# le saco la opcion guardar
@@ -209,7 +213,7 @@ class Activity(activity.Activity):
 		# le coloco none
 		barra_actividad.share = None
                 # alacaja le agregamos nuestra barra de Opciones
-                caja.add_toolbar("Opciones", barra)
+                caja.add_toolbar(_('Opciones'), barra)
 		# obteenmos la barra
                 barra2 = gtk.Toolbar()
                 # creamos el primer item
@@ -217,7 +221,7 @@ class Activity(activity.Activity):
                 # creamos la etiqueta para calibrar
                 self.et1 = gtk.Label()
                 # le ponemos el texto Calibrar
-                self.et1.set_text(' Tamaño muestra ')
+                self.et1.set_text(_(' Tamanio de muestra '))
                 # agrego la etiqueta al item
                 it1.add(self.et1)
                 # inserto el item en la barra
@@ -264,8 +268,42 @@ class Activity(activity.Activity):
                 it4.add(self.tmy)
                 # inserto el item a la barra
                 barra2.insert(it4, 3)
+		# creamos el quinto item
+		it5 = gtk.ToolItem()
+		# creamos la etiqueta para mostrar lineas
+		self.et5 = gtk.Label()
+		# le ponemos el texto
+		self.et5.set_text(_('  Mostrar lineas'))
+		# agrego la etiqueta al item
+		it5.add(self.et5)
+		# inserto el item en la barra
+		barra2.insert(it5, 4)
+		# creo un boton para la grilla
+		self.grilla = ToolButton('grid-icon')
+		# conecto el evento click y el procedimiento
+		self.grilla_handler = self.grilla.connect('clicked', self.grilla_click)
+		# inserto el boton grilla en la barra 2		
+		barra2.insert(self.grilla, 5)
+		# creamos el sexto item
+		it6 = gtk.ToolItem()
+		# creamos la etiqueta para mostrar en pantalla
+		self.et6 = gtk.Label()
+		# le ponemos el texto
+		self.et6.set_text(_(' Mostrar en pantalla'))
+		# agrego la etiqueta al item
+		it6.add(self.et6)
+		# inserto el item en la barra
+		barra2.insert(it6, 6)
+		# ponemos un boton de parar de mostrar captura
+		parar2 = ToolButton('media-playback-stop')
+		# conectamos el boton con el evento click
+		parar2.connect('clicked', self.parar_muestra)
+		# ponemos como mensaje Ocultar
+		parar2.set_tooltip(_('Ocultar'))
+		# insertamos el boton en la barra
+		barra2.insert(parar2, 7)
 		# agrego la barra2 a la caja (toolbar)
-		caja.add_toolbar("Resolución", barra2)
+		caja.add_toolbar(_('Resolucion'), barra2)
 		# la mostramos
                 caja.show_all()
                 # le ponemos la caja
@@ -318,17 +356,17 @@ class Activity(activity.Activity):
 
 	def tmx_mod(self, tmx, value):
                 # guardo el valor del cuadro
-                x = int(tmx.props.value)
+                x = float(tmx.props.value)
                 # actualizo el tamanio m
-                self.tamaniom = (x, self.tamaniom[1])
+                self.tamaniom = (x, float(self.tamaniom[1]))
                 # cambio en FollowMe el valor del tamanio
                 self.actividad.poner_tamaniom(self.tamaniom)
 
 	def tmy_mod(self, tmy, value):
                 # guardo el valor del cuadro
-                y = int(tmy.props.value)
+                y = float(tmy.props.value)
                 # actualizo el tamanio m
-                self.tamaniom = (self.tamaniom[0], y)
+                self.tamaniom = (float(self.tamaniom[0]), y)
                 # cambio en FollowMe el valor del tamanio
                 self.actividad.poner_tamaniom(self.tamaniom)
 
@@ -342,9 +380,27 @@ class Activity(activity.Activity):
 			# ponemos ejecutar
 			boton.set_icon('media-playback-start')
 			# con el tolltip Empezar
-			boton.set_tooltip("Empezar")
+			boton.set_tooltip(_('Empezar'))
 		else:
 			# ponemos parar
 			boton.set_icon('media-playback-stop')
 			# con el tolltip Detener
-			boton.set_tooltip("Detener")
+			boton.set_tooltip(_('Detener'))
+
+	def grilla_click(self, widget):
+		self.mostrar_grilla = not self.mostrar_grilla
+		self.actividad.poner_grilla(self.mostrar_grilla)
+
+	def parar_muestra(self, boton):
+		self.mostrar = not self.mostrar
+		if not self.mostrar:
+                        # ponemos mostrar
+                        boton.set_icon('media-playback-start')
+			# ponemos como mensaje Mostrar
+                	boton.set_tooltip(_('Mostrar'))
+                else:
+                        # ponemos ocultar
+                        boton.set_icon('media-playback-stop')
+			# ponemos como mensaje Ocultar
+			boton.set_tooltip(_('Ocultar'))
+		self.actividad.poner_muestra(self.mostrar)

@@ -11,6 +11,12 @@ while [ -n "$2" ] ; do
     shift;shift
 done
 
-export LUA_SCRIPT="/home/olpc/Activities/FollowMe.activity/scriptlua.sh"
+cd lua
+./lua bobot-server.lua&
+cd ../pythonAPI
+./waitforbobot.py
+cd ..
 
-$LUA_SCRIPT
+sugar-activity -a $SUGAR_ACTIVITY_ID activity.Activity
+
+kill `ps ax | grep bobot-server | grep -v grep | awk '{print $1}'`

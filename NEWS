@@ -1,0 +1,27 @@
+3
+
+* Se agrega internacionalizacion del codigo. Ademas de Español, se traduce al Ingles, 
+Frances, Aleman e Italiano. Se deja el archivo FollowMe.pot para agregar mas 
+traducciones.
+* Se agrega opcion de mostrar lineas. Esta opcion muestra las lineas que delimitan las 
+zonas que utiliza el codigo para mover al robot.
+* Se agrega opcion para ocultar/mostrar la captura en pantalla. Ocultando la captura en 
+la pantalla mejora el rendimiento, con la desventaja de no ver como funciona el algoritmo 
+de deteccion. En el modo calibrar no se oculta la captura.
+* Se corrige error en el modo seguir. Se logra funcionamiento usual con cualquier tamaño 
+de muestra de captura en pantalla.
+
+2
+
+* Se agrega un sh para levantar el servidor LUA automaticamente con la actividad.
+* Se reduce el tiempo de espera del servidor de 20 segundos a 10 para que la actividad
+se inicie mas rapido.
+
+1
+
+* Version sugarizada con ayuda de sugargame
+* Se agregan opciones para modificar parametros en tiempo de ejecución
+
+0
+
+* Version inicial de prueba

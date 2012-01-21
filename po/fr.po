@@ -1,0 +1,91 @@
+# FollowMe translation
+# Copyright (C) 2010, Alan Aguiar, Ayleen Ricca, Rodrigo Dearmas
+# This file is distributed under GPL license.
+# Alan Aguiar <alanjas@gmail.com>, 2010.
+# Aylen Ricca <ar18_90@hotmail.com>, 2010.
+# Rodrigo Dearmas <piegrande46@hotmail.com>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 3\n"
+"Report-Msgid-Bugs-To: alanjas@gmail.com\n"
+"POT-Creation-Date: 2010-11-25 19:55-0200\n"
+"PO-Revision-Date: 2010-11-25 20:02-0200\n"
+"Last-Translator:  <alanjas@gmail.com>\n"
+"Language-Team: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: activity/activity.info:2
+msgid "FollowMe"
+msgstr "FollowMe"
+
+#: followme.py:53
+msgid "No se encontro ninguna camara."
+msgstr "Ne trouver aucun chambre"
+
+#: followme.py:185
+msgid "No se detecto al robot Butia."
+msgstr "Robot Butia ne trouver"
+
+#: activity.py:72
+msgid "Parar"
+msgstr "Arreter"
+
+#: activity.py:84
+msgid " Calibrar "
+msgstr " Calibrer "
+
+#: activity.py:96
+msgid " Pixeles "
+msgstr " Pixels "
+
+#: activity.py:130
+msgid " Umbral:  Rojo "
+msgstr " Seuil:  Rouge "
+
+#: activity.py:156
+msgid "  Verde "
+msgstr "  Vert "
+
+#: activity.py:182
+msgid "  Azul "
+msgstr "  Bleu "
+
+#: activity.py:216
+msgid "Opciones"
+msgstr "Option"
+
+#: activity.py:224
+msgid " Tamanio de muestra "
+msgstr " Grandeur de enchantillon "
+
+#: activity.py:276
+msgid "  Mostrar lineas"
+msgstr "  Montrer ligne"
+
+#: activity.py:292
+msgid " Mostrar en pantalla"
+msgstr " Montrer en ecran"
+
+#: activity.py:302 activity.py:405
+msgid "Ocultar"
+msgstr "Cacher"
+
+#: activity.py:306
+msgid "Resolucion"
+msgstr "Resolution"
+
+#: activity.py:383
+msgid "Empezar"
+msgstr "Commencer"
+
+#: activity.py:388
+msgid "Detener"
+msgstr "Arreter"
+
+#: activity.py:400
+msgid "Mostrar"
+msgstr "Montrer"
