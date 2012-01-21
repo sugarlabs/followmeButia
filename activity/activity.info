@@ -1,10 +1,10 @@
 [Activity]
 name = FollowMe
-activity_version = 1
-host_version = 1
+activity_version = 2
+host_version = 2
 bundle_id = uy.edu.fing.followme
 service_name = uy.edu.fing.followme
-class = activity.Activity
+exec = activity-followme
 update_url = 
 show_launcher = yes
 icon = followme

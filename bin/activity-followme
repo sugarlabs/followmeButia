@@ -1,0 +1,16 @@
+#!/bin/sh
+
+while [ -n "$2" ] ; do
+    case "$1" in
+      	-b | --bundle-id)     export SUGAR_BUNDLE_ID="$2" ;;
+      	-a | --activity-id)   export SUGAR_ACTIVITY_ID="$2" ;;
+      	-o | --object-id)     export SUGAR_OBJECT_ID="$2" ;;
+	-u | --uri)           export SUGAR_URI="$2" ;;
+	*) echo unknown argument $1 $2 ;;
+    esac
+    shift;shift
+done
+
+export LUA_SCRIPT="/home/olpc/Activities/FollowMe.activity/scriptlua.sh"
+
+$LUA_SCRIPT
