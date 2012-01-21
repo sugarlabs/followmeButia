@@ -1,8 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# FollowMe
-# Copyright (C) 2010
+# FollowMe Butia
+# Copyright (C) 2010, 2011
 # This program was created to use with the robot Butia.
 # Butia is a project from Facultad de Ingenieria - Uruguay
 # Facultad de Ingenieria web site: <http://www.fing.edu.uy/>
@@ -27,8 +27,9 @@
 # Rodrigo Dearmas <piegrande46@hotmail.com>
 
 
+import os
 import sys
-sys.path.insert(0, '/home/olpc/Activities/FollowMe.activity')
+sys.path.insert(0, os.curdir)
 import re
 import gtk
 import pygame
@@ -79,13 +80,13 @@ class Activity(activity.Activity):
 		# creamos el primer item
 		item1 = gtk.ToolItem()
 		# creamos la etiqueta para calibrar
-                self.etiqueta1 = gtk.Label()
+		self.etiqueta1 = gtk.Label()
 		# le ponemos el texto Calibrar
-                self.etiqueta1.set_text(_(' Calibrar '))
+		self.etiqueta1.set_text(_(' Calibrar '))
 		# agrego la etiqueta al item
 		item1.add(self.etiqueta1)
 		# inserto el item en la barra
-                barra.insert(item1, 0)
+		barra.insert(item1, 0)
 		# insertamos el boton parar
 		barra.insert(parar, 1)
 		# creamos el segundo item
@@ -103,15 +104,15 @@ class Activity(activity.Activity):
 		# creo un cuadro de entrada
 		self.pixeles = gtk.Entry()
 		# colocamos 10 al comienzo
-                self.pixeles.set_text('10')
+		self.pixeles.set_text('10')
 		# ponemos alineacion derecha
-                self.pixeles.set_alignment(1)
+		self.pixeles.set_alignment(1)
 		# ponemos ancho de 3 caracteres
-                self.pixeles.set_width_chars(3)
+		self.pixeles.set_width_chars(3)
 		# conectamos el cuadro con el evento insertar
 		self.pixeles.connect('insert-text', self.pixeles_insertar)
 		# conectamos el cuadro con el elemento activar
-        	self.pixeles.connect('activate', self.pixeles_activar)
+		self.pixeles.connect('activate', self.pixeles_activar)
 		# agrego el cuadro al item
 		item3.add(self.pixeles)
 		# inserto el item en la barra
@@ -119,19 +120,19 @@ class Activity(activity.Activity):
 		# creo un separador
 		separador = gtk.SeparatorToolItem()
 		# que tenga una linea
-                separador.props.draw = True
+		separador.props.draw = True
 		# inserto el separador
-                barra.insert(separador, 4)
+		barra.insert(separador, 4)
 		# creo el item 5
 		item5 = gtk.ToolItem()
 		# creo la etiqueta para umbral
-                self.etiqueta5 = gtk.Label()
+		self.etiqueta5 = gtk.Label()
 		# le coloco el texto Umbral
-                self.etiqueta5.set_text(_(' Umbral:  Rojo '))
+		self.etiqueta5.set_text(_(' Umbral:  Rojo '))
 		# agrego la etiqueta al item
-                item5.add(self.etiqueta5)
+		item5.add(self.etiqueta5)
 		# inserto el item en la barra
-                barra.insert(item5, 5)
+		barra.insert(item5, 5)
 		# creo el sexto item
 		item6 = gtk.ToolItem()
 		# creo un cuadro para el Rojo
@@ -151,21 +152,21 @@ class Activity(activity.Activity):
 		# creo el septimo item
 		item7 = gtk.ToolItem()
 		# creo la etiqueta para el verde
-                self.etiqueta7 = gtk.Label()
+		self.etiqueta7 = gtk.Label()
 		# le coloco G de verde
 		self.etiqueta7.set_text(_('  Verde '))
 		# coloco la etiqueta en el item
 		item7.add(self.etiqueta7)
 		# coloco el item en la barra
-                barra.insert(item7, 7)
+		barra.insert(item7, 7)
  		# creo el octavo item
 		item8 = gtk.ToolItem()
 		# creo el cuadro para el verde
-                self.cverde = gtk.SpinButton()
+		self.cverde = gtk.SpinButton()
 		# coloco el rango 0 a 255
-                self.cverde.set_range(0, 255)
+		self.cverde.set_range(0, 255)
 		# coloco el incremento de a 1
-                self.cverde.set_increments(1, 10)
+		self.cverde.set_increments(1, 10)
 		# pongo al comienzo el valor del verde del umbral
 		self.cverde.props.value = self.umbral[1]
 		# conecto el cuadro con el evento verde_valor
@@ -177,21 +178,21 @@ class Activity(activity.Activity):
 		# creo el noveno item
 		item9 = gtk.ToolItem()
 		# creo la etiqueta para el azul
-                self.etiqueta9 = gtk.Label()
+		self.etiqueta9 = gtk.Label()
 		# coloco el texto B
-                self.etiqueta9.set_text(_('  Azul '))
-                # inserto la etiqueta en el item
+		self.etiqueta9.set_text(_('  Azul '))
+		# inserto la etiqueta en el item
 		item9.add(self.etiqueta9)
 		# inserto el item en la barra
-                barra.insert(item9, 9)
+		barra.insert(item9, 9)
 		# creo el decimo item
 		item10 = gtk.ToolItem()
 		# creo un cuadro para el azul
-                self.cazul = gtk.SpinButton()
+		self.cazul = gtk.SpinButton()
 		# coloco el rango 0 a 255
-                self.cazul.set_range(0, 255)
+		self.cazul.set_range(0, 255)
 		# coloco el incremento en 1
-                self.cazul.set_increments(1, 10)
+		self.cazul.set_increments(1, 10)
 		# al comienzo coloco azul del umbral
 		self.cazul.props.value = self.umbral[2]
 		# conecto el cuadro al evento cazul_valor
@@ -199,7 +200,7 @@ class Activity(activity.Activity):
 		# agrego el cuadro al item
 		item10.add(self.cazul)
 		# inserto el item en la barra
-                barra.insert(item10, 10)
+		barra.insert(item10, 10)
 		# obtengo la caja de la actividad
 		caja = activity.ActivityToolbox(self)
 		# obtengo la barra de Actividad
@@ -212,62 +213,62 @@ class Activity(activity.Activity):
 		barra_actividad.remove(barra_actividad.share)
 		# le coloco none
 		barra_actividad.share = None
-                # alacaja le agregamos nuestra barra de Opciones
-                caja.add_toolbar(_('Opciones'), barra)
+		# a la caja le agregamos nuestra barra de Opciones
+		caja.add_toolbar(_('Opciones'), barra)
 		# obteenmos la barra
-                barra2 = gtk.Toolbar()
-                # creamos el primer item
-                it1 = gtk.ToolItem()
-                # creamos la etiqueta para calibrar
-                self.et1 = gtk.Label()
-                # le ponemos el texto Calibrar
-                self.et1.set_text(_(' Tamanio de muestra '))
-                # agrego la etiqueta al item
-                it1.add(self.et1)
-                # inserto el item en la barra
-                barra2.insert(it1, 0)
-                # creo el decimo item
-                it2 = gtk.ToolItem()
-                # creo un cuadro para el azul
-                self.tmx = gtk.SpinButton()
-                # coloco el rango 0 a 255
-                self.tmx.set_range(160, 1200)
-                # coloco el incremento en 1
-                self.tmx.set_increments(1, 10)
-                # al comienzo coloco azul del umbral
-                self.tmx.props.value = 960
-                # conecto el cuadro al evento cazul_valor
-                self.tamx = self.tmx.connect('notify::value', self.tmx_mod)
-                # agrego el cuadro al item
-                it2.add(self.tmx)
+		barra2 = gtk.Toolbar()
+		# creamos el primer item
+		it1 = gtk.ToolItem()
+		# creamos la etiqueta para calibrar
+		self.et1 = gtk.Label()
+		# le ponemos el texto Calibrar
+		self.et1.set_text(_(' Tamanio de muestra '))
+		# agrego la etiqueta al item
+		it1.add(self.et1)
+		# inserto el item en la barra
+		barra2.insert(it1, 0)
+		# creo el decimo item
+		it2 = gtk.ToolItem()
+		# creo un cuadro para el azul
+		self.tmx = gtk.SpinButton()
+		# coloco el rango 0 a 255
+		self.tmx.set_range(160, 1200)
+		# coloco el incremento en 1
+		self.tmx.set_increments(1, 10)
+		# al comienzo coloco azul del umbral
+		self.tmx.props.value = 960
+		# conecto el cuadro al evento cazul_valor
+		self.tamx = self.tmx.connect('notify::value', self.tmx_mod)
+		# agrego el cuadro al item
+		it2.add(self.tmx)
 		# inserto el item a la barra
 		barra2.insert(it2, 1)
 		# creamos el primer item
-                it3 = gtk.ToolItem()
-                # creamos la etiqueta para calibrar
-                self.et2 = gtk.Label()
-                # le ponemos el texto Calibrar
-                self.et2.set_text(' X ')
-                # agrego la etiqueta al item
-                it3.add(self.et2)
-                # inserto el item en la barra
-                barra2.insert(it3, 2)
+		it3 = gtk.ToolItem()
+		# creamos la etiqueta para calibrar
+		self.et2 = gtk.Label()
+		# le ponemos el texto Calibrar
+		self.et2.set_text(' X ')
+		# agrego la etiqueta al item
+		it3.add(self.et2)
+		# inserto el item en la barra
+		barra2.insert(it3, 2)
 		# creo el decimo item
-                it4 = gtk.ToolItem()
-                # creo un cuadro para el azul
-                self.tmy = gtk.SpinButton()
-                # coloco el rango 0 a 255
-                self.tmy.set_range(120, 900)
-                # coloco el incremento en 1
-                self.tmy.set_increments(1, 10)
-                # al comienzo coloco azul del umbral
-                self.tmy.props.value = 720
-                # conecto el cuadro al evento cazul_valor
-                self.tamy = self.tmy.connect('notify::value', self.tmy_mod)
-                # agrego el cuadro al item
-                it4.add(self.tmy)
-                # inserto el item a la barra
-                barra2.insert(it4, 3)
+		it4 = gtk.ToolItem()
+		# creo un cuadro para el azul
+		self.tmy = gtk.SpinButton()
+		# coloco el rango 0 a 255
+		self.tmy.set_range(120, 900)
+		# coloco el incremento en 1
+		self.tmy.set_increments(1, 10)
+		# al comienzo coloco azul del umbral
+		self.tmy.props.value = 720
+		# conecto el cuadro al evento cazul_valor
+		self.tamy = self.tmy.connect('notify::value', self.tmy_mod)
+		# agrego el cuadro al item
+		it4.add(self.tmy)
+		# inserto el item a la barra
+		barra2.insert(it4, 3)
 		# creamos el quinto item
 		it5 = gtk.ToolItem()
 		# creamos la etiqueta para mostrar lineas
@@ -305,9 +306,9 @@ class Activity(activity.Activity):
 		# agrego la barra2 a la caja (toolbar)
 		caja.add_toolbar(_('Resolucion'), barra2)
 		# la mostramos
-                caja.show_all()
-                # le ponemos la caja
-                self.set_toolbox(caja)
+		caja.show_all()
+		# le ponemos la caja
+		self.set_toolbox(caja)
 
 	def pixeles_insertar(self, entry, text, length, position):
 		# si no es un numero

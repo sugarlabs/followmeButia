@@ -1,11 +1,9 @@
 [Activity]
-name = FollowMe
-activity_version = 3
-host_version = 3
+name = FollowMe Butia
+activity_version = 4
 bundle_id = uy.edu.fing.followme
 service_name = uy.edu.fing.followme
 exec = activity-followme
-update_url = 
 show_launcher = yes
 icon = followme
 license = GPLv2+

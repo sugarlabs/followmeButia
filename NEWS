@@ -1,5 +1,12 @@
-3
+4
+* Se cambia el nombre de la actividad a: FollowMe Butia, para diferenciarlo
+de otra actividad llamada igual.
+* Se depura la libreria Pygame. Se quitan ejemplos innecesarios.
+* Se corrige la tabulaciones del codigo, en algunos casos habia espacios.
+* Se pasa de una ruta estatica a una dinamica para poder ejecutar el codigo
+en cualquier directorio.
 
+3
 * Se agrega internacionalizacion del codigo. Ademas de Español, se traduce al Ingles, 
 Frances, Aleman e Italiano. Se deja el archivo FollowMe.pot para agregar mas 
 traducciones.
@@ -12,16 +19,13 @@ de deteccion. En el modo calibrar no se oculta la captura.
 de muestra de captura en pantalla.
 
 2
-
 * Se agrega un sh para levantar el servidor LUA automaticamente con la actividad.
 * Se reduce el tiempo de espera del servidor de 20 segundos a 10 para que la actividad
 se inicie mas rapido.
 
 1
-
 * Version sugarizada con ayuda de sugargame
 * Se agregan opciones para modificar parametros en tiempo de ejecución
 
 0
-
 * Version inicial de prueba

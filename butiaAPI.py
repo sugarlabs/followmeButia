@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Butia 2010
+# Butia 2010, 2011
 # This is a part of program to use with the robot Butia.
 # Butia is a project from Facultad de Ingenieria - Uruguay
 # Facultad de Ingenieria web site: <http://www.fing.edu.uy/>
@@ -19,7 +19,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#version 2_0 //agrega funcionalidades para manejar nuevos drivers 
+# version 2_0 //agrega funcionalidades para manejar nuevos drivers 
 
 import socket
 
@@ -274,5 +274,3 @@ class robot:
 			print "Operation error"
 		finally:	
 			return ret
-	 
-	 

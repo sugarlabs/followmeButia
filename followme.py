@@ -1,8 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# FollowMe
-# Copyright (C) 2010
+# FollowMe Butia
+# Copyright (C) 2010, 2011
 # This program was created to use with the robot Butia.
 # Butia is a project from Facultad de Ingenieria - Uruguay 
 # Facultad de Ingenieria web site: <http://www.fing.edu.uy/>
@@ -38,23 +38,23 @@ tamanioc = (320, 240)
 
 class Captura(object):
 
-        def __init__(self, tamanio):
-                # creamos una superfcie para usarla de pantalla
+	def __init__(self, tamanio):
+		# creamos una superfcie para usarla de pantalla
 		self.pantalla = pygame.display.get_surface()		
 		# creamos una superficie para la captura
 		self.captura = pygame.surface.Surface(tamanioc, 0, self.pantalla)
-                # inicializamos el modulo pygame de la camara
-                pygame.camera.init()
-                # obtenemos la lista de camaras
-                self.lcamaras = pygame.camera.list_cameras()
-                # si no hay ninguna camara
-                if not self.lcamaras:
-                        # mandamos el error correspondiente
-                        print _('No se encontro ninguna camara.')
-                else:
-                        # creamos la camara, con tamanio y modo color RGB
-                        self.cam = pygame.camera.Camera(self.lcamaras[0], tamanioc, 'RGB')
-       			# iniciamos la camara
+		# inicializamos el modulo pygame de la camara
+		pygame.camera.init()
+		# obtenemos la lista de camaras
+		self.lcamaras = pygame.camera.list_cameras()
+		# si no hay ninguna camara
+		if not self.lcamaras:
+			# mandamos el error correspondiente
+			print _('No se encontro ninguna camara.')
+		else:
+			# creamos la camara, con tamanio y modo color RGB
+			self.cam = pygame.camera.Camera(self.lcamaras[0], tamanioc, 'RGB')
+			# iniciamos la camara
 			self.cam.start()
 			# calculamos las proporciones
 			self.calc(tamanio)
@@ -82,44 +82,44 @@ class Captura(object):
 		self.tyd = self.tamaniom[1] / 3
 
 	def calibrar(self):
-                # guardamos una captura
-                self.captura = self.cam.get_image(self.captura)
-                # giramos la captura, en el horizontal
-                self.captura = pygame.transform.flip(self.captura,True,False)
+		# guardamos una captura
+		self.captura = self.cam.get_image(self.captura)
+		# giramos la captura, en el horizontal
+		self.captura = pygame.transform.flip(self.captura,True,False)
 		# colocamos la captura en la pantalla
-                self.pantalla.blit(self.captura, (0,0))
-                # dibujamos un rectangulo en el centro de la pantalla
-                rect = pygame.draw.rect(self.pantalla, (255,0,0), (self.xc,self.yc,50,50), 4)
-                # obtenemos el color promedio dentro del rectangulo
-                self.color = pygame.transform.average_color(self.captura, rect)
-                # rellenamos la pantalla con un color homogeneo
-                self.pantalla.fill((84,185,72))
+		self.pantalla.blit(self.captura, (0,0))
+		# dibujamos un rectangulo en el centro de la pantalla
+		rect = pygame.draw.rect(self.pantalla, (255,0,0), (self.xc,self.yc,50,50), 4)
+		# obtenemos el color promedio dentro del rectangulo
+		self.color = pygame.transform.average_color(self.captura, rect)
+		# rellenamos la pantalla con un color homogeneo
+		self.pantalla.fill((84,185,72))
 		# escalamos captura al tamanio tamaniom
 		self.captura2 = pygame.transform.scale(self.captura, (int(self.tamaniom[0]), int(self.tamaniom[1])))
-                # colocamos la captura 2 en la pantalla
-                self.pantalla.blit(self.captura2, (self.xblit, self.yblit))
-                # dibujamos un rectangulo en el centro de la pantalla
-                rect = pygame.draw.rect(self.pantalla, (255,0,0), (575,355,50,50), 4)
+		# colocamos la captura 2 en la pantalla
+		self.pantalla.blit(self.captura2, (self.xblit, self.yblit))
+		# dibujamos un rectangulo en el centro de la pantalla
+		rect = pygame.draw.rect(self.pantalla, (255,0,0), (575,355,50,50), 4)
 		# rellenamos la esquina superior con el color calibrado
-                self.pantalla.fill(self.color, (0,0,120,120))
+		self.pantalla.fill(self.color, (0,0,120,120))
 		# recuadramos el color para resaltarlo
 		rect = pygame.draw.rect(self.pantalla, (0,0,0), (0,0,120,120), 4)
 
 	def obtener_posicion(self, umbral, pixeles):
-                # guardamos una captura
-                self.captura = self.cam.get_image(self.captura)
+		# guardamos una captura
+		self.captura = self.cam.get_image(self.captura)
 		# giro la captura en el horizontal
-                self.captura = pygame.transform.flip(self.captura,True,False)
-                # creamos una mascara con la captura con color y umbral especificados
-                mascara = pygame.mask.from_threshold(self.captura, self.color, umbral)
-                # dejamos la mancha conexa mas grande
-                conexa = mascara.connected_component()
-                # si la mancha tiene al menos tantos pixeles
-                if (conexa.count() > pixeles):
-                        # devolvemos el centro de la mancha
-                        return mascara.centroid()
-                else:
-                        # sino devolvemos un centro ficticio
+		self.captura = pygame.transform.flip(self.captura,True,False)
+		# creamos una mascara con la captura con color y umbral especificados
+		mascara = pygame.mask.from_threshold(self.captura, self.color, umbral)
+		# dejamos la mancha conexa mas grande
+		conexa = mascara.connected_component()
+		# si la mancha tiene al menos tantos pixeles
+		if (conexa.count() > pixeles):
+			# devolvemos el centro de la mancha
+			return mascara.centroid()
+		else:
+			# sino devolvemos un centro ficticio
 			return (-1,-1)
 
 	def mostrar_posicion(self, pos):
@@ -127,10 +127,10 @@ class Captura(object):
 		x, y = pos
 		# escalo la captura para mostrar
 		self.captura2 = pygame.transform.scale(self.captura, (int(self.tamaniom[0]), int(self.tamaniom[1])))
-                # si es una posicion valida
-                if (x != -1):
-                        # creo un punto para mostrar la posicion
-        		rect = pygame.draw.rect(self.captura2, (255,0,0), (x*self.c1, y*self.c2, 20, 20), 16)
+		# si es una posicion valida
+		if (x != -1):
+			# creo un punto para mostrar la posicion
+			rect = pygame.draw.rect(self.captura2, (255,0,0), (x*self.c1, y*self.c2, 20, 20), 16)
 		# rellenamos la pantalla con un color homogeneo
 		self.pantalla.fill((84,185,72))
 		# si hay que mostrar la grilla
@@ -140,9 +140,9 @@ class Captura(object):
 		# muestro la captura en pantalla
 		self.pantalla.blit(self.captura2, (self.xblit, self.yblit))
 		# rellenamos la esquina superior con el color calibrado
-                self.pantalla.fill(self.color, (0,0,120,120))
+		self.pantalla.fill(self.color, (0,0,120,120))
 		# recuadramos el color para resaltarlo
-                rect = pygame.draw.rect(self.pantalla, (0,0,0), (0,0,120,120), 4)
+		rect = pygame.draw.rect(self.pantalla, (0,0,0), (0,0,120,120), 4)
 
 	def dibujar_grilla(self):
 		# dibujo las zonas verticales
@@ -170,18 +170,18 @@ class Robot(object):
 		self.z2 = tamanioc[1] / 3
 		# obtenemos el robot
 		self.butiabot = butiaAPI.robot()
-                # listamos los modulos
-                self.modulos = self.butiabot.listarModulos()
-                # si hay modulos
-                if (self.modulos != -1):
-                        # imprimimos la lista de modulos
-                        print self.modulos
-                        # abrimos los sensores
-                        self.butiabot.abrirSensor()
-                        # abrimos los motores
-                        self.butiabot.abrirMotores()
-                else:
-                        # sino se encuentra
+		# listamos los modulos
+		self.modulos = self.butiabot.listarModulos()
+		# si hay modulos
+		if (self.modulos != -1):
+			# imprimimos la lista de modulos
+			print self.modulos
+			# abrimos los sensores
+			self.butiabot.abrirSensor()
+			# abrimos los motores
+			self.butiabot.abrirMotores()
+		else:
+			# sino se encuentra
 			print _('No se detecto al robot Butia.')
 
 	def mover_robot(self, pos):
@@ -245,86 +245,87 @@ class Robot(object):
 
 class FollowMe:
 
-    def __init__(self):
-        # para manejar la tasa de refresco
-        self.clock = pygame.time.Clock()
-	# comienzo calibrando
-        self.calibrando = True
+	def __init__(self):
+		# para manejar la tasa de refresco
+		self.clock = pygame.time.Clock()
+		# comienzo calibrando
+		self.calibrando = True
 
-    def modocalibrando(self, calibrando):
-	# seteo el calibrando local        
-	self.calibrando = calibrando
-	# si no hay que mostrar
-        if (self.mostrar == False):
-                # limpio la pantalla
-                self.c.limpiar()
+	def modocalibrando(self, calibrando):
+		# seteo el calibrando local        
+		self.calibrando = calibrando
+		# si no hay que mostrar
+		if (self.mostrar == False):
+			# limpio la pantalla
+			self.c.limpiar()
 
-    def poner_umbral(self, umbral):
-	# guardo el umbral en el local
-        self.umbral = umbral
-  
-    def poner_pixeles(self, pixeles):
-	# seteo la cantidad de pixeles local
-        self.pixeles = pixeles
+	def poner_umbral(self, umbral):
+		# guardo el umbral en el local
+		self.umbral = umbral
 
-    def poner_tamaniom(self, tam):
-	# seteo el tamanio local con tam
-        self.tamaniom = tam
-	self.c.calc(tam)
+	def poner_pixeles(self, pixeles):
+		# seteo la cantidad de pixeles local
+		self.pixeles = pixeles
 
-    def poner_grilla(self, grilla):
-	# seteo la variable local
-	self.c.mostrar_grilla = grilla
+	def poner_tamaniom(self, tam):
+		# seteo el tamanio local con tam
+		self.tamaniom = tam
+		self.c.calc(tam)
 
-    def poner_muestra(self, muestra):
-	# seteo la variable local
-	self.mostrar = muestra
-	# si no hay que mostrar
-	if (self.mostrar == False):
-		# limpio la pantalla
-		self.c.limpiar()
+	def poner_grilla(self, grilla):
+		# seteo la variable local
+		self.c.mostrar_grilla = grilla
 
-    def run(self):
-	# creamos el robot
-        r = Robot()
-        # establecemos un valor de umbral de color
-        self.umbral = (25, 25, 25)
-	# establezco un numero de pixeles inicial
-	self.pixeles = 10
-	# establezco un tamaño incial
-	self.tamanioi = (960.0, 720.0)
-	self.mostrar = True
-        # creamos una captura
-        self.c = Captura(self.tamanioi)
-        # obligamos a que se ejecute el while
-        ejecutar = True
-        # mientras ejecutar
-	while ejecutar:
-		# Pump GTK messages.
-		while gtk.events_pending():
-			gtk.main_iteration()
-		# Pump PyGame messages.
-		for event in pygame.event.get():
-			if event.type == pygame.QUIT:
-				# salgo				
-				return
-			elif event.type == pygame.VIDEORESIZE:
-				pygame.display.set_mode(event.size, pygame.RESIZABLE)
-		# si es calibrar
-		if (self.calibrando):
-			# calibro la camara
-			self.c.calibrar()
-		else:
-			# obtengo la posicion
-			pos = self.c.obtener_posicion(self.umbral, self.pixeles)
-			if self.mostrar:
-				# muestro la posicion en pantalla
-				self.c.mostrar_posicion(pos)
+	def poner_muestra(self, muestra):
+		# seteo la variable local
+		self.mostrar = muestra
+		# si no hay que mostrar
+		if (self.mostrar == False):
+			# limpio la pantalla
+			self.c.limpiar()
+
+	def run(self):
+		# creamos el robot
+		r = Robot()
+		# establecemos un valor de umbral de color
+		self.umbral = (25, 25, 25)
+		# establezco un numero de pixeles inicial
+		self.pixeles = 10
+		# establezco un tamaño incial
+		self.tamanioi = (960.0, 720.0)
+		self.mostrar = True
+		# creamos una captura
+		self.c = Captura(self.tamanioi)
+		# obligamos a que se ejecute el while
+		ejecutar = True
+		# mientras ejecutar
+		while ejecutar:
+			# Pump GTK messages.
+			while gtk.events_pending():
+				gtk.main_iteration()
+			# Pump PyGame messages.
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					# salgo				
+					return
+				elif event.type == pygame.VIDEORESIZE:
+					pygame.display.set_mode(event.size, pygame.RESIZABLE)
+			# si es calibrar
+			if (self.calibrando):
+				# calibro la camara
+				self.c.calibrar()
+			else:
+				# obtengo la posicion
+				pos = self.c.obtener_posicion(self.umbral, self.pixeles)
+				# si hay que mostrar la captura en pantalla
+				if self.mostrar:
+					# muestro la posicion en pantalla
+					self.c.mostrar_posicion(pos)
 			# si esta el butia conectado
 			if (r.modulos != -1):
 				# movemos el robot
 				r.mover_robot(pos)
-		# actualizo la pantalla
-		pygame.display.flip()              
-		# seteo a 10 CPS (CuadrosPorSegundo)
-		self.clock.tick(10)
+			# actualizo la pantalla
+			pygame.display.flip()              
+			# seteo a 10 CPS (CuadrosPorSegundo)
+			self.clock.tick(10)

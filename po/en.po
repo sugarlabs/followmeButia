@@ -1,13 +1,13 @@
-# FollowMe translation
-# Copyright (C) 2010, Alan Aguiar, Ayleen Ricca, Rodrigo Dearmas
+# FollowMe Butia translation
+# Copyright (C) 2010, 2011 Alan Aguiar, Ayleen Ricca, Rodrigo Dearmas
 # This file is distributed under GPL license.
-# Alan Aguiar <alanjas@gmail.com>, 2010.
-# Aylen Ricca <ar18_90@hotmail.com>, 2010.
-# Rodrigo Dearmas <piegrande46@hotmail.com>, 2010.
+# Alan Aguiar <alanjas@gmail.com>, 2010, 2011.
+# Aylen Ricca <ar18_90@hotmail.com>, 2010, 2011.
+# Rodrigo Dearmas <piegrande46@hotmail.com>, 2010, 2011.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 3\n"
+"Project-Id-Version: 4\n"
 "Report-Msgid-Bugs-To: alanjas@gmail.com\n"
 "POT-Creation-Date: 2010-11-25 19:55-0200\n"
 "PO-Revision-Date: 2010-11-25 20:02-0200\n"
@@ -19,8 +19,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: activity/activity.info:2
-msgid "FollowMe"
-msgstr "FollowMe"
+msgid "FollowMe Butia"
+msgstr "FollowMe Butia"
 
 #: followme.py:53
 msgid "No se encontro ninguna camara."
