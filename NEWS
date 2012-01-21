@@ -1,3 +1,16 @@
+5
+* Se modifica la barra de Opciones y de Calibrar. Se agrega el color calibrado
+para ser mostrado en en sus 3 componenetes (RGB) y para ser introducido
+manualmente.
+* Se corrige tabulacion que generaba una excepcion cuando se usaba la actividad
+conectada al Robot Butia.
+* Se reestructura el sistema de directorios, se pasan las librerias a la carpeta
+'lib'.
+* Se cambia el modo en que se inicia la actividad. Se quita el directorio 'bin' y
+el 'sh' y se pasa a invocar al servidor de LUA mediante codigo.
+* Se cambia la versión del 'bobot-server.lua'.
+* Se corrigen traducciones.
+
 4
 * Se cambia el nombre de la actividad a: FollowMe Butia, para diferenciarlo
 de otra actividad llamada igual.

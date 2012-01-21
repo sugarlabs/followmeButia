@@ -1,276 +1,222 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
+# ButiaAPI
+# Copyright 2009-2010 Mina @ Facultad de Ingenieria UDELAR
 #
-# Butia 2010, 2011
-# This is a part of program to use with the robot Butia.
-# Butia is a project from Facultad de Ingenieria - Uruguay
-# Facultad de Ingenieria web site: <http://www.fing.edu.uy/>
-# Butia project web site: <http://www.fing.edu.uy/inco/proyectos/butia/>
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# Implementa una capa de abstraccion para la comunicacion con el bobot-server
+# version 3_0 //reorganiza el codigo pa mas legible y menos codigo repetido
 # version 2_0 //agrega funcionalidades para manejar nuevos drivers 
+#
+# This program is free software.....
+# TODO Poner la licencia que corresponde
+# 
 
 import socket
+import string
+import math 
 
 
-ADDRESS = "localhost"
-PUERTO  = 2009
-	
 	
 class robot:
 	cliente = None
-	   
-	def __init__(self):
-		#print "creando clase butiaAPI"
-		# abrir la conexion en socket
+	fcliente = None
+
+	#Init de la clase robot
+	def __init__(self, address = "localhost" , port = 2009):
+		self.reconnect(address, port)
+
+	# Connecta o Reconnecta al bobot en address:port
+	def reconnect(self, address, port):
+		self.cerrar()
 		try:
 			self.cliente = socket.socket()
-			self.cliente.connect((ADDRESS, PUERTO))  
+			self.cliente.connect((address, port))  
+			self.fcliente = self.cliente.makefile()
+			msg = "INIT\n"
+			self.cliente.send(msg) #bobot server instance is running, but we have to check for new or remove hardware
+			self.fcliente.readline()
 		except:
-			print "Connection error..."
-			#return -1
-		
+			return -1
+		return 0
+
+
+	# Cierra la comunicacion con servidor lubot
 	def cerrar(self):
 		#print "cerrando comunicacion..."	
-		# cerrar comunicacion con servidor lubot
 		try:
-			self.cliente.close() # FIXME verificar q esta operacion no da error
+			if self.fcliente != None:
+				self.fcliente.close()
+				self.fcliente = None
+			if self.cliente != None:
+				self.cliente.close()
+				self.cliente = None
 		except:
-			return -1	
-		
-	#Operaciones solicitadas al sistema modulo principal
-	
+			return -1
+		return 0
+
+	#######################################################################
+	### Operaciones solicitadas al sistema modulo principal
+	#######################################################################
+
 	#listar modulos: devuelve la lista de los modulos disponibles en el firmware de la placa
 	def listarModulos(self):
 		ret = -1
+		msg = "LIST\n"
 		try:
-			#print "Listar modulos"
-			msg = "LIST\n"
-			#print msg
-			self.cliente.send(msg)  # FIXME -- controlar que no de error el socket
-			ret = self.cliente.recv(256) 			
+			self.cliente.send(msg)		# FIXME -- controlar que no de error el socket -- Guille: No esta controlado con el "try"?
+			ret = self.fcliente.readline()
 		except:	
-			print "Error listing modules"
-		finally:
-			return ret	
-		
-	def abrirLback(self):
+			return -1
+		ret = ret[:len(ret) -1]		# le borro el \n
+		return ret
+	
+
+	#abrirModulo: apertura de modulos, habre el modulo "moduloname"
+	def abrirModulo(self, moduloname):
 		ret = -1
+		msg = "OPEN " + moduloname  + "\n"
 		try:
-			msg = "OPEN lback\n"
-			#print msg
 			self.cliente.send(msg)  # FIXME -- controlar que no de error el socket
-			ret = self.cliente.recv(256) 
-			return ret	
+			ret = self.fcliente.readline()
 		except:
-			return -1	
-			
-		
+			return -1
+		ret = ret[:len(ret) -1]		# le borro el \n
+		return ret
+
+
+	#llamarModulo: Operacion de llamada de una funcion de un modulo (CALL)
+	def llamarModulo(self, modulename, function , params = ""):
+		ret = -1
+		msg = "CALL " + modulename + " " + function
+		if params != "" :
+			msg += " " + params
+		msg += "\n"
+		try:
+			self.cliente.send(msg) # FIXME -- controlar que no de error el socket
+			ret = self.fcliente.readline()
+		except:
+			return -1
+		ret = ret[:len(ret) -1]		# le borro el \n
+		return ret
+
+
+
+	#######################################################################
+	### Funciones utiles
+	####################################################################### 
+
+
+	#retorna si esta presente el modulo
+	def isPresent(self, modulename):
+		ret = self.listarModulos()
+		# TODO : habria que hacer un buffer para guardar el listademodulos
+		# ya que las subsecuentes llamadas a esta funcion para chequear por
+		# muchos modulos seria ineficiente.
+		if ret == -1 :
+			return False
+		listamodulos = string.split(ret,',')
+		for modulo in listamodulos:
+			if modulo == modulename:
+				return True
+		return False
+
+	#loopBack: modulo de ayuda presente en el butia (open)
+	def abrirLback(self):
+		return self.abrirModulo("lback")
+
 	#loopBack: envia un mensaje a la placa y espera recibir exactamente lo que fue enviado
 	def loopBack(self, data):
-		ret = -1
-		try:
-			#print "Loop back"
-			msg = "CALL lback send " + data  + "\n"
-			#print msg
-			self.cliente.send(msg) # FIXME -- controlar que no de error el socket
-			ret = self.cliente.recv(256) # ver q hacer con esta respuesta
-			self.cliente.send("CALL lback read\n")# FIXME -- controlar que no de error el socket
-			ret = self.cliente.recv(256) 
-		except:
-			print "Operation error"
-		finally:	
-			return ret				
-	 
-	#Operaciones solicidatas al driver motores.lua	
-	 
+		ret = self.llamarModulo("lback", "send", data)
+		if ret == -1 :
+			return -1
+		return self.llamarModulo("lback", "read" )
+
+
+	#######################################################
+	### Operaciones solicidatas al driver motores.lua	
+	######################################################
+
 	def abrirMotores(self):
-		ret = -1
-		try:
-			#print "Abrir modulo"
-			msg = "OPEN motores\n"
-			#print msg
-			self.cliente.send(msg)  # FIXME -- controlar que no de error el socket
-			ret = self.cliente.recv(256) 
-		except:
-			print "Operation error"
-		finally:	
-			return ret	
-		
+		return self.abrirModulo("motores")
+
 	def setVelocidadMotores(self, sentidoIzq = "0", velIzq = "0", sentidoDer = "0", velDer = "0"):
-		ret = -1
-		try:
-			#print "setVelocidadMotores"
-			msg = "CALL motores setvel2mtr " + sentidoIzq + " " + velIzq + " " + sentidoDer + " " + velDer + "\n"
-			#print msg
-			self.cliente.send(msg)
-			ret = self.cliente.recv(256)
-		except:
-			print "Operation error"
-		finally:	
-			return ret
+		msg = sentidoIzq + " " + velIzq + " " + sentidoDer + " " + velDer
+		return self.llamarModulo("motores", "setvel2mtr", msg )
 	 
 	def setVelMotor(self, idMotor = "0", sentido = "0", vel = "0"):
-		ret = -1
-		try:
-			#print "setVelMotor"
-			msg = "CALL motores setvelmtr " + idMotor + " " + sentido + " " + vel + "\n"
-			#print msg
-			self.cliente.send(msg)
-			ret = self.cliente.recv(256)
-		except:
-			print "Operation error"
-		finally:	
-			return ret
-	 
+		msg = idMotor + " " + sentido + " " + vel
+		return self.llamarModulo("motores", "setvelmtr", msg )
+
 	
-	#Operaciones solicitadas al driver de los sensores
+	#### Operaciones solicitadas al driver de los sensores
+
 	def abrirSensor(self):
-		ret = -1
-		try:
-			#print "Abrir modulo"
-			msg = "OPEN sensor\n"
-			#print msg
-			self.cliente.send(msg)  # FIXME -- controlar que no de error el socket
-			ret = self.cliente.recv(256) 
-		except:
-			print "Operation error"
-		finally:	
-			return ret
-		
+		return self.abrirModulo("sensor")
+
 	def getValSenAnalog(self, pinAnalog = "0"):
-		ret = -1
-		try:
-			#print "getValSenAnalog"
-			msg = "CALL sensor senanl " + pinAnalog + "\n"
-			#print msg
-			self.cliente.send(msg)
-			ret = self.cliente.recv(256) 
-		except:
-			print "Operation error"
-		finally:	
-			return ret
-		
+		return self.llamarModulo("sensor", "senanl", pinAnalog )
+
 	def getValSenDigital(self, pinDig = "0"):
-		ret = -1
-		try:
-			#print "getValSenDig"
-			msg = "CALL sensor sendig " + pinDig + "\n" 
-			#print msg
-			self.cliente.send(msg)
-			ret = self.cliente.recv(256) 
-		except:
-			print "Operation error"
-		finally:	
-			return ret
+		return self.llamarModulo("sensor", "sendig", pinDig )
+
 		
-	#Operaciones solicitadas al modulo de la placa, driver butia.lua
-	#siempre de debe abrir el modulo antes de solicitar cualquier otra operacion
+	#### Operaciones solicitadas al modulo de la placa, driver butia.lua
+
 	def abrirButia(self):
-		ret = -1
-		try:
-			#print "Abrir modulo"
-			msg = "OPEN butia\n"
-			#print msg
-			self.cliente.send(msg)  
-			ret = self.cliente.recv(256) 
-		except:
-			print "Operation error"
-		finally:
-			return ret
+		return self.abrirModulo("butia")
 		
 	def ping(self):
-		try:
-			#print "ping"
-			msg = "CALL placa ping"
-			#print msg
-			self.cliente.send(msg)
-		except:
-			print "Operation error"
-			return -1
+		return self.llamarModulo("placa", "ping" )
+
 		
 	# esta operacion nos devuelve la carga aproximada del pack de pilas del robot con un error de 1 volt.	
 	def getCargaBateria(self):
-		ret = -1
-		try:
-			#print "getCargaBateria"
-			msg = "CALL butia get_volt\n"
-			#print msg
-			self.cliente.send(msg)
-			ret = self.cliente.recv(256)
-		except:
-			print "Operation error"
-		finally:
-			return ret
+		return self.llamarModulo("butia", "get_volt" )
 	 
 	#esta operacion nos devuelve la version del firmware de la placa con el que estamos trabajando 
 	def getVersion(self):
-		ret = -1
-		try:
-			#print "getVersion"
-			msg = "CALL butia read_ver\n"
-			#print msg
-			self.cliente.send(msg)
-			ret = self.cliente.recv(256)
-		except:
-			print "Operation error"
-		finally:
-			return ret
+		return self.llamarModulo("butia", "read_ver" )
 		
 	def setVelocidad3(self,velIzq = 0, velDer = 0):
-		try:
-			#print "setVelocidad en ambas ruedas" 
-			msg = "CALL placa setVelocidad " +  str(velIzq) + " " + str(velDer)
-			#print msg
-			self.cliente.send(msg)
-		except:
-			print "Operation error"
-			return -1
-		
-	def setPosicion(self, idMotor = 0, angulo = 0):
-		try:
-			#print "setPosicion"
-			msg = "CALL placa setPosicion "  + str(idMotor) + " " + str(angulo)
-			#print msg
-			self.cliente.send(msg)
-		except:
-			print "Operation error"	
-			return -1
+		msg = str(velIzq) + " " + str(velDer)
+		return self.llamarModulo("placa", "setVelocidad" , msg )
 
-    #Operaciones solicitadas al driver boton4
-	def abrirBoton4(self):
-		ret = -1
-		try:
-			#print "Abrir modulo"
-			msg = "OPEN boton4\n"
-			#print msg
-			self.cliente.send(msg)  # FIXME -- controlar que no de error el socket
-			ret = self.cliente.recv(256) 
-		except:
-			print "Operation error"
-		finally:			
-			return ret
+	def setPosicion(self, idMotor = 0, angulo = 0):
+		msg = str(idMotor) + " " + str(angulo)
+		return self.llamarModulo("placa", "setPosicion" , msg )
+
+
+	#### Operaciones solicitadas al driver boton4
+
+	def abrirBoton(self):
+		return self.abrirModulo("boton")
 		
 	def getBoton(self):
-		ret = -1
-		try:
-			#print "getValSenDig"
-			msg = "CALL boton getBoton\n"
-			#print msg
-			self.cliente.send(msg)
-			ret = self.cliente.recv(256) 
-		except:
-			print "Operation error"
-		finally:	
-			return ret
+		return self.llamarModulo("boton", "getBoton" )
+	
+	def getLuzAmbiente(self):
+		return self.llamarModulo("luz", "getLuz" )
+
+	def getDistancia(self):
+		return self.llamarModulo("dist", "getDistancia" )
+	
+	def getEscalaGris(self):
+		return self.llamarModulo("grises", "getLevel" )
+
+	def getTemperature(self):
+		return self.llamarModulo("temp", "getTemp" )
+
+	def getVibration(self):
+		return self.llamarModulo("vibra", "getVibra" )
+
+	def getTilt(self):
+		return self.llamarModulo("tilt", "getTilt" )
+
+	def getContactoCapacitivo(self):
+		return self.llamarModulo("capaci", "getCap" )
+
+	def getInduccionMagnetica(self):
+		return self.llamarModulo("magnet", "getCampo" )
+
+	def setLed(self, nivel = 255):
+		return self.llamarModulo("led", "setLight" , str(math.trunc(nivel)) )
+
+

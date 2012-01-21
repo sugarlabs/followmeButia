@@ -7,11 +7,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 4\n"
-"Report-Msgid-Bugs-To: alanjas@gmail.com\n"
-"POT-Creation-Date: 2010-11-25 19:55-0200\n"
-"PO-Revision-Date: 2010-11-25 20:02-0200\n"
-"Last-Translator:  <alanjas@gmail.com>\n"
+"Project-Id-Version: 5\n"
+"Report-Msgid-Bugs-To: <alanjas@hotmail.com>\n"
+"POT-Creation-Date: 2011-06-22 04:28+0000\n"
+"PO-Revision-Date: 2011-06-22 04:33+0000\n"
+"Last-Translator: <alanjas@hotmail.com>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,70 +22,78 @@ msgstr ""
 msgid "FollowMe Butia"
 msgstr "FollowMe Butia"
 
-#: followme.py:53
+#: followme.py:62
 msgid "No se encontro ninguna camara."
-msgstr "Ne trouver aucun chambre"
+msgstr "Ne trouver aucun caméra"
 
-#: followme.py:185
+#: followme.py:200
 msgid "No se detecto al robot Butia."
-msgstr "Robot Butia ne trouver"
+msgstr "Non trouvé le robot Butia."
 
-#: activity.py:72
+#: activity.py:102
+msgid " Calibrar/Seguir "
+msgstr " Calibrer/Suivre"
+
+#: activity.py:111
 msgid "Parar"
-msgstr "Arreter"
+msgstr "Arréter"
 
-#: activity.py:84
-msgid " Calibrar "
-msgstr " Calibrer "
+#: activity.py:131
+msgid " Color calibrado: Rojo "
+msgstr " Calibration couleur: Rouge"
 
-#: activity.py:96
-msgid " Pixeles "
-msgstr " Pixels "
-
-#: activity.py:130
-msgid " Umbral:  Rojo "
-msgstr " Seuil:  Rouge "
-
-#: activity.py:156
+#: activity.py:159 activity.py:285
 msgid "  Verde "
-msgstr "  Vert "
+msgstr "  Verte "
 
-#: activity.py:182
+#: activity.py:187 activity.py:313
 msgid "  Azul "
 msgstr "  Bleu "
 
-#: activity.py:216
+#: activity.py:211
+msgid "Calibrar"
+msgstr "Calibrer"
+
+#: activity.py:222
+msgid " Pixeles "
+msgstr " Pixels"
+
+#: activity.py:257
+msgid " Umbral:  Rojo "
+msgstr " Seuil:  Rouge "
+
+#: activity.py:337
 msgid "Opciones"
-msgstr "Option"
+msgstr "Options"
 
-#: activity.py:224
+#: activity.py:348
 msgid " Tamanio de muestra "
-msgstr " Grandeur de enchantillon "
+msgstr " Taille de l'échantillon "
 
-#: activity.py:276
+#: activity.py:400
 msgid "  Mostrar lineas"
-msgstr "  Montrer ligne"
+msgstr "  Montrer lignes"
 
-#: activity.py:292
+#: activity.py:416
 msgid " Mostrar en pantalla"
-msgstr " Montrer en ecran"
+msgstr " Montrer á l'écran"
 
-#: activity.py:302 activity.py:405
+#: activity.py:426 activity.py:560
 msgid "Ocultar"
 msgstr "Cacher"
 
-#: activity.py:306
+#: activity.py:431
 msgid "Resolucion"
-msgstr "Resolution"
+msgstr "Résolution"
 
-#: activity.py:383
+#: activity.py:534
 msgid "Empezar"
 msgstr "Commencer"
 
-#: activity.py:388
+#: activity.py:539
 msgid "Detener"
-msgstr "Arreter"
+msgstr "Arréter"
 
-#: activity.py:400
+#: activity.py:555
 msgid "Mostrar"
-msgstr "Montrer"
+msgstr "Montrent"
