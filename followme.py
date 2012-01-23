@@ -36,6 +36,10 @@ from gettext import gettext as _
 # seteamos el tamaño de captura
 tamanioc = (320, 240)
 
+# velocidad anterior
+vel_anterior_x = (0, 0, 0, 0)
+vel_anterior_y = (0, 0, 0, 0)
+
 class Captura(object):
 
     def __init__(self, tamanio):
@@ -45,14 +49,32 @@ class Captura(object):
         self.captura = pygame.surface.Surface(tamanioc, 0, self.pantalla)
         # inicializamos el modulo pygame de la camara
         pygame.camera.init()
+        # inicializo en None la cámara
+        self.cam = None
         # obtenemos la lista de camaras
         self.lcamaras = pygame.camera.list_cameras()
         # si no hay ninguna camara
         if self.lcamaras:
             # creamos la camara, con tamanio y modo color RGB
             self.cam = pygame.camera.Camera(self.lcamaras[0], tamanioc, 'RGB')
-            # iniciamos la camara
-            self.cam.start()
+            # obtengo la resolución de la cámara
+            res = self.cam.get_size()
+            # si no es 320, 240 (Sugar nuevo)
+            if not (res == tamanioc):
+                tamanioc = (352, 288)
+                # inicializo en 352, 288
+                self.cam = pygame.camera.Camera(self.lcamaras[0], tamanioc, 'RGB')
+            try:
+                # seteamos flip en horizontal, vertical false
+                self.cam.set_controls(True, False)
+                # iniciamos la camara
+                self.cam.start()
+                # obtengo el estado
+                res = self.cam.get_controls()
+                # guardo si el flip lo hace la cámara
+                self.flip = res[0]
+            except:
+                print _('Error en la inicialización de la cámara')
             # calculamos las proporciones
             self.calc(tamanio)
             # por defecto no mostramos la grilla
@@ -84,8 +106,10 @@ class Captura(object):
     def calibrar(self):
         # guardamos una captura
         self.captura = self.cam.get_image(self.captura)
-        # giramos la captura, en el horizontal
-        self.captura = pygame.transform.flip(self.captura,True,False)
+        # si el flip no lo hace la cámara
+        if not(self.flip):
+            # giramos la captura, en el horizontal
+            self.captura = pygame.transform.flip(self.captura,True,False)
         # colocamos la captura en la pantalla
         self.pantalla.blit(self.captura, (0,0))
         # dibujamos un rectangulo en el centro de la pantalla
@@ -110,8 +134,10 @@ class Captura(object):
     def obtener_posicion(self, color, umbral, pixeles):
         # guardamos una captura
         self.captura = self.cam.get_image(self.captura)
-        # giro la captura en el horizontal
-        self.captura = pygame.transform.flip(self.captura,True,False)
+        # si el flip no lo hace la cámara
+        if not(self.flip):
+            # giro la captura en el horizontal
+            self.captura = pygame.transform.flip(self.captura,True,False)
         # creamos una mascara con la captura con color y umbral especificados
         mascara = pygame.mask.from_threshold(self.captura, color, umbral)
         # dejamos la mancha conexa mas grande
@@ -207,55 +233,73 @@ class Robot(object):
         # si esta ligeramente a la izquierda
         if (x > (4*self.z1)) and (x <= (7*self.z1)):
             # me muevo a la derecha v = 300
-            self.butiabot.setVelocidadMotores("1","300", "0", "300")
+            vel_actual_x = (1, 300, 0, 300)
         # si esta bastante hacia la izquierda
         elif (x > (2*self.z1)) and (x <= (4*self.z1)):
             # me muevo a la derecha v = 600
-            self.butiabot.setVelocidadMotores("1","600", "0", "600")
+            vel_actual_x = (1, 600, 0, 600)
         # si esta a la iquierda
         elif (x <= (2*self.z1)) and (x >= 0):
             # me muevo a la derecha v = 900
-            self.butiabot.setVelocidadMotores("1","900", "0", "900")
+            vel_actual_x = (1, 900, 0, 900)
         # si esta ligeramente a la derecha
         elif (x >= (9*self.z1)) and (x < (12*self.z1)):
             # me muevo a la izquierda v = 300
-            self.butiabot.setVelocidadMotores("0","300", "1", "300")
+            vel_actual_x = (0, 300, 1, 300)
         # si esta bastante hacia la derecha
         elif (x >= 12*self.z1) and (x < 14*self.z1):
             # me muevo a la izquierda v = 600
-            self.butiabot.setVelocidadMotores("0","600", "1", "600")
+            vel_actual_x = (0, 600, 1, 600)
         # si esta a la derecha
         elif (x >= (14*self.z1)):
             # me muevo a la izquierda v = 900
-            self.butiabot.setVelocidadMotores("0","900", "1", "900")
+            vel_actual_x = (0, 900, 1, 900)
         # si esta en la zona muerta
         elif (x > 7*self.z1) and (x < 9*self.z1):
             # no espero
             espera = False
-        # si hay espera
-        if (espera == True):
-            # giro durante 0.1 segundos
-            time.sleep(0.1)
+
+
+        # para evitar envios de velocidad (eje X) innecesarios al robot
+        if not(vel_actual_x == vel_anterior_x):
+            vel_anterior_x = vel_actual_x
+            self.butiabot.setVelocidadMotores(vel_actual_x[0], vel_actual_x[1], vel_actual_x[2], vel_actual_x[4])
+            # si hay espera
+            if (espera == True):
+                # giro durante 0.1 segundos
+                time.sleep(0.1)
         # devuelvo el valor de espera
         espera = True
         # si esta abajo
         if (y <= self.z2) and (y >= 0):
             # me muevo hacia adelante
-            self.butiabot.setVelocidadMotores("1","500", "1", "500")
+            vel_actual_y = (1, 500, 1, 500)
         # si esta ariba
         elif (y >= 2*self.z2):
             # me muevo hacia atras
-            self.butiabot.setVelocidadMotores("0","500", "0", "500")
+            vel_actual_y = 0, 500, 0, 500)
         # si esta en la zona muerta
         elif (y > self.z2) and (y < 2*self.z2):
             # no espero
             espera = False
-        # si hay espera
-        if (espera == True):
-            # me muevo durante 0.1 segundos
-            time.sleep(0.1)
+
+        # para evitar envios de velocidad (eje Y) innecesarios al robot
+        if not(vel_actual_y == vel_anterior_y):
+            vel_anterior_y = vel_actual_y
+            self.butiabot.setVelocidadMotores(vel_actual_y[0], vel_actual_y[1], vel_actual_y[2], vel_actual_y[4])
+            # si hay espera
+            if (espera == True):
+                # giro durante 0.1 segundos
+                time.sleep(0.1)
+
+
+
         # detengo al robot
-        self.butiabot.setVelocidadMotores("0","0", "0", "0")
+        #self.butiabot.setVelocidadMotores("0","0", "0", "0")
+
+ 
+
+
 
 
 class FollowMe:
@@ -271,6 +315,10 @@ class FollowMe:
     def modocalibrando(self, calibrando):
         # seteo el calibrando local
         self.calibrando = calibrando
+        # si estoy calibrando
+        if self.calibrando:
+            # detengo el robot
+            self.butiabot.setVelocidadMotores(0, 0, 0, 0)
         # si no hay que mostrar
         if (self.mostrar == False):
             # limpio la pantalla
@@ -323,7 +371,7 @@ class FollowMe:
         # creamos una captura, inicializamos la camara
         self.c = Captura(self.tamanioi)
         # si se deteco alguna camara
-        if not (self.c.lcamaras):
+        if (self.c.cam == None):
             while gtk.events_pending():
                 gtk.main_iteration()
             # Pump PyGame messages.
