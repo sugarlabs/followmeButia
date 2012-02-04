@@ -43,12 +43,15 @@ vel_anterior_y = (0, 0, 0, 0)
 class Captura(object):
 
     def __init__(self, tamanio):
+        # iniciamos pygame
+        pygame.init()
+        # inicializamos el modulo pygame de la camara
+        pygame.camera.init()
         # creamos una superfcie para usarla de pantalla
         self.pantalla = pygame.display.get_surface()
         # creamos una superficie para la captura
-        self.captura = pygame.surface.Surface(tamanioc, 0, self.pantalla)
-        # inicializamos el modulo pygame de la camara
-        pygame.camera.init()
+        self.captura = pygame.surface.Surface(tamanio, 0, self.pantalla)
+
         # inicializo en None la cámara
         self.cam = None
         # obtenemos la lista de camaras
@@ -56,14 +59,14 @@ class Captura(object):
         # si no hay ninguna camara
         if self.lcamaras:
             # creamos la camara, con tamanio y modo color RGB
-            self.cam = pygame.camera.Camera(self.lcamaras[0], tamanioc, 'RGB')
+            self.cam = pygame.camera.Camera(self.lcamaras[0], tamanio, 'RGB')
             # obtengo la resolución de la cámara
             res = self.cam.get_size()
             # si no es 320, 240 (Sugar nuevo)
             if not (res == tamanioc):
-                tamanioc = (352, 288)
+                tamanio = (352, 288)
                 # inicializo en 352, 288
-                self.cam = pygame.camera.Camera(self.lcamaras[0], tamanioc, 'RGB')
+                self.cam = pygame.camera.Camera(self.lcamaras[0], tamanio, 'RGB')
             try:
                 # seteamos flip en horizontal, vertical false
                 self.cam.set_controls(True, False)
@@ -277,7 +280,7 @@ class Robot(object):
         # si esta ariba
         elif (y >= 2*self.z2):
             # me muevo hacia atras
-            vel_actual_y = 0, 500, 0, 500)
+            vel_actual_y = (0, 500, 0, 500)
         # si esta en la zona muerta
         elif (y > self.z2) and (y < 2*self.z2):
             # no espero
@@ -364,12 +367,14 @@ class FollowMe:
         self.colorc = (255, 255, 255)
         # establezco un numero de pixeles inicial
         self.pixeles = 10
-        # establezco un tamaño incial
+        # establezco un tamaño incial para mostrar
         self.tamanioi = (960.0, 720.0)
+        # establezco un tamaño incial para capturar
+        self.tamanioc = tamanioc
         # por defecto se muestra la captura
         self.mostrar = True
         # creamos una captura, inicializamos la camara
-        self.c = Captura(self.tamanioi)
+        self.c = Captura(self.tamanioc)
         # si se deteco alguna camara
         if (self.c.cam == None):
             while gtk.events_pending():
