@@ -69,7 +69,7 @@ class Captura(object):
                 self.cam = pygame.camera.Camera(self.lcamaras[0], tamanio, 'RGB')
             try:
                 # seteamos el brillo
-                self.cam.set_controls(brightness = 129)
+                #self.cam.set_controls(brightness = 129)
                 # seteamos flip en horizontal, vertical false
                 self.cam.set_controls(True, False)
                 # iniciamos la camara
