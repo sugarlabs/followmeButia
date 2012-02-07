@@ -322,8 +322,10 @@ class FollowMe:
         self.calibrando = calibrando
         # si estoy calibrando
         if self.calibrando:
-            # detengo el robot
-            self.butiabot.setVelocidadMotores(0, 0, 0, 0)
+            # si esta el robot
+            if (r.modulos != -1):
+                # detengo el robot
+                self.butiabot.setVelocidadMotores(0, 0, 0, 0)
         # si no hay que mostrar
         if (self.mostrar == False):
             # limpio la pantalla
