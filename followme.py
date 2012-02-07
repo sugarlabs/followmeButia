@@ -323,7 +323,7 @@ class FollowMe:
         # si estoy calibrando
         if self.calibrando:
             # si esta el robot
-            if (r.modulos != -1):
+            if (r != None and r.modulos != -1):
                 # detengo el robot
                 self.butiabot.setVelocidadMotores(0, 0, 0, 0)
         # si no hay que mostrar
@@ -417,7 +417,7 @@ class FollowMe:
                         # muestro la posicion en pantalla
                         self.c.mostrar_posicion(pos, self.colorc)
                     # si esta el butia conectado
-                    if (r.modulos != -1):
+                    if (r != None and r.modulos != -1):
                         # movemos el robot
                         r.mover_robot(pos)
                 # actualizo la pantalla
