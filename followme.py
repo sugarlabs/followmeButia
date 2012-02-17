@@ -49,6 +49,7 @@ class Captura(object):
         pygame.camera.init()
         # creamos una superfcie para usarla de pantalla
         self.pantalla = pygame.display.get_surface()
+        print self.pantalla.get_size()
         # creamos una superficie para la captura
         self.captura = pygame.surface.Surface(tamanio, 0, self.pantalla)
 
@@ -115,12 +116,8 @@ class Captura(object):
         if not(self.flip):
             # giramos la captura, en el horizontal
             self.captura = pygame.transform.flip(self.captura,True,False)
-        # colocamos la captura en la pantalla
-        self.pantalla.blit(self.captura, (0,0))
-        # dibujamos un rectangulo en el centro de la pantalla
-        rect = pygame.draw.rect(self.pantalla, (255,0,0), (self.xc,self.yc,50,50), 4)
         # obtenemos el color promedio dentro del rectangulo
-        color = pygame.transform.average_color(self.captura, rect)
+        color = pygame.transform.average_color(self.captura, (self.xc,self.yc,50,50))
         # rellenamos la pantalla con un color homogeneo
         self.pantalla.fill((84,185,72))
         # escalamos captura al tamanio tamaniom
@@ -268,7 +265,7 @@ class Robot(object):
         # para evitar envios de velocidad (eje X) innecesarios al robot
         if not(vel_actual_x == vel_anterior_x):
             vel_anterior_x = vel_actual_x
-            self.butiabot.setVelocidadMotores(vel_actual_x[0], vel_actual_x[1], vel_actual_x[2], vel_actual_x[4])
+            self.butiabot.setVelocidadMotores(vel_actual_x[0], vel_actual_x[1], vel_actual_x[2], vel_actual_x[3])
             # si hay espera
             if (espera == True):
                 # giro durante 0.1 segundos
@@ -291,7 +288,7 @@ class Robot(object):
         # para evitar envios de velocidad (eje Y) innecesarios al robot
         if not(vel_actual_y == vel_anterior_y):
             vel_anterior_y = vel_actual_y
-            self.butiabot.setVelocidadMotores(vel_actual_y[0], vel_actual_y[1], vel_actual_y[2], vel_actual_y[4])
+            self.butiabot.setVelocidadMotores(vel_actual_y[0], vel_actual_y[1], vel_actual_y[2], vel_actual_y[3])
             # si hay espera
             if (espera == True):
                 # giro durante 0.1 segundos
@@ -316,6 +313,8 @@ class FollowMe:
         self.clock = pygame.time.Clock()
         # comienzo calibrando
         self.calibrando = True
+        # seteamos el tamanio de muestra
+        self.tamaniom = (960, 720)
 
     def modocalibrando(self, calibrando):
         # seteo el calibrando local
@@ -372,7 +371,7 @@ class FollowMe:
         # establezco un numero de pixeles inicial
         self.pixeles = 10
         # establezco un tamaño incial para mostrar
-        self.tamanioi = (960.0, 720.0)
+        self.tamaniom = (960, 720)
         # establezco un tamaño incial para capturar
         self.tamanioc = tamanioc
         # por defecto se muestra la captura
