@@ -2,8 +2,7 @@
 name = FollowMe Butia
 activity_version = 5
 bundle_id = uy.edu.fing.followme
-service_name = uy.edu.fing.followme
-class = activity.Activity
+exec = sugar-activity activity.Activity
 show_launcher = yes
 icon = followme
-license = GPLv2+
+license = GPLv3+
