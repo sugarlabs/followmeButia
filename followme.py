@@ -210,7 +210,7 @@ class Robot(object):
             wait_counter = wait_counter - 1
             time.sleep(0.5)
         if(wait_counter > 0):
-            print("bobot OK! ; after " + str(WAIT_FOR_BOBOT - wait_counter) + " trys") 
+            print("bobot OK! ; after " + str(wait_counter) + " trys") 
         else:
             print("bobot NOT OK!") 
         # listamos los modulos
