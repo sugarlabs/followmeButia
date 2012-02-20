@@ -1,19 +1,18 @@
-# FollowMe Butia translation
-# Copyright (C) 2010, 2011 Alan Aguiar, Ayleen Ricca, Rodrigo Dearmas
-# This file is distributed under GPL license.
-# Alan Aguiar <alanjas@gmail.com>, 2010, 2011.
-# Aylen Ricca <ar18_90@hotmail.com>, 2010, 2011.
-# Rodrigo Dearmas <piegrande46@hotmail.com>, 2010, 2011.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 5\n"
-"Report-Msgid-Bugs-To: <alanjas@hotmail.com>\n"
-"POT-Creation-Date: 2011-06-22 04:28+0000\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-02-19 23:51-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,78 +21,87 @@ msgstr ""
 msgid "FollowMe Butia"
 msgstr ""
 
-#: followme.py:62
-msgid "No se encontro ninguna camara."
+#: /home/alan/Documentos/GIT/followmeButia/mainline/followme.py:83
+msgid "Error on initialization of the camera"
 msgstr ""
 
-#: followme.py:200
-msgid "No se detecto al robot Butia."
+#: /home/alan/Documentos/GIT/followmeButia/mainline/followme.py:90
+msgid "Camera was not found"
 msgstr ""
 
-#: activity.py:102
-msgid " Calibrar/Seguir "
+#: /home/alan/Documentos/GIT/followmeButia/mainline/followme.py:228
+msgid "Butia robot was no detected"
 msgstr ""
 
-#: activity.py:111
-msgid "Parar"
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:102
+msgid "Calibrate/Follow"
 msgstr ""
 
-#: activity.py:131
-msgid " Color calibrado: Rojo "
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:111
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:539
+msgid "Stop"
 msgstr ""
 
-#: activity.py:159 activity.py:285
-msgid "  Verde "
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:131
+msgid "Calibrated color:"
 msgstr ""
 
-#: activity.py:187 activity.py:313
-msgid "  Azul "
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:131
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:257
+msgid "Red"
 msgstr ""
 
-#: activity.py:211
-msgid "Calibrar"
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:159
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:285
+msgid "Green"
 msgstr ""
 
-#: activity.py:222
-msgid " Pixeles "
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:187
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:313
+msgid "Blue"
 msgstr ""
 
-#: activity.py:257
-msgid " Umbral:  Rojo "
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:211
+msgid "Calibrate"
 msgstr ""
 
-#: activity.py:337
-msgid "Opciones"
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:222
+msgid "Pixels"
 msgstr ""
 
-#: activity.py:348
-msgid " Tamanio de muestra "
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:257
+msgid "Threshold:"
 msgstr ""
 
-#: activity.py:400
-msgid "  Mostrar lineas"
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:337
+msgid "Options"
 msgstr ""
 
-#: activity.py:416
-msgid " Mostrar en pantalla"
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:348
+msgid "Show size"
 msgstr ""
 
-#: activity.py:426 activity.py:560
-msgid "Ocultar"
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:400
+msgid "Show grid"
 msgstr ""
 
-#: activity.py:431
-msgid "Resolucion"
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:416
+msgid "Show captures"
 msgstr ""
 
-#: activity.py:534
-msgid "Empezar"
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:426
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:560
+msgid "Hide"
 msgstr ""
 
-#: activity.py:539
-msgid "Detener"
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:431
+msgid "Resolution"
 msgstr ""
 
-#: activity.py:555
-msgid "Mostrar"
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:534
+msgid "Start"
+msgstr ""
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:555
+msgid "Show"
 msgstr ""

@@ -99,7 +99,7 @@ class Activity(activity.Activity):
         # creamos la etiqueta para calibrar
         self.etiqueta0 = gtk.Label()
         # le ponemos el texto Calibrar/Seguir
-        self.etiqueta0.set_text(_(' Calibrar/Seguir '))
+        self.etiqueta0.set_text(' ' + _('Calibrate/Follow') + ' ')
         # agrego la etiqueta al item
         item0.add(self.etiqueta0)
         # inserto el item en la barra
@@ -108,7 +108,7 @@ class Activity(activity.Activity):
         # ponemos un boton de parar de calibrar
         parar = ToolButton('media-playback-stop')
         # ponemos como mensaje Parar
-        parar.set_tooltip(_('Parar'))
+        parar.set_tooltip(_('Stop'))
         # ponemos la combinacion Ctrl + Espacio
         parar.set_accelerator('<ctrl>space')
         # conectamos el boton con el evento click
@@ -128,7 +128,7 @@ class Activity(activity.Activity):
         # creo la etiqueta de los pixeles
         self.etiqueta3 = gtk.Label()
         # le coloco el texto Pixeles
-        self.etiqueta3.set_text(_(' Color calibrado: Rojo '))
+        self.etiqueta3.set_text(' ' + _('Calibrated color:') + ' ' + _('Red') + ' ')
         # agrego la etiqueta al item
         item3.add(self.etiqueta3)
         # coloco el item en la barra
@@ -156,7 +156,7 @@ class Activity(activity.Activity):
         # creo la etiqueta para el verde
         self.etiqueta5 = gtk.Label()
         # le coloco G de verde
-        self.etiqueta5.set_text(_('  Verde '))
+        self.etiqueta5.set_text(' ' + _('Green') + ' ')
         # coloco la etiqueta en el item
         item5.add(self.etiqueta5)
         # coloco el item en la barra
@@ -184,7 +184,7 @@ class Activity(activity.Activity):
         # creo la etiqueta para el verde
         self.etiqueta7 = gtk.Label()
         # le coloco G de verde
-        self.etiqueta7.set_text(_('  Azul '))
+        self.etiqueta7.set_text(' ' + _('Blue') + ' ')
         # coloco la etiqueta en el item
         item7.add(self.etiqueta7)
         # coloco el item en la barra
@@ -208,7 +208,7 @@ class Activity(activity.Activity):
         barraCalibrar.insert(item8, 8)
 
         # a la caja le agregamos nuestra barra de Calibrar
-        caja.add_toolbar(_('Calibrar'), barraCalibrar)
+        caja.add_toolbar(_('Calibrate'), barraCalibrar)
 
         #####Opciones#####
         # obtenemos la barra
@@ -219,7 +219,7 @@ class Activity(activity.Activity):
         # creo la etiqueta de los pixeles
         self.etiqueta9 = gtk.Label()
         # le coloco el texto Pixeles
-        self.etiqueta9.set_text(_(' Pixeles '))
+        self.etiqueta9.set_text(' ' + _('Pixels') + ' ')
         # agrego la etiqueta al item
         item9.add(self.etiqueta9)
         # coloco el item en la barra
@@ -254,7 +254,7 @@ class Activity(activity.Activity):
         # creo la etiqueta para umbral
         self.etiqueta12 = gtk.Label()
         # le coloco el texto Umbral
-        self.etiqueta12.set_text(_(' Umbral:  Rojo '))
+        self.etiqueta12.set_text(' ' + _('Threshold:') + ' ' + _('Red') + ' ')
         # agrego la etiqueta al item
         item12.add(self.etiqueta12)
         # inserto el item en la barra
@@ -282,7 +282,7 @@ class Activity(activity.Activity):
         # creo la etiqueta para el verde
         self.etiqueta14 = gtk.Label()
         # le coloco G de verde
-        self.etiqueta14.set_text(_('  Verde '))
+        self.etiqueta14.set_text(' ' + _('Green') + ' ')
         # coloco la etiqueta en el item
         item14.add(self.etiqueta14)
         # coloco el item en la barra
@@ -310,7 +310,7 @@ class Activity(activity.Activity):
         # creo la etiqueta para el azul
         self.etiqueta16 = gtk.Label()
         # coloco el texto B
-        self.etiqueta16.set_text(_('  Azul '))
+        self.etiqueta16.set_text(' ' + _('Blue') + ' ')
         # inserto la etiqueta en el item
         item16.add(self.etiqueta16)
         # inserto el item en la barra
@@ -334,7 +334,7 @@ class Activity(activity.Activity):
         barraOpciones.insert(item17, 8)
 
         # a la caja le agregamos nuestra barra de Opciones
-        caja.add_toolbar(_('Opciones'), barraOpciones)
+        caja.add_toolbar(_('Options'), barraOpciones)
 
         #####Resolucion#####
         # obteenmos la barra
@@ -345,7 +345,7 @@ class Activity(activity.Activity):
         # creamos la etiqueta para calibrar
         self.et1 = gtk.Label()
         # le ponemos el texto Calibrar
-        self.et1.set_text(_(' Tamanio de muestra '))
+        self.et1.set_text(' ' + _('Show size') + ' ')
         # agrego la etiqueta al item
         it1.add(self.et1)
         # inserto el item en la barra
@@ -397,7 +397,7 @@ class Activity(activity.Activity):
         # creamos la etiqueta para mostrar lineas
         self.et5 = gtk.Label()
         # le ponemos el texto
-        self.et5.set_text(_('  Mostrar lineas'))
+        self.et5.set_text(' ' + _('Show grid'))
         # agrego la etiqueta al item
         it5.add(self.et5)
         # inserto el item en la barra
@@ -413,7 +413,7 @@ class Activity(activity.Activity):
         # creamos la etiqueta para mostrar en pantalla
         self.et6 = gtk.Label()
         # le ponemos el texto
-        self.et6.set_text(_(' Mostrar en pantalla'))
+        self.et6.set_text(' ' + _('Show captures') + ' ')
         # agrego la etiqueta al item
         it6.add(self.et6)
         # inserto el item en la barra
@@ -423,12 +423,12 @@ class Activity(activity.Activity):
         # conectamos el boton con el evento click
         parar2.connect('clicked', self.parar_muestra)
         # ponemos como mensaje Ocultar
-        parar2.set_tooltip(_('Ocultar'))
+        parar2.set_tooltip(_('Hide'))
         # insertamos el boton en la barra
         barraResolucion.insert(parar2, 7)
 
         # agrego la barra2 a la caja (toolbar)
-        caja.add_toolbar(_('Resolucion'), barraResolucion)
+        caja.add_toolbar(_('Resolution'), barraResolucion)
 
         # la mostramos
         caja.show_all()
@@ -531,12 +531,12 @@ class Activity(activity.Activity):
             # ponemos ejecutar
             boton.set_icon('media-playback-start')
             # con el tolltip Empezar
-            boton.set_tooltip(_('Empezar'))
+            boton.set_tooltip(_('Start'))
         else:
             # ponemos parar
             boton.set_icon('media-playback-stop')
             # con el tolltip Detener
-            boton.set_tooltip(_('Detener'))
+            boton.set_tooltip(_('Stop'))
 
     def grilla_click(self, widget):
         # cambio la variable mostrar_grilla
@@ -552,12 +552,12 @@ class Activity(activity.Activity):
             # ponemos mostrar
             boton.set_icon('media-playback-start')
             # ponemos como mensaje Mostrar
-            boton.set_tooltip(_('Mostrar'))
+            boton.set_tooltip(_('Show'))
         else:
             # ponemos ocultar
             boton.set_icon('media-playback-stop')
             # ponemos como mensaje Ocultar
-            boton.set_tooltip(_('Ocultar'))
+            boton.set_tooltip(_('Hide'))
         #actualizo el FollowMe
         self.actividad.poner_muestra(self.mostrar)
 

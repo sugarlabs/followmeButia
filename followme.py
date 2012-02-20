@@ -80,14 +80,14 @@ class Captura(object):
                 # guardo si el flip lo hace la cámara
                 self.flip = res[0]
             except:
-                print _('Error en la inicialización de la cámara')
+                print _('Error on initialization of the camera')
             # calculamos las proporciones
             self.calc(tamanio)
             # por defecto no mostramos la grilla
             self.mostrar_grilla = False
         else:
             # mandamos el error correspondiente
-            print _('No se encontro ninguna camara.')
+            print _('Camera was not found')
 
     def calc(self, tamanio):
         # guardo tamanio en self.tamaniom
@@ -225,7 +225,7 @@ class Robot(object):
             self.butiabot.abrirMotores()
         else:
             # sino se encuentra
-            print _('No se detecto al robot Butia.')
+            print _('Butia robot was no detected')
 
     def mover_robot(self, pos):
         # asigno las coordenadas
