@@ -1,0 +1,107 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-02-20 23:00-0200\n"
+"PO-Revision-Date: 2012-02-21 06:25+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#: activity/activity.info:2
+msgid "FollowMe Butia"
+msgstr "FollowMe Butia"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/followme.py:83
+msgid "Error on initialization of the camera"
+msgstr "Error on initialization of the camera"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/followme.py:90
+msgid "Camera was not found"
+msgstr "Camera was not found"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/followme.py:228
+msgid "Butia robot was not detected"
+msgstr "Butia robot was not detected"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:102
+msgid "Calibrate/Follow"
+msgstr "Calibrate/Follow"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:111
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:539
+msgid "Stop"
+msgstr "Stop"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:131
+msgid "Calibrated color:"
+msgstr "Calibrated color:"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:131
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:257
+msgid "Red"
+msgstr "Red"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:159
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:285
+msgid "Green"
+msgstr "Green"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:187
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:313
+msgid "Blue"
+msgstr "Blue"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:211
+msgid "Calibrate"
+msgstr "Calibrate"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:222
+msgid "Pixels"
+msgstr "Pixels"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:257
+msgid "Threshold:"
+msgstr "Threshold:"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:337
+msgid "Options"
+msgstr "Options"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:348
+msgid "Show size"
+msgstr "Show size"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:400
+msgid "Show grid"
+msgstr "Show grid"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:416
+msgid "Show captures"
+msgstr "Show captures"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:426
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:560
+msgid "Hide"
+msgstr "Hide"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:431
+msgid "Resolution"
+msgstr "Resolution"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:534
+msgid "Start"
+msgstr "Start"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:555
+msgid "Show"
+msgstr "Show"
