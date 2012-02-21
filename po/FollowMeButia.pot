@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-19 23:51-0200\n"
+"POT-Creation-Date: 2012-02-20 23:00-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgid "Camera was not found"
 msgstr ""
 
 #: /home/alan/Documentos/GIT/followmeButia/mainline/followme.py:228
-msgid "Butia robot was no detected"
+msgid "Butia robot was not detected"
 msgstr ""
 
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:102
