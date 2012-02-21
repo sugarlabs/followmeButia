@@ -225,7 +225,7 @@ class Robot(object):
             self.butiabot.abrirMotores()
         else:
             # sino se encuentra
-            print _('Butia robot was no detected')
+            print _('Butia robot was not detected')
 
     def mover_robot(self, pos):
         # asigno las coordenadas
