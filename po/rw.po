@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-20 23:00-0200\n"
-"PO-Revision-Date: 2012-02-22 11:07+0200\n"
-"Last-Translator: salomon <salomonisoni@yahoo.fr>\n"
+"PO-Revision-Date: 2012-04-05 06:15+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -26,16 +26,18 @@ msgid "Error on initialization of the camera"
 msgstr ""
 
 #: /home/alan/Documentos/GIT/followmeButia/mainline/followme.py:90
+#, fuzzy
 msgid "Camera was not found"
-msgstr ""
+msgstr "Camera ntiyashoboye kuboneka"
 
 #: /home/alan/Documentos/GIT/followmeButia/mainline/followme.py:228
 msgid "Butia robot was not detected"
 msgstr ""
 
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:102
+#, fuzzy
 msgid "Calibrate/Follow"
-msgstr ""
+msgstr "Byahinduwe/Gukurikira"
 
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:111
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:539
@@ -43,8 +45,9 @@ msgid "Stop"
 msgstr "Hagarika"
 
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:131
+#, fuzzy
 msgid "Calibrated color:"
-msgstr ""
+msgstr "Ibara ryahinduwe:"
 
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:131
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:257
@@ -58,12 +61,14 @@ msgstr "Icyatsi"
 
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:187
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:313
+#, fuzzy
 msgid "Blue"
-msgstr ""
+msgstr "Ubururu"
 
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:211
+#, fuzzy
 msgid "Calibrate"
-msgstr ""
+msgstr "Impindura"
 
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:222
 msgid "Pixels"
@@ -78,21 +83,25 @@ msgid "Options"
 msgstr "Amahitamo"
 
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:348
+#, fuzzy
 msgid "Show size"
-msgstr ""
+msgstr "Garagaza ingano"
 
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:400
+#, fuzzy
 msgid "Show grid"
-msgstr ""
+msgstr "Garagaza urusobetudirishya"
 
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:416
+#, fuzzy
 msgid "Show captures"
-msgstr ""
+msgstr "Garagaza ibyafashwe"
 
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:426
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:560
+#, fuzzy
 msgid "Hide"
-msgstr ""
+msgstr "Hisha"
 
 #: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:431
 msgid "Resolution"
