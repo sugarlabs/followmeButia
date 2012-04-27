@@ -46,7 +46,7 @@ class Activity(activity.Activity):
         # iniciamos la actividad
         activity.Activity.__init__(self, handle, False)
         # inicializamos el bobot-server
-        self.bobot_launch()
+        #self.bobot_launch()
         # seteamos el objeto calibrando
         self.calibrando = True
         # guardo el umbral por defecto
@@ -61,7 +61,7 @@ class Activity(activity.Activity):
         self.mostrar_grilla = False
         # por defecto mostramos la captura en pantalla
         self.mostrar = True
-        # creamos una isntancia del FollowMe, le pasamos el activity
+        # creamos una instancia del FollowMe, le pasamos el activity
         self.actividad = followme.FollowMe(self)
         # construimos la barra
         self.build_toolbar()
@@ -561,23 +561,4 @@ class Activity(activity.Activity):
         #actualizo el FollowMe
         self.actividad.poner_muestra(self.mostrar)
 
-    def bobot_launch(self):
-        cmd = 'ps ax'
-        pids = os.popen(cmd)
-        x = pids.readlines()
-        bobotAlive = False
-        for y in x:
-            p = y.find('bobot-server')
-            # process running
-            if p >= 0:
-                bobotAlive = True
-                print("bobot is alive! ")
-                break
-            else:
-                bobotAlive = False
-        if(bobotAlive==False):
-            print("creating bobot")
-            cmd = 'cd lib/bobot/'
-            os.system(cmd)
-            cmd = './lua bobot-server.lua &'
-            os.system(cmd)
+
