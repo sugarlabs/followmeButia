@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # FollowMe Butia
-# Copyright (C) 2010, 2011
+# Copyright (C) 2010, 2011, 2012
 # This program was created to use with the robot Butia.
 # Butia is a project from Facultad de Ingenieria - Uruguay
 # Facultad de Ingenieria web site: <http://www.fing.edu.uy/>
@@ -31,14 +31,13 @@ import pygame
 import gtk
 import butiaAPI
 import time
+import subprocess
+import commands
 from gettext import gettext as _
 
 # seteamos el tamaño de captura
 tamanioc = (320, 240)
 
-# velocidad anterior
-vel_anterior_x = (0, 0, 0, 0)
-vel_anterior_y = (0, 0, 0, 0)
 
 class Captura(object):
 
@@ -49,7 +48,7 @@ class Captura(object):
         pygame.camera.init()
         # creamos una superfcie para usarla de pantalla
         self.pantalla = pygame.display.get_surface()
-        print self.pantalla.get_size()
+        #print self.pantalla.get_size()
         # creamos una superficie para la captura
         self.captura = pygame.surface.Surface(tamanio, 0, self.pantalla)
 
@@ -82,7 +81,7 @@ class Captura(object):
             except:
                 print _('Error on initialization of the camera')
             # calculamos las proporciones
-            self.calc(tamanio)
+            self.calc((960, 720))
             # por defecto no mostramos la grilla
             self.mostrar_grilla = False
         else:
@@ -92,22 +91,26 @@ class Captura(object):
     def calc(self, tamanio):
         # guardo tamanio en self.tamaniom
         self.tamaniom = tamanio
+        # guardo el tamaño de la pantalla
+        pantalla_x, pantalla_y = self.pantalla.get_size()
         # calculamos la proporcion en x
         self.c1 = (self.tamaniom[0] / tamanioc[0])
         # calculamos la proporcion en y
         self.c2 = (self.tamaniom[1] / tamanioc[1])
         # coordenada x calibrar
-        self.xc = (tamanioc[0] - 50) / 2
+        self.xc = (tamanioc[0] - 50) / 2.0
         # coordenada y calibrar
-        self.yc = (tamanioc[1] - 50) / 2
+        self.yc = (tamanioc[1] - 50) / 2.0
+        self.xcm = (pantalla_x - 50) / 2.0
+        self.ycm = (pantalla_y - 50) / 2.0
         # posicion desde el borde izquierdo en la pantalla
-        self.xblit = (1200 - self.tamaniom[0]) / 2
+        self.xblit = (pantalla_x - self.tamaniom[0]) / 2
         # posicion desde el borde superior de la pantalla
-        self.yblit = (780 - self.tamaniom[1]) / 2
+        self.yblit = (pantalla_y - self.tamaniom[1]) / 2
         # calculamos las divisiones en x
-        self.txd = self.tamaniom[0] / 16
+        self.txd = self.tamaniom[0] / 15.0
         # calculamos las divisiones en y
-        self.tyd = self.tamaniom[1] / 3
+        self.tyd = self.tamaniom[1] / 3.0
 
     def calibrar(self):
         # guardamos una captura
@@ -125,7 +128,9 @@ class Captura(object):
         # colocamos la captura 2 en la pantalla
         self.pantalla.blit(self.captura2, (self.xblit, self.yblit))
         # dibujamos un rectangulo en el centro de la pantalla
-        rect = pygame.draw.rect(self.pantalla, (255,0,0), (575,355,50,50), 4)
+        #FIXME: cambiar posición en función de la pantalla
+        
+        rect = pygame.draw.rect(self.pantalla, (255,0,0), (self.xcm,self.ycm,50,50), 4)
         # rellenamos la esquina superior con el color calibrado
         self.pantalla.fill(color, (0,0,120,120))
         # recuadramos el color para resaltarlo
@@ -181,10 +186,11 @@ class Captura(object):
         # dibujo las zonas horizontales
         r2 = pygame.draw.line(self.captura2, (250, 40, 40), (2*self.txd, 0), (2*self.txd, self.tamaniom[1]), 3)
         r3 = pygame.draw.line(self.captura2, (250, 40, 40), (4*self.txd, 0), (4*self.txd, self.tamaniom[1]), 3)
-        r4 = pygame.draw.line(self.captura2, (250, 40, 40), (7*self.txd, 0), (7*self.txd, self.tamaniom[1]), 3)
+        r4 = pygame.draw.line(self.captura2, (250, 40, 40), (6*self.txd, 0), (6*self.txd, self.tamaniom[1]), 3)
         r5 = pygame.draw.line(self.captura2, (250, 40, 40), (9*self.txd, 0), (9*self.txd, self.tamaniom[1]), 3)
-        r6 = pygame.draw.line(self.captura2, (250, 40, 40), (12*self.txd, 0), (12*self.txd, self.tamaniom[1]), 3)
-        r7 = pygame.draw.line(self.captura2, (250, 40, 40), (14*self.txd, 0), (14*self.txd, self.tamaniom[1]), 3)
+        r6 = pygame.draw.line(self.captura2, (250, 40, 40), (11*self.txd, 0), (11*self.txd, self.tamaniom[1]), 3)
+        r7 = pygame.draw.line(self.captura2, (250, 40, 40), (13*self.txd, 0), (13*self.txd, self.tamaniom[1]), 3)
+        
 
     def limpiar(self):
         # relleno la pantalla con un color homogeneo
@@ -195,34 +201,34 @@ class Robot(object):
 
     def __init__(self):
         # calculamos la zona 1 en x
-        self.z1 = tamanioc[0] / 16
+        self.z1 = tamanioc[0] / 15.0
         # calculamos la zona 2 en y
-        self.z2 = tamanioc[1] / 3
-        # obtenemos el robot
-        self.butiabot = butiaAPI.robot()
-        wait_counter = 20
-        module_list = self.butiabot.listarModulos()
-        while((wait_counter > 0) and (module_list == -1)):
-            self.butiabot.cerrar()
-            self.butiabot = butiaAPI.robot()
-            module_list = self.butiabot.listarModulos()
-            print("waiting...")
-            wait_counter = wait_counter - 1
-            time.sleep(0.5)
-        if(wait_counter > 0):
-            print("bobot OK! ; after " + str(wait_counter) + " trys") 
+        self.z2 = tamanioc[1] / 3.0
+        # inicializamos la velocidades
+        self.vel_anterior = (0, 0, 0, 0)
+        # lanzamos el bobot
+        self.bobot_launch()
+
+    def bobot_launch(self):
+
+        print 'Initialising butia...'
+        output = commands.getoutput('ps -ax | grep lua')
+        if 'bobot-server' in output:
+            print 'bobot is alive!'
         else:
-            print("bobot NOT OK!") 
-        # listamos los modulos
-        self.modulos = self.butiabot.listarModulos()
+            try:
+                print 'creating bobot'
+                self.bobot = subprocess.Popen(['./lua', 'bobot-server.lua'], cwd='./lib/butia_support')
+            except:
+                print 'ERROR creating bobot'
+
+        self.butia = butiaAPI.robot()
+
+        self.modulos = self.butia.get_modules_list()
         # si hay modulos
-        if (self.modulos != -1):
+        if (self.modulos != []):
             # imprimimos la lista de modulos
             print self.modulos
-            # abrimos los sensores
-            self.butiabot.abrirSensor()
-            # abrimos los motores
-            self.butiabot.abrirMotores()
         else:
             # sino se encuentra
             print _('Butia robot was not detected')
@@ -230,71 +236,77 @@ class Robot(object):
     def mover_robot(self, pos):
         # asigno las coordenadas
         x,y = pos
-        # por defecto espero
-        espera = True
-        # si esta ligeramente a la izquierda
-        if (x > (4*self.z1)) and (x <= (7*self.z1)):
-            # me muevo a la derecha v = 300
-            vel_actual_x = (1, 300, 0, 300)
-        # si esta bastante hacia la izquierda
+
+        vel_actual = (0, 0, 0, 0)
+
+        if (x >= 0) and (x <= (2*self.z1)):
+            if (y >= 0) and (y <= self.z2) :
+                vel_actual = (1, 900, 1, 600)
+            elif (y > self.z2) and (y < 2*self.z2):
+                vel_actual = (0, 900, 1, 900)
+            elif (y >= 2*self.z2):
+                vel_actual = (0, 900, 0, 600)
+
         elif (x > (2*self.z1)) and (x <= (4*self.z1)):
-            # me muevo a la derecha v = 600
-            vel_actual_x = (1, 600, 0, 600)
-        # si esta a la iquierda
-        elif (x <= (2*self.z1)) and (x >= 0):
-            # me muevo a la derecha v = 900
-            vel_actual_x = (1, 900, 0, 900)
-        # si esta ligeramente a la derecha
-        elif (x >= (9*self.z1)) and (x < (12*self.z1)):
-            # me muevo a la izquierda v = 300
-            vel_actual_x = (0, 300, 1, 300)
-        # si esta bastante hacia la derecha
-        elif (x >= 12*self.z1) and (x < 14*self.z1):
-            # me muevo a la izquierda v = 600
-            vel_actual_x = (0, 600, 1, 600)
-        # si esta a la derecha
-        elif (x >= (14*self.z1)):
-            # me muevo a la izquierda v = 900
-            vel_actual_x = (0, 900, 1, 900)
-        # si esta en la zona muerta
-        elif (x > 7*self.z1) and (x < 9*self.z1):
-            # no espero
-            espera = False
+            if (y >= 0) and (y <= self.z2) :
+                vel_actual = (1, 600, 1, 300)
+            elif (y > self.z2) and (y < 2*self.z2):
+                vel_actual = (0, 600, 1, 600)
+            elif (y >= 2*self.z2):
+                vel_actual = (0, 600, 0, 600)
 
 
-        # para evitar envios de velocidad (eje X) innecesarios al robot
-        if not(vel_actual_x == vel_anterior_x):
-            vel_anterior_x = vel_actual_x
-            self.butiabot.setVelocidadMotores(vel_actual_x[0], vel_actual_x[1], vel_actual_x[2], vel_actual_x[3])
-            # si hay espera
-            if (espera == True):
-                # giro durante 0.1 segundos
-                time.sleep(0.1)
-        # devuelvo el valor de espera
-        espera = True
-        # si esta abajo
-        if (y <= self.z2) and (y >= 0):
-            # me muevo hacia adelante
-            vel_actual_y = (1, 500, 1, 500)
-        # si esta ariba
-        elif (y >= 2*self.z2):
-            # me muevo hacia atras
-            vel_actual_y = (0, 500, 0, 500)
-        # si esta en la zona muerta
-        elif (y > self.z2) and (y < 2*self.z2):
-            # no espero
-            espera = False
+        elif (x > (4*self.z1)) and (x <= (6*self.z1)):
+            if (y >= 0) and (y <= self.z2) :
+                vel_actual = (1, 300, 1, 0)
+            elif (y > self.z2) and (y < 2*self.z2):
+                vel_actual = (0, 300, 1, 300)
+            elif (y >= 2*self.z2):
+                vel_actual = (0, 300, 0, 0)
 
-        # para evitar envios de velocidad (eje Y) innecesarios al robot
-        if not(vel_actual_y == vel_anterior_y):
-            vel_anterior_y = vel_actual_y
-            self.butiabot.setVelocidadMotores(vel_actual_y[0], vel_actual_y[1], vel_actual_y[2], vel_actual_y[3])
-            # si hay espera
-            if (espera == True):
-                # giro durante 0.1 segundos
-                time.sleep(0.1)
+        elif (x > 6*self.z1) and (x < 9*self.z1):
+            if (y >= 0) and (y <= self.z2) :
+                vel_actual = (1, 300, 1, 300)
+            elif (y > self.z2) and (y < 2*self.z2):
+                vel_actual = (0, 0, 0, 0)
+            elif (y >= 2*self.z2):
+                vel_actual = (0, 300, 0, 300)
 
 
+        elif (x >= (9*self.z1)) and (x < (11*self.z1)):
+            if (y >= 0) and (y <= self.z2) :
+                vel_actual = (1, 0, 1, 300)
+            elif (y > self.z2) and (y < 2*self.z2):
+                vel_actual = (0, 300, 1, 300)
+            elif (y >= 2*self.z2):
+                vel_actual = (0, 0, 0, 300)
+
+
+        elif (x >= 11*self.z1) and (x < 13*self.z1):
+            if (y >= 0) and (y <= self.z2) :
+                vel_actual = (1, 300, 1, 600)
+            elif (y > self.z2) and (y < 2*self.z2):
+                vel_actual = (0, 600, 1, 600)
+            elif (y >= 2*self.z2):
+                vel_actual = (0, 300, 0, 600)
+
+
+        elif (x >= (13*self.z1)):
+            if (y >= 0) and (y <= self.z2) :
+                vel_actual = (1, 600, 1, 900)
+            elif (y > self.z2) and (y < 2*self.z2):
+                vel_actual = (0, 900, 1, 900)
+            elif (y >= 2*self.z2):
+                vel_actual = (0, 600, 0, 900)
+
+
+
+        # para evitar envios de velocidad innecesarios al robot
+        if not(vel_actual == self.vel_anterior):
+            self.vel_anterior = vel_actual
+            #self.butiabot.setVelocidadMotores(vel_actual[0], vel_actual[1], vel_actual[2], vel_actual[3])
+            self.butia.set2MotorSpeed(str(vel_actual[0]), str(vel_actual[1]), str(vel_actual[2]), str(vel_actual[3]))
+    
 
         # detengo al robot
         #self.butiabot.setVelocidadMotores("0","0", "0", "0")
@@ -314,7 +326,10 @@ class FollowMe:
         # comienzo calibrando
         self.calibrando = True
         # seteamos el tamanio de muestra
-        self.tamaniom = (960, 720)
+        self.tamaniom = (960.0, 720.0)
+        
+        # creo el robot vacio
+        self.r = None
 
     def modocalibrando(self, calibrando):
         # seteo el calibrando local
@@ -322,9 +337,9 @@ class FollowMe:
         # si estoy calibrando
         if self.calibrando:
             # si esta el robot
-            if (r != None and r.modulos != -1):
+            if (self.r != None and self.r.modulos != []):
                 # detengo el robot
-                self.butiabot.setVelocidadMotores(0, 0, 0, 0)
+                self.r.butia.set2MotorSpeed('0', '0', '0', '0')
         # si no hay que mostrar
         if (self.mostrar == False):
             # limpio la pantalla
@@ -363,7 +378,7 @@ class FollowMe:
 
     def run(self):
         # creamos el robot
-        r = Robot()
+        self.r = Robot()
         # establecemos un valor de umbral de color
         self.umbral = (25, 25, 25)
         # establecemos un color a seguir
@@ -386,12 +401,13 @@ class FollowMe:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     # salgo
-                    return
+                    break
                 elif event.type == pygame.VIDEORESIZE:
                     pygame.display.set_mode(event.size, pygame.RESIZABLE)
         else:
-            # mientras True
-            while True:
+            # mientras run
+            run = True            
+            while run:
                 # Pump GTK messages.
                 while gtk.events_pending():
                     gtk.main_iteration()
@@ -399,7 +415,7 @@ class FollowMe:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         # salgo
-                        return
+                        run = False
                     elif event.type == pygame.VIDEORESIZE:
                         pygame.display.set_mode(event.size, pygame.RESIZABLE)
                 # si es calibrar
@@ -416,10 +432,17 @@ class FollowMe:
                         # muestro la posicion en pantalla
                         self.c.mostrar_posicion(pos, self.colorc)
                     # si esta el butia conectado
-                    if (r != None and r.modulos != -1):
+                    if (self.r != None and self.r.modulos != []):
                         # movemos el robot
-                        r.mover_robot(pos)
+                        self.r.mover_robot(pos)
                 # actualizo la pantalla
                 pygame.display.flip()
                 # seteo a 10 CPS (CuadrosPorSegundo)
                 self.clock.tick(10)
+
+        if self.r.butia:
+            self.r.butia.close()
+            self.r.butia.closeService()
+        if self.r.bobot:
+            self.r.bobot.kill()
+
