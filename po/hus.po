@@ -1,0 +1,112 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-02-20 23:00-0200\n"
+"PO-Revision-Date: 2012-03-01 13:55+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#: activity/activity.info:2
+msgid "FollowMe Butia"
+msgstr ""
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/followme.py:83
+msgid "Error on initialization of the camera"
+msgstr ""
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/followme.py:90
+msgid "Camera was not found"
+msgstr ""
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/followme.py:228
+msgid "Butia robot was not detected"
+msgstr ""
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:102
+msgid "Calibrate/Follow"
+msgstr ""
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:111
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:539
+msgid "Stop"
+msgstr "Kuba'"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:131
+msgid "Calibrated color:"
+msgstr ""
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:131
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:257
+#, fuzzy
+msgid "Red"
+msgstr "Tsakni'"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:159
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:285
+#, fuzzy
+msgid "Green"
+msgstr "Yaxu'"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:187
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:313
+#, fuzzy
+msgid "Blue"
+msgstr "Tok'i'"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:211
+msgid "Calibrate"
+msgstr ""
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:222
+msgid "Pixels"
+msgstr ""
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:257
+msgid "Threshold:"
+msgstr ""
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:337
+#, fuzzy
+msgid "Options"
+msgstr "Jolat takudhtaláb"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:348
+msgid "Show size"
+msgstr ""
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:400
+msgid "Show grid"
+msgstr ""
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:416
+msgid "Show captures"
+msgstr ""
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:426
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:560
+msgid "Hide"
+msgstr ""
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:431
+#, fuzzy
+msgid "Resolution"
+msgstr "Tsáb t'ojojoy"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:534
+msgid "Start"
+msgstr "Tujtal"
+
+#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:555
+msgid "Show"
+msgstr "Tejwa'medha'"
