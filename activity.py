@@ -35,16 +35,20 @@ import gtk
 import pygame
 import pygame.camera
 from sugar.activity import activity
+from sugar.graphics.toolbarbox import ToolbarBox
 from sugar.graphics.toolbutton import ToolButton
+from sugar.activity.widgets import ActivityToolbarButton
+from sugar.activity.widgets import StopButton
+from sugar.graphics.toolbarbox import ToolbarButton
 import sugargame.canvas
 import followme
 from gettext import gettext as _
 
 class Activity(activity.Activity):
 
-    def __init__(self, handle, create_jobject=True):
+    def __init__(self, handle):
         # iniciamos la actividad
-        activity.Activity.__init__(self, handle, False)
+        activity.Activity.__init__(self, handle)
         # inicializamos el bobot-server
         #self.bobot_launch()
         # seteamos el objeto calibrando
@@ -77,18 +81,21 @@ class Activity(activity.Activity):
         activity.Activity.close(self, True)
 
     def build_toolbar(self):
+
+        # no sharing
+        self.max_participants = 1
+
+        toolbox = ToolbarBox()
+
+        activity_button = ActivityToolbarButton(self)
+        toolbox.toolbar.insert(activity_button, 0)
+        activity_button.show()
         # obtengo la caja de la actividad
-        caja = activity.ActivityToolbox(self)
+        #caja = activity.ActivityToolbox(self)
         # obtengo la barra de Actividad
-        barra_actividad = caja.get_activity_toolbar()
-        # le saco la opcion guardar
-        barra_actividad.remove(barra_actividad.keep)
-        # le coloco none
-        barra_actividad.keep = None
-        # le saco el boton compartir actividad
-        barra_actividad.remove(barra_actividad.share)
-        # le coloco none
-        barra_actividad.share = None
+        #barra_actividad = caja.get_activity_toolbar()
+
+
 
         #####Calibrar#####
         # obtenemos la barra
@@ -207,8 +214,17 @@ class Activity(activity.Activity):
         # inserto el item en la barra
         barraCalibrar.insert(item8, 8)
 
+        barraCalibrar.show_all()
+
+        calibrar_button = ToolbarButton(label=_('Calibrate'),
+                page=barraCalibrar,
+                icon_name='preferences-system')
+        toolbox.toolbar.insert(calibrar_button, -1)
+        calibrar_button.show()
+
         # a la caja le agregamos nuestra barra de Calibrar
-        caja.add_toolbar(_('Calibrate'), barraCalibrar)
+        #caja.add_toolbar(_('Calibrate'), barraCalibrar)
+
 
         #####Opciones#####
         # obtenemos la barra
@@ -333,16 +349,30 @@ class Activity(activity.Activity):
         # inserto el item en la barra
         barraOpciones.insert(item17, 8)
 
+        # creo un separador
+        separador12 = gtk.SeparatorToolItem()
+        # que tenga una linea
+        separador12.props.draw = True
+        barraOpciones.insert(separador12, 9)
+
         item18 = gtk.ToolItem()
         combo = Combo()
         item18.add(combo)
 
         self.combo_handler = combo.connect('changed', self.change_combo)
 
-        barraOpciones.insert(item18, 9)
+        barraOpciones.insert(item18, 10)
+
+        barraOpciones.show_all()
+
+        options_button = ToolbarButton(label=_('Options'),
+                page=barraOpciones,
+                icon_name='view-source')
+        toolbox.toolbar.insert(options_button, -1)
+        options_button.show()
 
         # a la caja le agregamos nuestra barra de Opciones
-        caja.add_toolbar(_('Options'), barraOpciones)
+        #caja.add_toolbar(_('Options'), barraOpciones)
 
         #####Resolucion#####
         # obteenmos la barra
@@ -435,13 +465,31 @@ class Activity(activity.Activity):
         # insertamos el boton en la barra
         barraResolucion.insert(parar2, 7)
 
-        # agrego la barra2 a la caja (toolbar)
-        caja.add_toolbar(_('Resolution'), barraResolucion)
+        barraResolucion.show_all()
 
-        # la mostramos
-        caja.show_all()
-        # le ponemos la caja
-        self.set_toolbox(caja)
+        resolution_button = ToolbarButton(label=_('Resolution'),
+                page=barraResolucion,
+                icon_name='camera')
+        toolbox.toolbar.insert(resolution_button, -1)
+        resolution_button.show()
+
+
+        # creo un separador
+        separador13 = gtk.SeparatorToolItem()
+        # que no tenga linea
+        separador13.props.draw = False
+        separador13.set_expand(True)
+        toolbox.toolbar.insert(separador13, -1)
+
+        stop_button = StopButton(self)
+        stop_button.props.accelerator = _('<Ctrl>Q')
+        toolbox.toolbar.insert(stop_button, -1)
+        stop_button.show()
+
+        self.set_toolbox(toolbox)
+        toolbox.show()
+
+        self.show_all()
 
     def change_combo(self, combo):
         self.modo = combo.get_active_text()

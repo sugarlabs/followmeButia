@@ -63,10 +63,11 @@ class Captura(object):
     
     def get_camera(self, tamanio, modo):
         # detengo la cámara
-        try:
-            self.cam.stop()
-        except:
-            pass
+        if self.cam:
+            try:
+                self.cam.stop()
+            except:
+                pass
         
         # obtenemos la lista de camaras
         self.lcamaras = pygame.camera.list_cameras()
@@ -398,7 +399,7 @@ class FollowMe:
 
     def run(self):
         # creamos el robot
-        self.r = Robot()
+        #self.r = Robot()
         # establecemos un valor de umbral de color
         self.umbral = (25, 25, 25)
         # establecemos un color a seguir
@@ -463,9 +464,15 @@ class FollowMe:
                     # seteo a 10 CPS (CuadrosPorSegundo)
                     self.clock.tick(10)
 
-        if self.r.butia:
-            self.r.butia.close()
-            self.r.butia.closeService()
-        if self.r.bobot:
-            self.r.bobot.kill()
+        if self.r:
+            if self.r.butia:
+                self.r.butia.close()
+                self.r.butia.closeService()
+            if self.r.bobot:
+                self.r.bobot.kill()
+        if self.c.cam:
+            try:
+                self.cam.stop()
+            except:
+                pass
 
