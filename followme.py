@@ -161,10 +161,21 @@ class Captura(object):
         if not(self.flip):
             # giro la captura en el horizontal
             self.captura = pygame.transform.flip(self.captura,True,False)
+
+        self.captura2 = pygame.surface.Surface((320,240), 0, self.pantalla)
+
+        pygame.transform.threshold(self.captura2,self.captura, color, (umbral[0],umbral[1], umbral[2]), (0,0,0), 2)
+
+        self.captura = self.captura2
+
         # creamos una mascara con la captura con color y umbral especificados
-        mascara = pygame.mask.from_threshold(self.captura, color, umbral)
+        mascara = pygame.mask.from_threshold(self.captura, color, (0, 0, 0))
         # dejamos la mancha conexa mas grande
         conexa = mascara.connected_component()
+
+
+
+
         # si la mancha tiene al menos tantos pixeles
         if (conexa.count() > pixeles):
             # devolvemos el centro de la mancha
