@@ -76,9 +76,6 @@ class Activity(activity.Activity):
         # comenzamos la actividad (self.game.run es llamada cuando constructor de la actividad vuelve)
         self._pygamecanvas.run_pygame(self.actividad.run)
 
-    def close(self, skip_save=False):
-        # evito la entrada al diario
-        activity.Activity.close(self, True)
 
     def build_toolbar(self):
 
@@ -90,11 +87,6 @@ class Activity(activity.Activity):
         activity_button = ActivityToolbarButton(self)
         toolbox.toolbar.insert(activity_button, 0)
         activity_button.show()
-        # obtengo la caja de la actividad
-        #caja = activity.ActivityToolbox(self)
-        # obtengo la barra de Actividad
-        #barra_actividad = caja.get_activity_toolbar()
-
 
 
         #####Calibrar#####
@@ -221,9 +213,6 @@ class Activity(activity.Activity):
                 icon_name='preferences-system')
         toolbox.toolbar.insert(calibrar_button, -1)
         calibrar_button.show()
-
-        # a la caja le agregamos nuestra barra de Calibrar
-        #caja.add_toolbar(_('Calibrate'), barraCalibrar)
 
 
         #####Opciones#####
@@ -371,8 +360,6 @@ class Activity(activity.Activity):
         toolbox.toolbar.insert(options_button, -1)
         options_button.show()
 
-        # a la caja le agregamos nuestra barra de Opciones
-        #caja.add_toolbar(_('Options'), barraOpciones)
 
         #####Resolucion#####
         # obteenmos la barra
