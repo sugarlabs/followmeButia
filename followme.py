@@ -233,6 +233,8 @@ class Robot(object):
             except:
                 print 'ERROR creating bobot'
 
+        time.sleep(1)
+
         self.butia = butiaAPI.robot()
 
         self.modulos = self.butia.get_modules_list()
