@@ -28,6 +28,7 @@
 
 
 import pygame
+import pygame.camera
 import gtk
 import butiaAPI
 import time
@@ -41,13 +42,16 @@ tamanioc = (320, 240)
 
 class Captura(object):
 
-    def __init__(self, tamanio, modo):
+    def __init__(self, tamanio, modo, parent):
         # iniciamos pygame
         pygame.init()
         # inicializamos el modulo pygame de la camara
         pygame.camera.init()
         # creamos una superfcie para usarla de pantalla
-        self.pantalla = pygame.display.get_surface()
+        if parent:
+            self.pantalla = pygame.display.get_surface()
+        else:
+            self.pantalla = pygame.display.set_mode((1200, 900))
         #print self.pantalla.get_size()
         # creamos una superficie para la captura
         self.captura = pygame.surface.Surface(tamanio, 0, self.pantalla)
@@ -415,7 +419,7 @@ class FollowMe:
         self.modo = 'RGB'
         self.can_use = True
         # creamos una captura, inicializamos la camara
-        self.c = Captura(self.tamanioc, self.modo)
+        self.c = Captura(self.tamanioc, self.modo, self.parent)
         # si se deteco alguna camara
         if (self.c.cam == None):
             while gtk.events_pending():
@@ -447,7 +451,8 @@ class FollowMe:
                         # calibro la camara
                         self.colorc = self.c.calibrar()
                         # actualizo el color en el activity
-                        self.parent.acolor(self.colorc)
+                        if self.parent:
+                            self.parent.acolor(self.colorc)
                     else:
                         # obtengo la posicion
                         pos = self.c.obtener_posicion(self.colorc, self.umbral, self.pixeles)
@@ -475,4 +480,9 @@ class FollowMe:
                 self.cam.stop()
             except:
                 pass
+
+
+if __name__ == "__main__":
+    f = FollowMe(None)
+    f.run()
 
