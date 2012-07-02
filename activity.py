@@ -581,7 +581,7 @@ class Combo(gtk.ComboBox):
 
         self.liststore = gtk.ListStore(str)
 
-        GROUPS = ('RGB', 'YUV')
+        GROUPS = ('RGB', 'YUV', 'HSV')
         for group in GROUPS:
             self.liststore.append([group])
 
