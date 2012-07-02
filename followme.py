@@ -41,7 +41,7 @@ tamanioc = (320, 240)
 
 class Captura(object):
 
-    def __init__(self, tamanio):
+    def __init__(self, tamanio, modo):
         # iniciamos pygame
         pygame.init()
         # inicializamos el modulo pygame de la camara
@@ -54,19 +54,33 @@ class Captura(object):
 
         # inicializo en None la cámara
         self.cam = None
+
+        self.get_camera(tamanio, modo)
+        # calculamos las proporciones
+        self.calc((960, 720))
+        # por defecto no mostramos la grilla
+        self.mostrar_grilla = False
+    
+    def get_camera(self, tamanio, modo):
+        # detengo la cámara
+        try:
+            self.cam.stop()
+        except:
+            pass
+        
         # obtenemos la lista de camaras
         self.lcamaras = pygame.camera.list_cameras()
         # si no hay ninguna camara
         if self.lcamaras:
             # creamos la camara, con tamanio y modo color RGB
-            self.cam = pygame.camera.Camera(self.lcamaras[0], tamanio, 'RGB')
+            self.cam = pygame.camera.Camera(self.lcamaras[0], tamanio, modo)
             # obtengo la resolución de la cámara
             res = self.cam.get_size()
             # si no es 320, 240 (Sugar nuevo)
             if not (res == tamanioc):
                 tamanio = (352, 288)
                 # inicializo en 352, 288
-                self.cam = pygame.camera.Camera(self.lcamaras[0], tamanio, 'RGB')
+                self.cam = pygame.camera.Camera(self.lcamaras[0], tamanio, modo)
             try:
                 # seteamos el brillo
                 #self.cam.set_controls(brightness = 129)
@@ -80,13 +94,10 @@ class Captura(object):
                 self.flip = res[0]
             except:
                 print _('Error on initialization of the camera')
-            # calculamos las proporciones
-            self.calc((960, 720))
-            # por defecto no mostramos la grilla
-            self.mostrar_grilla = False
+
         else:
             # mandamos el error correspondiente
-            print _('Camera was not found')
+            print _('No cameras was found')
 
     def calc(self, tamanio):
         # guardo tamanio en self.tamaniom
@@ -330,6 +341,7 @@ class FollowMe:
         
         # creo el robot vacio
         self.r = None
+        self.c = None
 
     def modocalibrando(self, calibrando):
         # seteo el calibrando local
@@ -376,6 +388,12 @@ class FollowMe:
             # limpio la pantalla
             self.c.limpiar()
 
+    def poner_modo_color(self, modo):
+        #self.can_use = False
+        self.modo = modo
+        self.c.get_camera(self.tamanioc, self.modo)
+        #self.can_use = True
+
     def run(self):
         # creamos el robot
         self.r = Robot()
@@ -391,8 +409,10 @@ class FollowMe:
         self.tamanioc = tamanioc
         # por defecto se muestra la captura
         self.mostrar = True
+        self.modo = 'RGB'
+        self.can_use = True
         # creamos una captura, inicializamos la camara
-        self.c = Captura(self.tamanioc)
+        self.c = Captura(self.tamanioc, self.modo)
         # si se deteco alguna camara
         if (self.c.cam == None):
             while gtk.events_pending():
@@ -402,8 +422,8 @@ class FollowMe:
                 if event.type == pygame.QUIT:
                     # salgo
                     break
-                elif event.type == pygame.VIDEORESIZE:
-                    pygame.display.set_mode(event.size, pygame.RESIZABLE)
+                #elif event.type == pygame.VIDEORESIZE:
+                #    pygame.display.set_mode(event.size, pygame.RESIZABLE)
         else:
             # mientras run
             run = True            
@@ -416,29 +436,30 @@ class FollowMe:
                     if event.type == pygame.QUIT:
                         # salgo
                         run = False
-                    elif event.type == pygame.VIDEORESIZE:
-                        pygame.display.set_mode(event.size, pygame.RESIZABLE)
-                # si es calibrar
-                if (self.calibrando):
-                    # calibro la camara
-                    self.colorc = self.c.calibrar()
-                    # actualizo el color en el activity
-                    self.parent.acolor(self.colorc)
-                else:
-                    # obtengo la posicion
-                    pos = self.c.obtener_posicion(self.colorc, self.umbral, self.pixeles)
-                    # si hay que mostrar la captura en pantalla
-                    if self.mostrar:
-                        # muestro la posicion en pantalla
-                        self.c.mostrar_posicion(pos, self.colorc)
-                    # si esta el butia conectado
-                    if (self.r != None and self.r.modulos != []):
-                        # movemos el robot
-                        self.r.mover_robot(pos)
-                # actualizo la pantalla
-                pygame.display.flip()
-                # seteo a 10 CPS (CuadrosPorSegundo)
-                self.clock.tick(10)
+                    #elif event.type == pygame.VIDEORESIZE:
+                    #    pygame.display.set_mode(event.size, pygame.RESIZABLE)
+                if self.can_use:
+                    # si es calibrar
+                    if (self.calibrando):
+                        # calibro la camara
+                        self.colorc = self.c.calibrar()
+                        # actualizo el color en el activity
+                        self.parent.acolor(self.colorc)
+                    else:
+                        # obtengo la posicion
+                        pos = self.c.obtener_posicion(self.colorc, self.umbral, self.pixeles)
+                        # si hay que mostrar la captura en pantalla
+                        if self.mostrar:
+                            # muestro la posicion en pantalla
+                            self.c.mostrar_posicion(pos, self.colorc)
+                        # si esta el butia conectado
+                        if (self.r != None and self.r.modulos != []):
+                            # movemos el robot
+                            self.r.mover_robot(pos)
+                    # actualizo la pantalla
+                    pygame.display.flip()
+                    # seteo a 10 CPS (CuadrosPorSegundo)
+                    self.clock.tick(10)
 
         if self.r.butia:
             self.r.butia.close()

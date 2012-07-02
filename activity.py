@@ -333,6 +333,14 @@ class Activity(activity.Activity):
         # inserto el item en la barra
         barraOpciones.insert(item17, 8)
 
+        item18 = gtk.ToolItem()
+        combo = Combo()
+        item18.add(combo)
+
+        self.combo_handler = combo.connect('changed', self.change_combo)
+
+        barraOpciones.insert(item18, 9)
+
         # a la caja le agregamos nuestra barra de Opciones
         caja.add_toolbar(_('Options'), barraOpciones)
 
@@ -434,6 +442,11 @@ class Activity(activity.Activity):
         caja.show_all()
         # le ponemos la caja
         self.set_toolbox(caja)
+
+    def change_combo(self, combo):
+        self.modo = combo.get_active_text()
+        
+        self.actividad.poner_modo_color(self.modo)
 
     def acolor(self, color):
         # actualizo la variable local
@@ -561,4 +574,23 @@ class Activity(activity.Activity):
         #actualizo el FollowMe
         self.actividad.poner_muestra(self.mostrar)
 
+
+class Combo(gtk.ComboBox):
+
+    def __init__(self):
+
+        self.liststore = gtk.ListStore(str)
+
+        GROUPS = ('RGB', 'YUV')
+        for group in GROUPS:
+            self.liststore.append([group])
+
+        gtk.ComboBox.__init__(self, self.liststore)
+
+
+        cell = gtk.CellRendererText()
+        self.pack_start(cell, True)
+        self.add_attribute(cell, 'text', 0)
+
+        self.set_active(0)
 
