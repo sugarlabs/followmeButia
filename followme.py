@@ -52,13 +52,13 @@ class Captura(object):
             self.pantalla = pygame.display.get_surface()
         else:
             self.pantalla = pygame.display.set_mode((1200, 900))
-        #print self.pantalla.get_size()
         # creamos una superficie para la captura
         self.captura = pygame.surface.Surface(tamanio, 0, self.pantalla)
-
+        # creamos una superficie actualizar
+        self.captura2 = pygame.surface.Surface(tamanio, 0, self.pantalla)
         # inicializo en None la cámara
         self.cam = None
-
+        # obtenemos la camara
         self.get_camera(tamanio, modo)
         # calculamos las proporciones
         self.calc((960, 720))
@@ -162,18 +162,15 @@ class Captura(object):
             # giro la captura en el horizontal
             self.captura = pygame.transform.flip(self.captura,True,False)
 
-        self.captura2 = pygame.surface.Surface((320,240), 0, self.pantalla)
-
-        pygame.transform.threshold(self.captura2,self.captura, color, (umbral[0],umbral[1], umbral[2]), (0,0,0), 2)
-
-        self.captura = self.captura2
+        
+        if self.use_threshold_view:
+            pygame.transform.threshold(self.captura2, self.captura, color, (umbral[0],umbral[1], umbral[2]), (0,0,0), 2)
+            self.captura = self.captura2
 
         # creamos una mascara con la captura con color y umbral especificados
-        mascara = pygame.mask.from_threshold(self.captura, color, (0, 0, 0))
+        mascara = pygame.mask.from_threshold(self.captura, color, (10, 10, 10))
         # dejamos la mancha conexa mas grande
         conexa = mascara.connected_component()
-
-
 
 
         # si la mancha tiene al menos tantos pixeles
@@ -407,10 +404,11 @@ class FollowMe:
             self.c.limpiar()
 
     def poner_modo_color(self, modo):
-        #self.can_use = False
         self.modo = modo
         self.c.get_camera(self.tamanioc, self.modo)
-        #self.can_use = True
+
+    def poner_threshold_view(self, view):
+        self.use_threshold_view = view
 
     def run(self):
         # creamos el robot
@@ -427,8 +425,8 @@ class FollowMe:
         self.tamanioc = tamanioc
         # por defecto se muestra la captura
         self.mostrar = True
+        # default mode RGB
         self.modo = 'RGB'
-        self.can_use = True
         # creamos una captura, inicializamos la camara
         self.c = Captura(self.tamanioc, self.modo, self.parent)
         # si se deteco alguna camara
@@ -456,29 +454,28 @@ class FollowMe:
                         run = False
                     #elif event.type == pygame.VIDEORESIZE:
                     #    pygame.display.set_mode(event.size, pygame.RESIZABLE)
-                if self.can_use:
-                    # si es calibrar
-                    if (self.calibrando):
-                        # calibro la camara
-                        self.colorc = self.c.calibrar()
-                        # actualizo el color en el activity
-                        if self.parent:
-                            self.parent.acolor(self.colorc)
-                    else:
-                        # obtengo la posicion
-                        pos = self.c.obtener_posicion(self.colorc, self.umbral, self.pixeles)
-                        # si hay que mostrar la captura en pantalla
-                        if self.mostrar:
-                            # muestro la posicion en pantalla
-                            self.c.mostrar_posicion(pos, self.colorc)
-                        # si esta el butia conectado
-                        if (self.r != None and self.r.modulos != []):
-                            # movemos el robot
-                            self.r.mover_robot(pos)
-                    # actualizo la pantalla
-                    pygame.display.flip()
-                    # seteo a 10 CPS (CuadrosPorSegundo)
-                    self.clock.tick(10)
+                # si es calibrar
+                if (self.calibrando):
+                    # calibro la camara
+                    self.colorc = self.c.calibrar()
+                    # actualizo el color en el activity
+                    if self.parent:
+                        self.parent.acolor(self.colorc)
+                else:
+                    # obtengo la posicion
+                    pos = self.c.obtener_posicion(self.colorc, self.umbral, self.pixeles)
+                    # si hay que mostrar la captura en pantalla
+                    if self.mostrar:
+                        # muestro la posicion en pantalla
+                        self.c.mostrar_posicion(pos, self.colorc)
+                    # si esta el butia conectado
+                    if (self.r != None and self.r.modulos != []):
+                        # movemos el robot
+                        self.r.mover_robot(pos)
+                # actualizo la pantalla
+                pygame.display.flip()
+                # seteo a 10 CPS (CuadrosPorSegundo)
+                self.clock.tick(10)
 
         if self.r:
             if self.r.butia:
