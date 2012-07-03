@@ -56,6 +56,8 @@ class Captura(object):
         self.captura = pygame.surface.Surface(tamanio, 0, self.pantalla)
         # creamos una superficie actualizar
         self.captura2 = pygame.surface.Surface(tamanio, 0, self.pantalla)
+        # que no use la vista
+        self.use_threshold_view = False
         # inicializo en None la cámara
         self.cam = None
         # obtenemos la camara
@@ -408,11 +410,11 @@ class FollowMe:
         self.c.get_camera(self.tamanioc, self.modo)
 
     def poner_threshold_view(self, view):
-        self.use_threshold_view = view
+        self.c.use_threshold_view = view
 
     def run(self):
         # creamos el robot
-        #self.r = Robot()
+        self.r = Robot()
         # establecemos un valor de umbral de color
         self.umbral = (25, 25, 25)
         # establecemos un color a seguir
