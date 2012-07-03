@@ -54,8 +54,10 @@ class Captura(object):
             self.pantalla = pygame.display.set_mode((1200, 900))
         # creamos una superficie para la captura
         self.captura = pygame.surface.Surface(tamanio, 0, self.pantalla)
+
+        self.captura_aux = pygame.surface.Surface(tamanio, 0, self.pantalla)
         # creamos una superficie actualizar
-        self.captura2 = pygame.surface.Surface(tamanio, 0, self.pantalla)
+        self.captura_to_show = pygame.surface.Surface(tamanio, 0, self.pantalla)
         # que no use la vista
         self.use_threshold_view = False
         # inicializo en None la cámara
@@ -166,14 +168,13 @@ class Captura(object):
 
         
         if self.use_threshold_view:
-            pygame.transform.threshold(self.captura2, self.captura, color, (umbral[0],umbral[1], umbral[2]), (0,0,0), 2)
-            self.captura = self.captura2
-
-        # creamos una mascara con la captura con color y umbral especificados
-        mascara = pygame.mask.from_threshold(self.captura, color, (10, 10, 10))
+            pygame.transform.threshold(self.captura_aux, self.captura, color, (umbral[0],umbral[1], umbral[2]), (0,0,0), 2)
+            mascara = pygame.mask.from_threshold(self.captura_aux, color, (10, 10, 10))
+        else:
+            mascara = pygame.mask.from_threshold(self.captura, color, (10, 10, 10))
+            
         # dejamos la mancha conexa mas grande
         conexa = mascara.connected_component()
-
 
         # si la mancha tiene al menos tantos pixeles
         if (conexa.count() > pixeles):
@@ -186,12 +187,14 @@ class Captura(object):
     def mostrar_posicion(self, pos, color):
         # guardo en x e y la posicion
         x, y = pos
-        # escalo la captura para mostrar
-        self.captura2 = pygame.transform.scale(self.captura, (int(self.tamaniom[0]), int(self.tamaniom[1])))
+        if self.use_threshold_view:
+            self.captura_to_show = pygame.transform.scale(self.captura_aux, (int(self.tamaniom[0]), int(self.tamaniom[1])))
+        else:
+            self.captura_to_show = pygame.transform.scale(self.captura, (int(self.tamaniom[0]), int(self.tamaniom[1])))
         # si es una posicion valida
         if (x != -1):
             # creo un punto para mostrar la posicion
-            rect = pygame.draw.rect(self.captura2, (255,0,0), (x*self.c1, y*self.c2, 20, 20), 16)
+            rect = pygame.draw.rect(self.captura_to_show, (255,0,0), (x*self.c1, y*self.c2, 20, 20), 16)
         # rellenamos la pantalla con un color homogeneo
         self.pantalla.fill((84,185,72))
         # si hay que mostrar la grilla
@@ -199,7 +202,7 @@ class Captura(object):
             # dibujo la grilla
             self.dibujar_grilla()
         # muestro la captura en pantalla
-        self.pantalla.blit(self.captura2, (self.xblit, self.yblit))
+        self.pantalla.blit(self.captura_to_show, (self.xblit, self.yblit))
         # rellenamos la esquina superior con el color calibrado
         self.pantalla.fill(color, (0,0,120,120))
         # recuadramos el color para resaltarlo
