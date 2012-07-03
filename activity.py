@@ -49,8 +49,8 @@ class Activity(activity.Activity):
     def __init__(self, handle):
         # iniciamos la actividad
         activity.Activity.__init__(self, handle)
-        # inicializamos el bobot-server
-        #self.bobot_launch()
+        # no sharing
+        self.max_participants = 1
         # seteamos el objeto calibrando
         self.calibrando = True
         # guardo el umbral por defecto
@@ -65,6 +65,8 @@ class Activity(activity.Activity):
         self.mostrar_grilla = False
         # por defecto mostramos la captura en pantalla
         self.mostrar = True
+        # por defecto, no se muestra la vista umbral
+        self.use_threshold_view = False
         # creamos una instancia del FollowMe, le pasamos el activity
         self.actividad = followme.FollowMe(self)
         # construimos la barra
@@ -79,9 +81,6 @@ class Activity(activity.Activity):
 
     def build_toolbar(self):
 
-        # no sharing
-        self.max_participants = 1
-
         toolbox = ToolbarBox()
 
         activity_button = ActivityToolbarButton(self)
@@ -89,7 +88,7 @@ class Activity(activity.Activity):
         activity_button.show()
 
 
-        #####Calibrar#####
+        ######################################## Calibrar ########################################
         # obtenemos la barra
         barraCalibrar = gtk.Toolbar()
 
@@ -209,13 +208,13 @@ class Activity(activity.Activity):
         barraCalibrar.show_all()
 
         calibrar_button = ToolbarButton(label=_('Calibrate'),
-                page=barraCalibrar,
-                icon_name='preferences-system')
+                                        page=barraCalibrar,
+                                        icon_name='preferences-system')
         toolbox.toolbar.insert(calibrar_button, -1)
         calibrar_button.show()
 
 
-        #####Opciones#####
+        ######################################## Opciones ########################################
         # obtenemos la barra
         barraOpciones = gtk.Toolbar()
 
@@ -345,12 +344,23 @@ class Activity(activity.Activity):
         barraOpciones.insert(separador12, 9)
 
         item18 = gtk.ToolItem()
-        combo = Combo()
-        item18.add(combo)
-
-        self.combo_handler = combo.connect('changed', self.change_combo)
-
+        # creo la etiqueta para Modo color
+        self.etiqueta17 = gtk.Label()
+        # coloco el texto B
+        self.etiqueta17.set_text(_('Color mode'))
+        # inserto la etiqueta en el item
+        item18.add(self.etiqueta17)
+        # inserto el item en la barra
         barraOpciones.insert(item18, 10)
+
+        item19 = gtk.ToolItem()
+        combo = Combo()
+        item19.add(combo)
+        self.combo_handler = combo.connect('changed', self.change_combo)
+        barraOpciones.insert(item19, 11)
+
+
+
 
         barraOpciones.show_all()
 
@@ -361,7 +371,7 @@ class Activity(activity.Activity):
         options_button.show()
 
 
-        #####Resolucion#####
+        ######################################## Resolucion ########################################
         # obteenmos la barra
         barraResolucion = gtk.Toolbar()
 
@@ -417,6 +427,13 @@ class Activity(activity.Activity):
         it4.add(self.tmy)
         # inserto el item a la barra
         barraResolucion.insert(it4, 3)
+
+        # creo un separador
+        separador14 = gtk.SeparatorToolItem()
+        # que tenga una linea
+        separador14.props.draw = True
+        barraResolucion.insert(separador14, 4)
+
         # creamos el quinto item
         it5 = gtk.ToolItem()
         # creamos la etiqueta para mostrar lineas
@@ -426,13 +443,20 @@ class Activity(activity.Activity):
         # agrego la etiqueta al item
         it5.add(self.et5)
         # inserto el item en la barra
-        barraResolucion.insert(it5, 4)
+        barraResolucion.insert(it5, 5)
         # creo un boton para la grilla
         self.grilla = ToolButton('grid-icon')
         # conecto el evento click y el procedimiento
         self.grilla_handler = self.grilla.connect('clicked', self.grilla_click)
         # inserto el boton grilla en la barra 2
-        barraResolucion.insert(self.grilla, 5)
+        barraResolucion.insert(self.grilla, 6)
+
+        # creo un separador
+        separador15 = gtk.SeparatorToolItem()
+        # que tenga una linea
+        separador15.props.draw = True
+        barraResolucion.insert(separador15, 7)
+
         # creamos el sexto item
         it6 = gtk.ToolItem()
         # creamos la etiqueta para mostrar en pantalla
@@ -442,7 +466,7 @@ class Activity(activity.Activity):
         # agrego la etiqueta al item
         it6.add(self.et6)
         # inserto el item en la barra
-        barraResolucion.insert(it6, 6)
+        barraResolucion.insert(it6, 8)
         # ponemos un boton de parar de mostrar captura
         parar2 = ToolButton('media-playback-stop')
         # conectamos el boton con el evento click
@@ -450,7 +474,32 @@ class Activity(activity.Activity):
         # ponemos como mensaje Ocultar
         parar2.set_tooltip(_('Hide'))
         # insertamos el boton en la barra
-        barraResolucion.insert(parar2, 7)
+        barraResolucion.insert(parar2, 9)
+
+        # creo un separador
+        separador16 = gtk.SeparatorToolItem()
+        # que tenga una linea
+        separador16.props.draw = True
+        barraResolucion.insert(separador16, 10)
+
+        # creamos el sexto item
+        it7 = gtk.ToolItem()
+        # creamos la etiqueta para mostrar en pantalla
+        self.et7 = gtk.Label()
+        # le ponemos el texto
+        self.et7.set_text(_('Show threshold view'))
+        # agrego la etiqueta al item
+        it7.add(self.et7)
+        # inserto el item en la barra
+        barraResolucion.insert(it7, 11)
+
+        threshold_view = ToolButton('media-playback-start')
+        # conectamos el boton con el evento click
+        threshold_view.connect('clicked', self.threshold_view)
+        parar2.set_tooltip(_('Yes'))
+        # insertamos el boton en la barra
+        barraResolucion.insert(threshold_view, 12)
+
 
         barraResolucion.show_all()
 
@@ -479,9 +528,25 @@ class Activity(activity.Activity):
         self.show_all()
 
     def change_combo(self, combo):
-        self.modo = combo.get_active_text()
-        
+        self.modo = combo.get_active_text()        
         self.actividad.poner_modo_color(self.modo)
+
+    def threshold_view(self, button):
+        # activamos o desactivamos el modo calibrar
+        self.use_threshold_view = not self.use_threshold_view
+        # seteamos el modo dentro de la actividad
+        self.actividad.poner_threshold_view(self.use_threshold_view)
+        # actualizamos la barra para el siguiente evento
+        if not self.use_threshold_view:
+            # ponemos ejecutar
+            button.set_icon('media-playback-start')
+            # con el tolltip Empezar
+            button.set_tooltip(_('Yes'))
+        else:
+            # ponemos parar
+            button.set_icon('media-playback-stop')
+            # con el tolltip Detener
+            button.set_tooltip(_('No'))
 
     def acolor(self, color):
         # actualizo la variable local
