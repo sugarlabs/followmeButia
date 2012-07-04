@@ -9,8 +9,12 @@ local NULL_BYTE				                    = string.char(0x00)
 local DEFAULT_PACKET_SIZE    	          	    = 0x04
 local GET_USER_MODULES_SIZE_COMMAND           	= string.char(0x05)
 local GET_USER_MODULE_LINE_COMMAND		        = string.char(0x06)
+local GET_HANDLER_SIZE_COMMAND                  = string.char(0x0A)
+local GET_HANDLER_TYPE_COMMAND                  = string.char(0x0B)
 local GET_LINES_RESPONSE_PACKET_SIZE 	        = 6
 local GET_LINE_RESPONSE_PACKET_SIZE 	        = 12
+local GET_HANDLER_TYPE_PACKET_SIZE              = 0x05
+local GET_HANDLER_RESPONSE_PACKET_SIZE 	        = 5 --
 local ADMIN_HANDLER_SEND_COMMAND 		        = string.char(0x00)
 local ADMIN_MODULE_IN_ENDPOINT		            = 0x01
 local ADMIN_MODULE_OUT_ENDPOINT        	        = 0x81
@@ -101,7 +105,7 @@ function BaseBoard:get_user_modules_size()
 			return user_modules_size
 		end
 	else	
-	local retry = 0
+	    local retry = 0
         while(write_res == nil and retry < MAX_RETRY) do
 			write_res = comms.send(ADMIN_MODULE_IN_ENDPOINT, get_user_modules_size_packet, TIMEOUT)
 			bobot.debugprint("u4b:get_user_modules_size:comunication with I/O board write error", write_res)
@@ -144,6 +148,59 @@ function BaseBoard:get_user_module_line(index)
 		return module_name
 	else	
 		bobot.debugprint("u4b:get_user_module_line:comunication with I/O board write error", write_res)
+	end
+end
+
+function BaseBoard:get_handler_size() ------ NEW LISTI ------
+	--state sanity check
+	assert(type(self.comms)=="table")
+
+	local comms=self.comms
+
+	local handler_packet = ADMIN_HANDLER_SEND_COMMAND .. string.char(DEFAULT_PACKET_SIZE) .. NULL_BYTE
+	local admin_packet = GET_HANDLER_SIZE_COMMAND
+	local get_handler_size_packet  = handler_packet .. admin_packet    
+
+	local write_res = comms.send(ADMIN_MODULE_IN_ENDPOINT, get_handler_size_packet, TIMEOUT)
+	if write_res then
+        local data, err = comms.read(ADMIN_MODULE_OUT_ENDPOINT, GET_HANDLER_RESPONSE_PACKET_SIZE, TIMEOUT)
+		if not data then
+			bobot.debugprint("u4b:get_handler_size:comunication with I/O board read error", err)
+			return 0
+		else
+			local handler_size = string.byte(data, 5)	
+			return handler_size
+		end
+	else	
+		bobot.debugprint("u4b:get_handler_type:comunication with I/O board write error", write_res)
+	end
+end
+function BaseBoard:get_handler_type(index) ------ NEW LISTI ------
+	--state & parameter sanity check
+	assert(type(index)=="number")
+	assert(index>0)	
+	assert(type(self.comms)=="table")
+
+	local comms=self.comms
+
+	-- In case of get_handler_type command is atended by admin module in handler 0 and send operation is 000
+	local get_handler_type_packet_length = string.char(GET_HANDLER_TYPE_PACKET_SIZE) --GET_USER_MODULE_LINE_PACKET_SIZE
+	local handler_packet = ADMIN_HANDLER_SEND_COMMAND .. get_handler_type_packet_length .. NULL_BYTE
+	local admin_packet = GET_HANDLER_TYPE_COMMAND .. string.char(index-1)
+	local get_handler_type_packet  = handler_packet .. admin_packet
+
+	local write_res = comms.send(ADMIN_MODULE_IN_ENDPOINT, get_handler_type_packet, TIMEOUT)
+    if write_res then
+		local data, err = comms.read(ADMIN_MODULE_OUT_ENDPOINT, GET_HANDLER_RESPONSE_PACKET_SIZE, TIMEOUT)
+		if not data then
+			bobot.debugprint("u4b:get_handler_type:comunication with I/O board read error", err)
+			return 0
+		else
+			local handler_type = string.byte(data, 5)	
+			return handler_type
+		end
+	else	
+		bobot.debugprint("u4b:get_handler_type:comunication with I/O board write error", write_res)
 	end
 end
 

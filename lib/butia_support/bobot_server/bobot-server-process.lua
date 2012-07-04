@@ -29,6 +29,22 @@ process["LIST"] = function ()
 	end
 	return ret
 end
+
+
+process["LISTI"] = function ()
+    if bobot.baseboards then
+        bobot.debugprint("listing instanced modules...")
+        for _, bb in pairs(bobot.baseboards) do
+    	    local handler_size=bb:get_handler_size()
+            for i=1, handler_size do
+                t_handler = bb:get_handler_type(i)
+                bobot.debugprint("handler=", i-1 ," type=" ,t_handler)
+            end
+        end
+    end
+end
+
+
 process["OPEN"] = function (parameters)
 	local d  = parameters[2]
 	local ep1= tonumber(parameters[3])
