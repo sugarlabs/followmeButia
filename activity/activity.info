@@ -1,6 +1,6 @@
 [Activity]
 name = FollowMe Butia
-activity_version = 5
+activity_version = 6
 bundle_id = uy.edu.fing.followme
 exec = sugar-activity activity.Activity
 show_launcher = yes
