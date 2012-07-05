@@ -423,7 +423,7 @@ class Activity(activity.Activity):
 
     def stop_execute(self, button):
         self.calibrating = not self.calibrating
-        self.actividad.modocalibrando(self.calibrando)
+        self.followme_activity.mode_calibrating(self.calibrating)
         if not self.calibrando:
             boton.set_icon('media-playback-start')
             boton.set_tooltip(_('Start'))
@@ -435,15 +435,15 @@ class Activity(activity.Activity):
         self.show_grid = not self.show_grid
         self.followme_activity.put_grid(self.show_grid)
 
-    def parar_muestra(self, button):
-        self.mostrar = not self.mostrar
-        if self.mostrar:
+    def stop_show(self, button):
+        self.show = not self.show
+        if self.show:
             boton.set_icon('media-playback-stop')
             boton.set_tooltip(_('Hide'))
         else:
             boton.set_icon('media-playback-start')
             boton.set_tooltip(_('Show'))
-        self.actividad.poner_muestra(self.mostrar)
+        self.followme_activity.put_show(self.show)
 
 
 class Combo(gtk.ComboBox):
