@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # FollowMe Butia
-# Copyright (C) 2010, 2011
+# Copyright (C) 2010, 2011, 2012
 # This program was created to use with the robot Butia.
 # Butia is a project from Facultad de Ingenieria - Uruguay
 # Facultad de Ingenieria web site: <http://www.fing.edu.uy/>
@@ -47,36 +47,24 @@ from gettext import gettext as _
 class Activity(activity.Activity):
 
     def __init__(self, handle):
-        # iniciamos la actividad
         activity.Activity.__init__(self, handle)
-        # no sharing
+
         self.max_participants = 1
-        # seteamos el objeto calibrando
-        self.calibrando = True
-        # guardo el umbral por defecto
-        self.umbral = (25, 25, 25)
-        # guardo color calibrado por defecto 'blanco'
-        self.colorc = (255, 255, 255)
-        # cantidad de pixeles de la mancha
-        self.pixeles = 10
-        # seteo el tamanio inicial de muestra
-        self.tamaniom = (960.0, 720.0)
-        # por defecto no se muestra la grilla
-        self.mostrar_grilla = False
-        # por defecto mostramos la captura en pantalla
-        self.mostrar = True
-        # por defecto, no se muestra la vista umbral
-        self.use_threshold_view = False
-        # creamos una instancia del FollowMe, le pasamos el activity
-        self.actividad = followme.FollowMe(self)
-        # construimos la barra
+        self.pixels = 10
+        self.threshold = (25, 25, 25)
+        self.colorC = (255, 255, 255)
+        self.show_size = (960.0, 720.0)
+        self.show_grid = False
+        self.show_capture = True
+        self.calibrating = True
+        self.use_threshold_view = True
+        self.mode = 'RGB'
+
+        self.followme_activity = followme.FollowMe(self)
         self.build_toolbar()
-        # construimos el PygameCanvas
         self._pygamecanvas = sugargame.canvas.PygameCanvas(self)
-        # set_canvas implicitamente llama a read_file cuando se llama desde el diario
         self.set_canvas(self._pygamecanvas)
-        # comenzamos la actividad (self.game.run es llamada cuando constructor de la actividad vuelve)
-        self._pygamecanvas.run_pygame(self.actividad.run)
+        self._pygamecanvas.run_pygame(self.followme_activity.run)
 
 
     def build_toolbar(self):
@@ -84,435 +72,271 @@ class Activity(activity.Activity):
         toolbox = ToolbarBox()
 
         activity_button = ActivityToolbarButton(self)
-        toolbox.toolbar.insert(activity_button, 0)
+        toolbox.toolbar.insert(activity_button, -1)
         activity_button.show()
 
 
-        ######################################## Calibrar ########################################
-        # obtenemos la barra
-        barraCalibrar = gtk.Toolbar()
+        ############################## Calibrate ##############################
 
-        # creamos el primer item
-        item0 = gtk.ToolItem()
-        # creamos la etiqueta para calibrar
-        self.etiqueta0 = gtk.Label()
-        # le ponemos el texto Calibrar/Seguir
-        self.etiqueta0.set_text(' ' + _('Calibrate/Follow') + ' ')
-        # agrego la etiqueta al item
-        item0.add(self.etiqueta0)
-        # inserto el item en la barra
-        barraCalibrar.insert(item0, 0)
+        calibrate_bar = gtk.Toolbar()
 
-        # ponemos un boton de parar de calibrar
-        parar = ToolButton('media-playback-stop')
-        # ponemos como mensaje Parar
-        parar.set_tooltip(_('Stop'))
-        # ponemos la combinacion Ctrl + Espacio
-        parar.set_accelerator('<ctrl>space')
-        # conectamos el boton con el evento click
-        parar.connect('clicked', self.parar_ejecutar)
-        # insertamos el boton parar
-        barraCalibrar.insert(parar, 1)
+        item1 = gtk.ToolItem()
+        label1 = gtk.Label()
+        label1.set_text(' ' + _('Calibrate/Follow') + ' ')
+        item1.add(label1)
+        calibrate_bar.insert(item1, -1)
 
-        # creo un separador
-        separador2 = gtk.SeparatorToolItem()
-        # que tenga una linea dibujada
-        separador2.props.draw = True
-        # inserto el separador
-        barraCalibrar.insert(separador2, 2)
+        stop_calibrate = ToolButton('media-playback-stop')
+        stop_calibrate.set_tooltip(_('Stop'))
+        stop_calibrate.set_accelerator('<ctrl>space')
+        stop_calibrate.connect('clicked', self.stop_execute)
+        calibrate_bar.insert(stop_calibrate, -1)
 
-        # creamos el segundo item
+        separator1 = gtk.SeparatorToolItem()
+        separator1.props.draw = True
+        calibrate_bar.insert(separador1, -1)
+
         item3 = gtk.ToolItem()
-        # creo la etiqueta de los pixeles
-        self.etiqueta3 = gtk.Label()
-        # le coloco el texto Pixeles
-        self.etiqueta3.set_text(' ' + _('Calibrated color:') + ' ' + _('Red') + ' ')
-        # agrego la etiqueta al item
-        item3.add(self.etiqueta3)
-        # coloco el item en la barra
-        barraCalibrar.insert(item3, 3)
+        label3 = gtk.Label()
+        label3.set_text(' ' + _('Calibrated color:') + ' ' + _('Red') + ' ')
+        item3.add(label3)
+        calibrate_bar.insert(item3, -1)
 
-        # creo el sexto item
         item4 = gtk.ToolItem()
-        # creo un cuadro para el Rojo
-        self.crojoc = gtk.SpinButton()
-        # le coloco rango de 0 a 255
-        self.crojoc.set_range(0, 255)
-        # coloco un incremento de 1
-        self.crojoc.set_increments(1, 10)
-        # al comienzo tiene el valor rojo del umbral
-        self.crojoc.props.value = self.colorc[0]
-        #conecto el cuadro con crojoc_valor
-        self.crojoc_handler = self.crojoc.connect('notify::value', self.crojoc_valor)
-        # coloco el cuadro en el item
-        item4.add(self.crojoc)
-        # coloco el item en la barra
-        barraCalibrar.insert(item4, 4)
+        self.red_spin = gtk.SpinButton()
+        self.red_spin.set_range(0, 255)
+        self.red_spin.set_increments(1, 10)
+        self.red_spin.props.value = self.colorC[0]
+        self.red_spin.connect('notify::value', self.red_spin_color)
+        item4.add(self.red_spin)
+        calibrate_bar.insert(item4, -1)
 
-        # creo el septimo item
         item5 = gtk.ToolItem()
-        # creo la etiqueta para el verde
-        self.etiqueta5 = gtk.Label()
-        # le coloco G de verde
-        self.etiqueta5.set_text(' ' + _('Green') + ' ')
-        # coloco la etiqueta en el item
-        item5.add(self.etiqueta5)
-        # coloco el item en la barra
-        barraCalibrar.insert(item5, 5)
+        label5 = gtk.Label()
+        label5.set_text(' ' + _('Green') + ' ')
+        item5.add(label5)
+        calibrate_bar.insert(item5, -1)
 
-        # creo el octavo item
         item6 = gtk.ToolItem()
-        # creo el cuadro para el verde
-        self.cverdec = gtk.SpinButton()
-        # coloco el rango 0 a 255
-        self.cverdec.set_range(0, 255)
-        # coloco el incremento de a 1
-        self.cverdec.set_increments(1, 10)
-        # pongo al comienzo el valor del verde del umbral
-        self.cverdec.props.value = self.colorc[1]
-        # conecto el cuadro con el evento verde_valor
-        self.cverdec_handler = self.cverdec.connect('notify::value', self.cverdec_valor)
-        # coloco el cuadro en el item
-        item6.add(self.cverdec)
-        # coloco el item en la barra
-        barraCalibrar.insert(item6, 6)
+        self.green_spin = gtk.SpinButton()
+        self.green_spin.set_range(0, 255)
+        self.green_spin.set_increments(1, 10)
+        self.green_spin.props.value = self.colorC[1]
+        self.green_spin.connect('notify::value', self.green_spin_color)
+        item6.add(self.green_spin)
+        calibrate_bar.insert(item6, -1)
 
-        # creo el septimo item
         item7 = gtk.ToolItem()
-        # creo la etiqueta para el verde
-        self.etiqueta7 = gtk.Label()
-        # le coloco G de verde
-        self.etiqueta7.set_text(' ' + _('Blue') + ' ')
-        # coloco la etiqueta en el item
-        item7.add(self.etiqueta7)
-        # coloco el item en la barra
-        barraCalibrar.insert(item7, 7)
+        label7 = gtk.Label()
+        label7.set_text(' ' + _('Blue') + ' ')
+        item7.add(label7)
+        calibrate_bar.insert(item7, -1)
 
-        # creo el decimo item
         item8 = gtk.ToolItem()
-        # creo un cuadro para el azul
-        self.cazulc = gtk.SpinButton()
-        # coloco el rango 0 a 255
-        self.cazulc.set_range(0, 255)
-        # coloco el incremento en 1
-        self.cazulc.set_increments(1, 10)
-        # al comienzo coloco azul del umbral
-        self.cazulc.props.value = self.colorc[2]
-        # conecto el cuadro al evento cazul_valor
-        self.cazulc_handler = self.cazulc.connect('notify::value', self.cazulc_valor)
-        # agrego el cuadro al item
-        item8.add(self.cazulc)
-        # inserto el item en la barra
-        barraCalibrar.insert(item8, 8)
+        self.blue_spin = gtk.SpinButton()
+        self.blue_spin.set_range(0, 255)
+        self.blue_spin.set_increments(1, 10)
+        self.blue_spin.props.value = self.colorC[2]
+        self.blue_spin.connect('notify::value', self.blue_spin_color)
+        item8.add(self.blue_spin)
+        calibrate_bar.insert(item8, -1)
 
-        barraCalibrar.show_all()
-
-        calibrar_button = ToolbarButton(label=_('Calibrate'),
-                                        page=barraCalibrar,
-                                        icon_name='preferences-system')
-        toolbox.toolbar.insert(calibrar_button, -1)
-        calibrar_button.show()
+        calibrate_bar.show_all()
+        calibrate_button = ToolbarButton(label=_('Calibrate'),
+                page=calibrate_bar,
+                icon_name='preferences-system')
+        toolbox.toolbar.insert(calibrate_button, -1)
+        calibrate_button.show()
 
 
-        ######################################## Opciones ########################################
-        # obtenemos la barra
-        barraOpciones = gtk.Toolbar()
+        ############################### Options ###############################
 
-        # creamos el primer item
-        item9 = gtk.ToolItem()
-        # creo la etiqueta de los pixeles
-        self.etiqueta9 = gtk.Label()
-        # le coloco el texto Pixeles
-        self.etiqueta9.set_text(' ' + _('Pixels') + ' ')
-        # agrego la etiqueta al item
-        item9.add(self.etiqueta9)
-        # coloco el item en la barra
-        barraOpciones.insert(item9, 0)
+        options_bar = gtk.Toolbar()
 
-        # creo el segundo item
-        item10 = gtk.ToolItem()
-        # creo un cuadro para el Rojo
-        self.cpixeles = gtk.SpinButton()
-        # le coloco rango de 0 a 255
-        self.cpixeles.set_range(0, 1000)
-        # coloco un incremento de 1
-        self.cpixeles.set_increments(1, 10)
-        # al comienzo tiene el valor rojo del umbral
-        self.cpixeles.props.value = self.pixeles
-        #conecto el cuadro con crojo_valor
-        self.cpixeles_handler = self.cpixeles.connect('notify::value', self.pixeles_valor)
-        # coloco el cuadro en el item
-        item10.add(self.cpixeles)
-        # coloco el item en la barra
-        barraOpciones.insert(item10, 1)
+        item1 = gtk.ToolItem()
+        label1 = gtk.Label()
+        label1.set_text(' ' + _('Pixels') + ' ')
+        item1.add(label1)
+        options_bar.insert(item1, -1)
 
-        # creo un separador
-        separador11 = gtk.SeparatorToolItem()
-        # que tenga una linea
-        separador11.props.draw = True
-        # inserto el separador
-        barraOpciones.insert(separador11, 2)
+        item2 = gtk.ToolItem()
+        pixels = gtk.SpinButton()
+        pixels.set_range(0, 1000)
+        pixels.set_increments(1, 10)
+        pixels.props.value = self.pixels
+        pixels.connect('notify::value', self.pixels_value)
+        item2.add(pixels)
+        options_bar.insert(item2, -1)
 
-        # creo el cuarto item
-        item12 = gtk.ToolItem()
-        # creo la etiqueta para umbral
-        self.etiqueta12 = gtk.Label()
-        # le coloco el texto Umbral
-        self.etiqueta12.set_text(' ' + _('Threshold:') + ' ' + _('Red') + ' ')
-        # agrego la etiqueta al item
-        item12.add(self.etiqueta12)
-        # inserto el item en la barra
-        barraOpciones.insert(item12, 3)
+        separator1 = gtk.SeparatorToolItem()
+        separator1.props.draw = True
+        options_bar.insert(separator1, -1)
 
-        # creo el quinto item
-        item13 = gtk.ToolItem()
-        # creo un cuadro para el Rojo
-        self.crojo = gtk.SpinButton()
-        # le coloco rango de 0 a 255
-        self.crojo.set_range(0, 255)
-        # coloco un incremento de 1
-        self.crojo.set_increments(1, 10)
-        # al comienzo tiene el valor rojo del umbral
-        self.crojo.props.value = self.umbral[0]
-        #conecto el cuadro con crojo_valor
-        self.crojo_handler = self.crojo.connect('notify::value', self.crojo_valor)
-        # coloco el cuadro en el item
-        item13.add(self.crojo)
-        # coloco el item en la barra
-        barraOpciones.insert(item13, 4)
+        item3 = gtk.ToolItem()
+        label3 = gtk.Label()
+        label3.set_text(' ' + _('Threshold:') + ' ' + _('Red') + ' ')
+        item3.add(label3)
+        options_bar.insert(item3, -1)
 
-        # creo el sexto item
-        item14 = gtk.ToolItem()
-        # creo la etiqueta para el verde
-        self.etiqueta14 = gtk.Label()
-        # le coloco G de verde
-        self.etiqueta14.set_text(' ' + _('Green') + ' ')
-        # coloco la etiqueta en el item
-        item14.add(self.etiqueta14)
-        # coloco el item en la barra
-        barraOpciones.insert(item14, 5)
+        item4 = gtk.ToolItem()
+        red_spin = gtk.SpinButton()
+        red_spin.set_range(0, 255)
+        red_spin.set_increments(1, 10)
+        red_spin.props.value = self.threshold[0]
+        red_spin.connect('notify::value', self.red_spin_threshold)
+        item4.add(red_spin)
+        options_bar.insert(item4, -1)
 
-         # creo el septimo item
-        item15 = gtk.ToolItem()
-        # creo el cuadro para el verde
-        self.cverde = gtk.SpinButton()
-        # coloco el rango 0 a 255
-        self.cverde.set_range(0, 255)
-        # coloco el incremento de a 1
-        self.cverde.set_increments(1, 10)
-        # pongo al comienzo el valor del verde del umbral
-        self.cverde.props.value = self.umbral[1]
-        # conecto el cuadro con el evento verde_valor
-        self.cverde_handler = self.cverde.connect('notify::value', self.cverde_valor)
-        # coloco el cuadro en el item
-        item15.add(self.cverde)
-        # coloco el item en la barra
-        barraOpciones.insert(item15, 6)
+        item5 = gtk.ToolItem()
+        label5 = gtk.Label()
+        label5.set_text(' ' + _('Green') + ' ')
+        item5.add(label5)
+        options_bar.insert(item5, -1)
 
-        # creo el octavo item
-        item16 = gtk.ToolItem()
-        # creo la etiqueta para el azul
-        self.etiqueta16 = gtk.Label()
-        # coloco el texto B
-        self.etiqueta16.set_text(' ' + _('Blue') + ' ')
-        # inserto la etiqueta en el item
-        item16.add(self.etiqueta16)
-        # inserto el item en la barra
-        barraOpciones.insert(item16, 7)
+        item6 = gtk.ToolItem()
+        green_spin = gtk.SpinButton()
+        green_spin.set_range(0, 255)
+        green_spin.set_increments(1, 10)
+        green_spin.props.value = self.threshold[1]
+        green_spin.connect('notify::value', self.green_spin_threshold)
+        item6.add(green_spin)
+        options_bar.insert(item6, -1)
 
-        # creo el noveno item
-        item17 = gtk.ToolItem()
-        # creo un cuadro para el azul
-        self.cazul = gtk.SpinButton()
-        # coloco el rango 0 a 255
-        self.cazul.set_range(0, 255)
-        # coloco el incremento en 1
-        self.cazul.set_increments(1, 10)
-        # al comienzo coloco azul del umbral
-        self.cazul.props.value = self.umbral[2]
-        # conecto el cuadro al evento cazul_valor
-        self.cazul_handler = self.cazul.connect('notify::value', self.cazul_valor)
-        # agrego el cuadro al item
-        item17.add(self.cazul)
-        # inserto el item en la barra
-        barraOpciones.insert(item17, 8)
+        item7 = gtk.ToolItem()
+        label7= gtk.Label()
+        label7.set_text(' ' + _('Blue') + ' ')
+        item7.add(label7)
+        options_bar.insert(item7, -1)
 
-        # creo un separador
-        separador12 = gtk.SeparatorToolItem()
-        # que tenga una linea
-        separador12.props.draw = True
-        barraOpciones.insert(separador12, 9)
+        item8 = gtk.ToolItem()
+        blue_spin = gtk.SpinButton()
+        blue_spin.set_range(0, 255)
+        blue_spin.set_increments(1, 10)
+        blue_spin.props.value = self.threshold[2]
+        blue_spin.connect('notify::value', self.blue_spin_threshold)
+        item8.add(blue_spin)
+        options_bar.insert(item8, -1)
 
-        item18 = gtk.ToolItem()
-        # creo la etiqueta para Modo color
-        self.etiqueta17 = gtk.Label()
-        # coloco el texto B
-        self.etiqueta17.set_text(_('Color mode'))
-        # inserto la etiqueta en el item
-        item18.add(self.etiqueta17)
-        # inserto el item en la barra
-        barraOpciones.insert(item18, 10)
-
-        item19 = gtk.ToolItem()
-        combo = Combo()
-        item19.add(combo)
-        self.combo_handler = combo.connect('changed', self.change_combo)
-        barraOpciones.insert(item19, 11)
-
-
-
-
-        barraOpciones.show_all()
-
+        options_bar.show_all()
         options_button = ToolbarButton(label=_('Options'),
-                page=barraOpciones,
+                page=options_bar,
                 icon_name='view-source')
         toolbox.toolbar.insert(options_button, -1)
         options_button.show()
 
 
-        ######################################## Resolucion ########################################
-        # obteenmos la barra
-        barraResolucion = gtk.Toolbar()
+        ############################## Resolution #############################
 
-        # creamos el primer item
-        it1 = gtk.ToolItem()
-        # creamos la etiqueta para calibrar
-        self.et1 = gtk.Label()
-        # le ponemos el texto Calibrar
-        self.et1.set_text(' ' + _('Show size') + ' ')
-        # agrego la etiqueta al item
-        it1.add(self.et1)
-        # inserto el item en la barra
-        barraResolucion.insert(it1, 0)
-        # creo el decimo item
-        it2 = gtk.ToolItem()
-        # creo un cuadro para el azul
-        self.tmx = gtk.SpinButton()
-        # coloco el rango 0 a 255
-        self.tmx.set_range(160, 1200)
-        # coloco el incremento en 1
-        self.tmx.set_increments(1, 10)
-        # al comienzo coloco azul del umbral
-        self.tmx.props.value = 960
-        # conecto el cuadro al evento cazul_valor
-        self.tamx = self.tmx.connect('notify::value', self.tmx_mod)
-        # agrego el cuadro al item
-        it2.add(self.tmx)
-        # inserto el item a la barra
-        barraResolucion.insert(it2, 1)
-        # creamos el primer item
-        it3 = gtk.ToolItem()
-        # creamos la etiqueta para calibrar
-        self.et2 = gtk.Label()
-        # le ponemos el texto Calibrar
-        self.et2.set_text(' X ')
-        # agrego la etiqueta al item
-        it3.add(self.et2)
-        # inserto el item en la barra
-        barraResolucion.insert(it3, 2)
-        # creo el decimo item
-        it4 = gtk.ToolItem()
-        # creo un cuadro para el azul
-        self.tmy = gtk.SpinButton()
-        # coloco el rango 0 a 255
-        self.tmy.set_range(120, 900)
-        # coloco el incremento en 1
-        self.tmy.set_increments(1, 10)
-        # al comienzo coloco azul del umbral
-        self.tmy.props.value = 720
-        # conecto el cuadro al evento cazul_valor
-        self.tamy = self.tmy.connect('notify::value', self.tmy_mod)
-        # agrego el cuadro al item
-        it4.add(self.tmy)
-        # inserto el item a la barra
-        barraResolucion.insert(it4, 3)
+        resolution_bar = gtk.Toolbar()
 
-        # creo un separador
-        separador14 = gtk.SeparatorToolItem()
-        # que tenga una linea
-        separador14.props.draw = True
-        barraResolucion.insert(separador14, 4)
+        item1 = gtk.ToolItem()
+        label1 = gtk.Label()
+        label1.set_text(' ' + _('Show size') + ' ')
+        item1.add(label1)
+        resolution_bar.insert(item1, -1)
 
-        # creamos el quinto item
-        it5 = gtk.ToolItem()
-        # creamos la etiqueta para mostrar lineas
-        self.et5 = gtk.Label()
-        # le ponemos el texto
-        self.et5.set_text(' ' + _('Show grid'))
-        # agrego la etiqueta al item
-        it5.add(self.et5)
-        # inserto el item en la barra
-        barraResolucion.insert(it5, 5)
-        # creo un boton para la grilla
-        self.grilla = ToolButton('grid-icon')
-        # conecto el evento click y el procedimiento
-        self.grilla_handler = self.grilla.connect('clicked', self.grilla_click)
-        # inserto el boton grilla en la barra 2
-        barraResolucion.insert(self.grilla, 6)
+        item2 = gtk.ToolItem()
+        x_size_spin = gtk.SpinButton()
+        x_size_spin.set_range(160, 1200)
+        x_size_spin.set_increments(1, 10)
+        x_size_spin.props.value = int(self.show_size[0])
+        x_size_spin.connect('notify::value', self.x_size_spin_change)
+        item2.add(x_size_spin)
+        resolution_bar.insert(item2, -1)
 
-        # creo un separador
-        separador15 = gtk.SeparatorToolItem()
-        # que tenga una linea
-        separador15.props.draw = True
-        barraResolucion.insert(separador15, 7)
+        item3 = gtk.ToolItem()
+        label3 = gtk.Label()
+        label3.set_text(' X ')
+        item3.add(label2)
+        resolution_bar.insert(item3, -1)
 
-        # creamos el sexto item
-        it6 = gtk.ToolItem()
-        # creamos la etiqueta para mostrar en pantalla
-        self.et6 = gtk.Label()
-        # le ponemos el texto
-        self.et6.set_text(' ' + _('Show captures') + ' ')
-        # agrego la etiqueta al item
-        it6.add(self.et6)
-        # inserto el item en la barra
-        barraResolucion.insert(it6, 8)
-        # ponemos un boton de parar de mostrar captura
-        parar2 = ToolButton('media-playback-stop')
-        # conectamos el boton con el evento click
-        parar2.connect('clicked', self.parar_muestra)
-        # ponemos como mensaje Ocultar
-        parar2.set_tooltip(_('Hide'))
-        # insertamos el boton en la barra
-        barraResolucion.insert(parar2, 9)
+        item4 = gtk.ToolItem()
+        y_size_spin = gtk.SpinButton()
+        y_size_spin.set_range(120, 900)
+        y_size_spin.set_increments(1, 10)
+        y_size_spin.props.value = int(self.show_size[1])
+        y_size_spin.connect('notify::value', self.y_size_spin_change)
+        item4.add(y_size_spin)
+        resolution_bar.insert(item4, -1)
 
-        # creo un separador
-        separador16 = gtk.SeparatorToolItem()
-        # que tenga una linea
-        separador16.props.draw = True
-        barraResolucion.insert(separador16, 10)
+        separator1 = gtk.SeparatorToolItem()
+        separator1.props.draw = True
+        resolution_bar.insert(separator1, -1)
 
-        # creamos el sexto item
-        it7 = gtk.ToolItem()
-        # creamos la etiqueta para mostrar en pantalla
-        self.et7 = gtk.Label()
-        # le ponemos el texto
-        self.et7.set_text(_('Show threshold view'))
-        # agrego la etiqueta al item
-        it7.add(self.et7)
-        # inserto el item en la barra
-        barraResolucion.insert(it7, 11)
+        item5 = gtk.ToolItem()
+        label5 = gtk.Label()
+        label5.set_text(' ' + _('Show grid'))
+        item5.add(label5)
+        resolution_bar.insert(item5, -1)
 
-        threshold_view = ToolButton('media-playback-start')
-        # conectamos el boton con el evento click
-        threshold_view.connect('clicked', self.threshold_view)
-        parar2.set_tooltip(_('Yes'))
-        # insertamos el boton en la barra
-        barraResolucion.insert(threshold_view, 12)
+        grid = ToolButton('grid-icon')
+        grid.connect('clicked', self.grid_click)
+        resolution_bar.insert(grid, -1)
 
+        separador2 = gtk.SeparatorToolItem()
+        separador2.props.draw = True
+        resolution_bar.insert(separador2, -1)
 
-        barraResolucion.show_all()
+        item6 = gtk.ToolItem()
+        label6 = gtk.Label()
+        label6.set_text(' ' + _('Show captures') + ' ')
+        item6.add(label6)
+        resolution_bar.insert(item6, -1)
 
+        stop_show = ToolButton('media-playback-stop')
+        stop_show.connect('clicked', self.stop_show)
+        stop_show.set_tooltip(_('Hide'))
+        resolution_bar.insert(stop_show, -1)
+
+        resolution_bar.show_all()
         resolution_button = ToolbarButton(label=_('Resolution'),
-                page=barraResolucion,
+                page=resolution_bar,
                 icon_name='camera')
         toolbox.toolbar.insert(resolution_button, -1)
         resolution_button.show()
 
+        #######################################################################
 
-        # creo un separador
+        barra_colors = gtk.Toolbar()
+
+        item1 = gtk.ToolItem()
+        label1 = gtk.Label()
+        label1.set_text(_('Color mode'))
+        item1.add(label1)
+        barra_colors.insert(item1, -1)
+
+        item2 = gtk.ToolItem()
+        combo = Combo()
+        item2.add(combo)
+        combo.connect('changed', self.change_combo)
+        barra_colors.insert(item2, -1)
+
+        separator1 = gtk.SeparatorToolItem()
+        separator1.props.draw = True
+        barra_colors.insert(separator1, -1)
+
+        item3 = gtk.ToolItem()
+        label3 = gtk.Label()
+        label3.set_text(_('Show threshold view'))
+        item3.add(label3)
+        barra_colors.insert(item3, -1)
+
+        threshold_view = ToolButton('media-playback-stop')
+        threshold_view.connect('clicked', self.threshold_view)
+        threshold_view.set_tooltip(_('Yes'))
+        barra_colors.insert(threshold_view, -1)
+
+        colors_button = ToolbarButton(label=_('Colors'),
+                page=barra_colors,
+                icon_name='toolbar-colors')
+        toolbox.toolbar.insert(colors_button, -1)
+        colors_button.show()
+
+        barra_colors.show_all()
+
+        #######################################################################
+
         separador13 = gtk.SeparatorToolItem()
-        # que no tenga linea
         separador13.props.draw = False
         separador13.set_expand(True)
         toolbox.toolbar.insert(separador13, -1)
@@ -528,150 +352,97 @@ class Activity(activity.Activity):
         self.show_all()
 
     def change_combo(self, combo):
-        self.modo = combo.get_active_text()        
-        self.actividad.poner_modo_color(self.modo)
+        self.mode = combo.get_active_text()        
+        self.followme_activity.put_color_mode(self.mode)
 
     def threshold_view(self, button):
-        # activamos o desactivamos el modo calibrar
         self.use_threshold_view = not self.use_threshold_view
-        # seteamos el modo dentro de la actividad
-        self.actividad.poner_threshold_view(self.use_threshold_view)
-        # actualizamos la barra para el siguiente evento
+        self.followme_activity.put_threshold_view(self.use_threshold_view)
         if not self.use_threshold_view:
-            # ponemos ejecutar
             button.set_icon('media-playback-start')
-            # con el tolltip Empezar
             button.set_tooltip(_('Yes'))
         else:
-            # ponemos parar
             button.set_icon('media-playback-stop')
-            # con el tolltip Detener
             button.set_tooltip(_('No'))
 
-    def acolor(self, color):
-        # actualizo la variable local
-        self.colorc = color
-        # cambio el cuadro rojo
-        self.crojoc.props.value = self.colorc[0]
-        # cambio el cuadro azul
-        self.cverdec.props.value = self.colorc[1]
-        # cambio el cuadro verde
-        self.cazulc.props.value = self.colorc[2]
+    def put_color(self, color):
+        self.colorC = color
+        self.red_spin.props.value = self.colorC[0]
+        self.green_spin.props.value = self.colorC[1]
+        self.blue_spin.props.value = self.colorC[2]
 
-    def pixeles_valor(self, pixeles, value):
-        # guardo el valor del cuadro
-        self.pixeles = int(pixeles.props.value)
-        # cambio en FolloMe el umbral
-        self.actividad.poner_pixeles(self.pixeles)
+    def pixels_value(self, pixels, value):
+        self.pixels = int(pixels.props.value)
+        self.followme_activity.put_pixels(self.pixels)
 
-    def crojo_valor(self, rojo, value):
-        # guardo el valor del cuadro
-        r = int(rojo.props.value)
-        # actualizo el valor del umbral
-        self.umbral = (r, self.umbral[1], self.umbral[2])
-        # cambio en FolloMe el umbral
-        self.actividad.poner_umbral(self.umbral)
+    # THRESHOLDS
+    def red_spin_threshold(self, red, value):
+        r = int(red.props.value)
+        self.threshold = (r, self.threshold[1], self.threshold[2])
+        self.followme_activity.put_threshold(self.threshold)
 
-    def cverde_valor(self, verde, value):
-        # guardo el valor del cuadro
-        v = int(verde.props.value)
-        # actualizo el valor del umbral
-        self.umbral = (self.umbral[0], v, self.umbral[2])
-        # cambio en FollowMe el umbral
-        self.actividad.poner_umbral(self.umbral)
+    def green_spin_threshold(self, green, value):
+        g = int(green.props.value)
+        self.threshold = (self.threshold[0], g, self.threshold[2])
+        self.followme_activity.put_threshold(self.threshold)
 
-    def cazul_valor(self, azul, value):
-        # guardo el valor del cuadro
-        a = int(azul.props.value)
-        # actualizo el umbral
-        self.umbral = (self.umbral[0], self.umbral[1], a)
-        # cambio en FollowMe el valor del umbral
-        self.actividad.poner_umbral(self.umbral)
+    def blue_spin_threshold(self, blue, value):
+        b = int(red.props.value)
+        self.threshold = (self.threshold[0], self.threshold[1], b)
+        self.followme_activity.put_threshold(self.threshold)
 
-    def crojoc_valor(self, rojo, value):
-        # guardo el valor del cuadro
-        r = int(rojo.props.value)
-        # si no estoy calibrando
-        if not (self.calibrando):
-            # actualizo el valor del umbral
-            self.colorc = (r, self.colorc[1], self.colorc[2])
-            # cambio en FolloMe el umbral
-            self.actividad.poner_colorc(self.colorc)
+    # COLOR
+    def red_spin_color(self, red, value):
+        r = int(red.props.value)
+        if not (self.calibrating):
+            self.colorC = (r, self.colorC[1], self.colorC[2])
+            self.followme_activity.put_colorC(self.colorC)
 
-    def cverdec_valor(self, verde, value):
-        # guardo el valor del cuadro
-        v = int(verde.props.value)
-        # si no estoy calibrando
-        if not (self.calibrando):
-            # actualizo el valor del umbral
-            self.colorc = (self.colorc[0], v, self.colorc[2])
-            # cambio en FollowMe el umbral
-            self.actividad.poner_colorc(self.colorc)
+    def green_spin_color(self, green, value):
+        g = int(green.props.value)
+        if not (self.calibrating):
+            self.colorC = (self.colorC[0], g, self.colorC[2])
+            self.followme_activity.put_colorC(self.colorC)
 
-    def cazulc_valor(self, azul, value):
-        # guardo el valor del cuadro
-        a = int(azul.props.value)
-        # si no estoy calibrando
-        if not (self.calibrando):
-            # actualizo el umbral
-            self.colorc = (self.colorc[0], self.colorc[1], a)
-            # cambio en FollowMe el valor del umbral
-            self.actividad.poner_colorc(self.colorc)
+    def blue_spin_color(self, blue, value):
+        b = int(blue.props.value)
+        if not (self.calibrating):
+            self.colorC = (self.colorC[0], self.colorC[1], b)
+            self.followme_activity.put_colorC(self.colorC)
 
-    def tmx_mod(self, tmx, value):
-        # guardo el valor del cuadro
-        x = float(tmx.props.value)
-        # actualizo el tamanio m
-        self.tamaniom = (x, float(self.tamaniom[1]))
-        # cambio en FollowMe el valor del tamanio
-        self.actividad.poner_tamaniom(self.tamaniom)
+    # SIZE
+    def x_size_spin_change(self, spin, value):
+        x = float(spin.props.value)
+        self.show_size = (x, self.show_size[1])
+        self.followme_activity.put_show_size(self.show_size)
 
-    def tmy_mod(self, tmy, value):
-        # guardo el valor del cuadro
-        y = float(tmy.props.value)
-        # actualizo el tamanio m
-        self.tamaniom = (float(self.tamaniom[0]), y)
-        # cambio en FollowMe el valor del tamanio
-        self.actividad.poner_tamaniom(self.tamaniom)
+    def y_size_spin_change(self, spin, value):
+        y = float(spin.props.value)
+        self.show_size = (self.show_size[0], y)
+        self.followme_activity.put_show_size(self.show_size)
 
-    def parar_ejecutar(self, boton):
-        # activamos o desactivamos el modo calibrar
-        self.calibrando = not self.calibrando
-        # seteamos el modo dentro de la actividad
+    def stop_execute(self, button):
+        self.calibrating = not self.calibrating
         self.actividad.modocalibrando(self.calibrando)
-        # actualizamos la barra para el siguiente evento
         if not self.calibrando:
-            # ponemos ejecutar
             boton.set_icon('media-playback-start')
-            # con el tolltip Empezar
             boton.set_tooltip(_('Start'))
         else:
-            # ponemos parar
             boton.set_icon('media-playback-stop')
-            # con el tolltip Detener
             boton.set_tooltip(_('Stop'))
 
-    def grilla_click(self, widget):
-        # cambio la variable mostrar_grilla
-        self.mostrar_grilla = not self.mostrar_grilla
-        # cambio dentro del codigo del FollowMe
-        self.actividad.poner_grilla(self.mostrar_grilla)
+    def grilla_click(self, button):
+        self.show_grid = not self.show_grid
+        self.followme_activity.put_grid(self.show_grid)
 
-    def parar_muestra(self, boton):
-        #cambio el mostrar
+    def parar_muestra(self, button):
         self.mostrar = not self.mostrar
-        # si no mostrar
-        if not self.mostrar:
-            # ponemos mostrar
-            boton.set_icon('media-playback-start')
-            # ponemos como mensaje Mostrar
-            boton.set_tooltip(_('Show'))
-        else:
-            # ponemos ocultar
+        if self.mostrar:
             boton.set_icon('media-playback-stop')
-            # ponemos como mensaje Ocultar
             boton.set_tooltip(_('Hide'))
-        #actualizo el FollowMe
+        else:
+            boton.set_icon('media-playback-start')
+            boton.set_tooltip(_('Show'))
         self.actividad.poner_muestra(self.mostrar)
 
 
@@ -681,12 +452,11 @@ class Combo(gtk.ComboBox):
 
         self.liststore = gtk.ListStore(str)
 
-        GROUPS = ('RGB', 'YUV', 'HSV')
-        for group in GROUPS:
-            self.liststore.append([group])
+        modes = ('RGB', 'YUV', 'HSV')
+        for m in modes:
+            self.liststore.append([m])
 
         gtk.ComboBox.__init__(self, self.liststore)
-
 
         cell = gtk.CellRendererText()
         self.pack_start(cell, True)
