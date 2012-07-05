@@ -94,7 +94,7 @@ class Activity(activity.Activity):
 
         separator1 = gtk.SeparatorToolItem()
         separator1.props.draw = True
-        calibrate_bar.insert(separador1, -1)
+        calibrate_bar.insert(separator1, -1)
 
         item3 = gtk.ToolItem()
         label3 = gtk.Label()
@@ -247,7 +247,7 @@ class Activity(activity.Activity):
         item3 = gtk.ToolItem()
         label3 = gtk.Label()
         label3.set_text(' X ')
-        item3.add(label2)
+        item3.add(label3)
         resolution_bar.insert(item3, -1)
 
         item4 = gtk.ToolItem()
@@ -387,7 +387,7 @@ class Activity(activity.Activity):
         self.followme_activity.put_threshold(self.threshold)
 
     def blue_spin_threshold(self, blue, value):
-        b = int(red.props.value)
+        b = int(blue.props.value)
         self.threshold = (self.threshold[0], self.threshold[1], b)
         self.followme_activity.put_threshold(self.threshold)
 
@@ -424,25 +424,25 @@ class Activity(activity.Activity):
     def stop_execute(self, button):
         self.calibrating = not self.calibrating
         self.followme_activity.mode_calibrating(self.calibrating)
-        if not self.calibrando:
-            boton.set_icon('media-playback-start')
-            boton.set_tooltip(_('Start'))
+        if not self.calibrating:
+            button.set_icon('media-playback-start')
+            button.set_tooltip(_('Start'))
         else:
-            boton.set_icon('media-playback-stop')
-            boton.set_tooltip(_('Stop'))
+            button.set_icon('media-playback-stop')
+            button.set_tooltip(_('Stop'))
 
-    def grilla_click(self, button):
+    def grid_click(self, button):
         self.show_grid = not self.show_grid
         self.followme_activity.put_grid(self.show_grid)
 
     def stop_show(self, button):
         self.show = not self.show
         if self.show:
-            boton.set_icon('media-playback-stop')
-            boton.set_tooltip(_('Hide'))
+            button.set_icon('media-playback-stop')
+            button.set_tooltip(_('Hide'))
         else:
-            boton.set_icon('media-playback-start')
-            boton.set_tooltip(_('Show'))
+            button.set_icon('media-playback-start')
+            button.set_tooltip(_('Show'))
         self.followme_activity.put_show(self.show)
 
 
