@@ -52,9 +52,9 @@ class Captura(object):
             self.display = pygame.display.set_mode((1200, 900))
         self.use_threshold_view = True
         self.cam = None
-        #self.get_camera(mode)
+        self.get_camera(mode)
         self.calc((960, 720))
-        self.show_grilla = False
+        self.show_grid = False
     
     def get_camera(self, mode):
         global tamanioc
@@ -104,8 +104,8 @@ class Captura(object):
             self.captura = pygame.transform.flip(self.captura,True,False)
         color = pygame.transform.average_color(self.captura, (self.xc,self.yc,50,50))
         self.display.fill((84,185,72))
-        self.captura2 = pygame.transform.scale(self.captura, (int(self.show_size[0]), int(self.show_size[1])))
-        self.display.blit(self.captura2, (self.xblit, self.yblit))
+        self.captura_to_show = pygame.transform.scale(self.captura, (int(self.show_size[0]), int(self.show_size[1])))
+        self.display.blit(self.captura_to_show, (self.xblit, self.yblit))
         #FIXME: cambiar posición en función de la pantalla
         
         rect = pygame.draw.rect(self.display, (255,0,0), (self.xcm,self.ycm,50,50), 4)
@@ -120,20 +120,21 @@ class Captura(object):
             self.captura = pygame.transform.flip(self.captura,True,False)
         
         if self.use_threshold_view:
-            pygame.transform.threshold(self.captura_aux, self.captura, color, (umbral[0],umbral[1], umbral[2]), (0,0,0), 2)
+            pygame.transform.threshold(self.captura_aux, self.captura, color, (threshold[0],threshold[1], threshold[2]), (0,0,0), 2)
             mascara = pygame.mask.from_threshold(self.captura_aux, color, (10, 10, 10))
         else:
             mascara = pygame.mask.from_threshold(self.captura, color, (10, 10, 10))
             
         conexa = mascara.connected_component()
 
-        if (conexa.count() > pixeles):
+        if (conexa.count() > pixels):
             return mascara.centroid()
         else:
             return (-1,-1)
 
     def show_position(self, pos, color):
         x, y = pos
+
         if self.use_threshold_view:
             self.captura_to_show = pygame.transform.scale(self.captura_aux, (int(self.show_size[0]), int(self.show_size[1])))
         else:
@@ -141,7 +142,8 @@ class Captura(object):
         if (x != -1):
             rect = pygame.draw.rect(self.captura_to_show, (255,0,0), (x*self.c1, y*self.c2, 20, 20), 16)
         self.display.fill((84,185,72))
-        if (self.show_grilla == True):
+
+        if (self.show_grid == True):
             self.draw_grid()
         self.display.blit(self.captura_to_show, (self.xblit, self.yblit))
         self.display.fill(color, (0,0,120,120))
@@ -149,15 +151,15 @@ class Captura(object):
 
     def draw_grid(self):
         # draw verticals
-        r0 = pygame.draw.line(self.captura2, (250, 40, 40), (0, self.tyd), (self.show_size[0],self.tyd), 3)
-        r1 = pygame.draw.line(self.captura2, (250, 40, 40), (0, 2*self.tyd), (self.show_size[0], 2*self.tyd), 3)
+        r0 = pygame.draw.line(self.captura_to_show, (250, 40, 40), (0, self.tyd), (self.show_size[0],self.tyd), 3)
+        r1 = pygame.draw.line(self.captura_to_show, (250, 40, 40), (0, 2*self.tyd), (self.show_size[0], 2*self.tyd), 3)
         # draw horizontals
-        r2 = pygame.draw.line(self.captura2, (250, 40, 40), (2*self.txd, 0), (2*self.txd, self.show_size[1]), 3)
-        r3 = pygame.draw.line(self.captura2, (250, 40, 40), (4*self.txd, 0), (4*self.txd, self.show_size[1]), 3)
-        r4 = pygame.draw.line(self.captura2, (250, 40, 40), (6*self.txd, 0), (6*self.txd, self.show_size[1]), 3)
-        r5 = pygame.draw.line(self.captura2, (250, 40, 40), (9*self.txd, 0), (9*self.txd, self.show_size[1]), 3)
-        r6 = pygame.draw.line(self.captura2, (250, 40, 40), (11*self.txd, 0), (11*self.txd, self.show_size[1]), 3)
-        r7 = pygame.draw.line(self.captura2, (250, 40, 40), (13*self.txd, 0), (13*self.txd, self.show_size[1]), 3)
+        r2 = pygame.draw.line(self.captura_to_show, (250, 40, 40), (2*self.txd, 0), (2*self.txd, self.show_size[1]), 3)
+        r3 = pygame.draw.line(self.captura_to_show, (250, 40, 40), (4*self.txd, 0), (4*self.txd, self.show_size[1]), 3)
+        r4 = pygame.draw.line(self.captura_to_show, (250, 40, 40), (6*self.txd, 0), (6*self.txd, self.show_size[1]), 3)
+        r5 = pygame.draw.line(self.captura_to_show, (250, 40, 40), (9*self.txd, 0), (9*self.txd, self.show_size[1]), 3)
+        r6 = pygame.draw.line(self.captura_to_show, (250, 40, 40), (11*self.txd, 0), (11*self.txd, self.show_size[1]), 3)
+        r7 = pygame.draw.line(self.captura_to_show, (250, 40, 40), (13*self.txd, 0), (13*self.txd, self.show_size[1]), 3)
         
 
     def clean(self):
@@ -198,7 +200,7 @@ class Robot(object):
         else:
             print _('Butia robot was not detected')
 
-    def mover_robot(self, pos):
+    def move_robot(self, pos):
 
         x,y = pos
 
@@ -348,15 +350,15 @@ class FollowMe:
                     #    pygame.display.set_mode(event.size, pygame.RESIZABLE)
 
                 if (self.calibrating):
-                    self.colorC = self.c.calibrar()
+                    self.colorC = self.c.calibrate()
                     if self.parent:
                         self.parent.put_color(self.colorC)
                 else:
-                    pos = self.c.obtener_posicion(self.colorC, self.threshold, self.pixels)
+                    pos = self.c.get_position(self.colorC, self.threshold, self.pixels)
 
                     if self.show:
                         self.c.show_position(pos, self.colorC)
-                    if (self.r != None and self.r.modulos != []):
+                    if (self.r != None and self.r.modules != []):
                         self.r.move_robot(pos)
 
                 pygame.display.flip()
