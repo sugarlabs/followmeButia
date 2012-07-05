@@ -54,7 +54,7 @@ class Captura(object):
         self.cam = None
         #self.get_camera(mode)
         self.calc((960, 720))
-        self.mostrar_grilla = False
+        self.show_grilla = False
     
     def get_camera(self, mode):
         global tamanioc
@@ -141,7 +141,7 @@ class Captura(object):
         if (x != -1):
             rect = pygame.draw.rect(self.captura_to_show, (255,0,0), (x*self.c1, y*self.c2, 20, 20), 16)
         self.display.fill((84,185,72))
-        if (self.mostrar_grilla == True):
+        if (self.show_grilla == True):
             self.draw_grid()
         self.display.blit(self.captura_to_show, (self.xblit, self.yblit))
         self.display.fill(color, (0,0,120,120))
@@ -284,9 +284,9 @@ class FollowMe:
     def mode_calibrating(self, calibrating):
         self.calibrating = calibrating
         if self.calibrating:
-            if (self.r != None and self.r.modulos != []):
+            if (self.r != None and self.r.modules != []):
                 self.r.butia.set2MotorSpeed('0', '0', '0', '0')
-        if (self.mostrar == False):
+        if (self.show == False):
             self.c.limpiar()
 
     def put_threshold(self, threshold):
@@ -307,11 +307,9 @@ class FollowMe:
         self.c.show_grid = grid
 
     def put_show(self, show):
-        self.mostrar = muestra
-        # si no hay que mostrar
-        if (self.mostrar == False):
-            # limpio la pantalla
-            self.c.limpiar()
+        self.show = show
+        if (self.show == False):
+            self.c.clean()
 
     def put_color_mode(self, mode):
         self.mode = mode
