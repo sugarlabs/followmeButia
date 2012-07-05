@@ -97,9 +97,9 @@ class Activity(activity.Activity):
         calibrate_bar.insert(separator1, -1)
 
         item3 = gtk.ToolItem()
-        label3 = gtk.Label()
-        label3.set_text(' ' + _('Calibrated color:') + ' ' + _('Red') + ' ')
-        item3.add(label3)
+        self.label_color_red = gtk.Label()
+        self.label_color_red.set_text(' ' + _('Calibrated color:') + ' ' + _('Red') + ' ')
+        item3.add(self.label_color_red)
         calibrate_bar.insert(item3, -1)
 
         item4 = gtk.ToolItem()
@@ -112,9 +112,9 @@ class Activity(activity.Activity):
         calibrate_bar.insert(item4, -1)
 
         item5 = gtk.ToolItem()
-        label5 = gtk.Label()
-        label5.set_text(' ' + _('Green') + ' ')
-        item5.add(label5)
+        self.label_color_green = gtk.Label()
+        self.label_color_green.set_text(' ' + _('Green') + ' ')
+        item5.add(self.label_color_green)
         calibrate_bar.insert(item5, -1)
 
         item6 = gtk.ToolItem()
@@ -127,9 +127,9 @@ class Activity(activity.Activity):
         calibrate_bar.insert(item6, -1)
 
         item7 = gtk.ToolItem()
-        label7 = gtk.Label()
-        label7.set_text(' ' + _('Blue') + ' ')
-        item7.add(label7)
+        self.label_color_blue = gtk.Label()
+        self.label_color_blue.set_text(' ' + _('Blue') + ' ')
+        item7.add(self.label_color_blue)
         calibrate_bar.insert(item7, -1)
 
         item8 = gtk.ToolItem()
@@ -173,9 +173,9 @@ class Activity(activity.Activity):
         options_bar.insert(separator1, -1)
 
         item3 = gtk.ToolItem()
-        label3 = gtk.Label()
-        label3.set_text(' ' + _('Threshold:') + ' ' + _('Red') + ' ')
-        item3.add(label3)
+        self.label_threshold_red = gtk.Label()
+        self.label_threshold_red.set_text(' ' + _('Threshold:') + ' ' + _('Red') + ' ')
+        item3.add(self.label_threshold_red)
         options_bar.insert(item3, -1)
 
         item4 = gtk.ToolItem()
@@ -188,9 +188,9 @@ class Activity(activity.Activity):
         options_bar.insert(item4, -1)
 
         item5 = gtk.ToolItem()
-        label5 = gtk.Label()
-        label5.set_text(' ' + _('Green') + ' ')
-        item5.add(label5)
+        self.label_threshold_green = gtk.Label()
+        self.label_threshold_green.set_text(' ' + _('Green') + ' ')
+        item5.add(self.label_threshold_green)
         options_bar.insert(item5, -1)
 
         item6 = gtk.ToolItem()
@@ -203,9 +203,9 @@ class Activity(activity.Activity):
         options_bar.insert(item6, -1)
 
         item7 = gtk.ToolItem()
-        label7= gtk.Label()
-        label7.set_text(' ' + _('Blue') + ' ')
-        item7.add(label7)
+        self.label_threshold_blue = gtk.Label()
+        self.label_threshold_blue.set_text(' ' + _('Blue') + ' ')
+        item7.add(self.label_threshold_blue)
         options_bar.insert(item7, -1)
 
         item8 = gtk.ToolItem()
@@ -352,7 +352,34 @@ class Activity(activity.Activity):
         self.show_all()
 
     def change_combo(self, combo):
-        self.mode = combo.get_active_text()        
+        self.mode = combo.get_active_text()
+        if self.mode == 'RGB':
+            self.label_color_red.set_text(' ' + _('Calibrated color:') + ' ' + _('Red') + ' ')
+            self.label_color_green.set_text(' ' + _('Green') + ' ')
+            self.label_color_blue.set_text(' ' + _('Blue') + ' ')
+
+            self.label_threshold_red.set_text(' ' + _('Threshold:') + ' ' + _('Red') + ' ')
+            self.label_threshold_green.set_text(' ' + _('Green') + ' ')
+            self.label_threshold_blue.set_text(' ' + _('Blue') + ' ')
+
+        elif self.mode == 'YUV':
+            self.label_color_red.set_text(' ' + _('Calibrated color:') + ' ' + _('Luma') + ' ')
+            self.label_color_green.set_text(' ' + _('U') + ' ')
+            self.label_color_blue.set_text(' ' + _('V') + ' ')
+
+            self.label_threshold_red.set_text(' ' + _('Threshold:') + ' ' + _('Luma') + ' ')
+            self.label_threshold_green.set_text(' ' + _('U') + ' ')
+            self.label_threshold_blue.set_text(' ' + _('V') + ' ')
+
+        elif self.mode == 'HSV':
+            self.label_color_red.set_text(' ' + _('Calibrated color:') + ' ' + _('Hue') + ' ')
+            self.label_color_green.set_text(' ' + _('Saturation') + ' ')
+            self.label_color_blue.set_text(' ' + _('Value') + ' ')
+
+            self.label_threshold_red.set_text(' ' + _('Threshold:') + ' ' + _('Hue') + ' ')
+            self.label_threshold_green.set_text(' ' + _('Saturation') + ' ')
+            self.label_threshold_blue.set_text(' ' + _('Value') + ' ')
+
         self.followme_activity.put_color_mode(self.mode)
 
     def threshold_view(self, button):
