@@ -306,7 +306,8 @@ class Activity(activity.Activity):
         barra_colors.insert(item1, -1)
 
         item2 = gtk.ToolItem()
-        combo = Combo()
+        modes = ('RGB', 'YUV', 'HSV')
+        combo = Combo(modes)
         item2.add(combo)
         combo.connect('changed', self.change_combo)
         barra_colors.insert(item2, -1)
@@ -475,13 +476,12 @@ class Activity(activity.Activity):
 
 class Combo(gtk.ComboBox):
 
-    def __init__(self):
+    def __init__(self, options):
 
         self.liststore = gtk.ListStore(str)
 
-        modes = ('RGB', 'YUV', 'HSV')
-        for m in modes:
-            self.liststore.append([m])
+        for o in options:
+            self.liststore.append([o])
 
         gtk.ComboBox.__init__(self, self.liststore)
 
