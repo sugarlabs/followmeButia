@@ -30,10 +30,7 @@
 import os
 import sys
 sys.path.insert(0, "lib")
-import re
 import gtk
-import pygame
-import pygame.camera
 from sugar.activity import activity
 from sugar.graphics.toolbarbox import ToolbarBox
 from sugar.graphics.toolbutton import ToolButton
@@ -75,8 +72,27 @@ class Activity(activity.Activity):
         toolbox.toolbar.insert(activity_button, -1)
         activity_button.show()
 
+        self.build_calibrate_toolbar(toolbox)
+        self.build_options_toolbar(toolbox)
+        self.build_resolution_toolbar(toolbox)
+        self.build_colors_toolbar(toolbox)
 
-        ############################## Calibrate ##############################
+        separador13 = gtk.SeparatorToolItem()
+        separador13.props.draw = False
+        separador13.set_expand(True)
+        toolbox.toolbar.insert(separador13, -1)
+
+        stop_button = StopButton(self)
+        stop_button.props.accelerator = _('<Ctrl>Q')
+        toolbox.toolbar.insert(stop_button, -1)
+        stop_button.show()
+
+        self.set_toolbox(toolbox)
+        toolbox.show()
+
+        self.show_all()
+
+    def build_calibrate_toolbar(self, toolbox):
 
         calibrate_bar = gtk.Toolbar()
 
@@ -149,7 +165,7 @@ class Activity(activity.Activity):
         calibrate_button.show()
 
 
-        ############################### Options ###############################
+    def build_options_toolbar(self, toolbox):
 
         options_bar = gtk.Toolbar()
 
@@ -225,7 +241,7 @@ class Activity(activity.Activity):
         options_button.show()
 
 
-        ############################## Resolution #############################
+    def build_resolution_toolbar(self, toolbox):
 
         resolution_bar = gtk.Toolbar()
 
@@ -295,7 +311,7 @@ class Activity(activity.Activity):
         toolbox.toolbar.insert(resolution_button, -1)
         resolution_button.show()
 
-        #######################################################################
+    def build_colors_toolbar(self, toolbox):
 
         barra_colors = gtk.Toolbar()
 
@@ -327,30 +343,12 @@ class Activity(activity.Activity):
         threshold_view.set_tooltip(_('Yes'))
         barra_colors.insert(threshold_view, -1)
 
+        barra_colors.show_all()
         colors_button = ToolbarButton(label=_('Colors'),
                 page=barra_colors,
                 icon_name='toolbar-colors')
         toolbox.toolbar.insert(colors_button, -1)
         colors_button.show()
-
-        barra_colors.show_all()
-
-        #######################################################################
-
-        separador13 = gtk.SeparatorToolItem()
-        separador13.props.draw = False
-        separador13.set_expand(True)
-        toolbox.toolbar.insert(separador13, -1)
-
-        stop_button = StopButton(self)
-        stop_button.props.accelerator = _('<Ctrl>Q')
-        toolbox.toolbar.insert(stop_button, -1)
-        stop_button.show()
-
-        self.set_toolbox(toolbox)
-        toolbox.show()
-
-        self.show_all()
 
     def change_combo(self, combo):
         self.mode = combo.get_active_text()
