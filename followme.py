@@ -66,13 +66,9 @@ class Captura(object):
         self.lcamaras = pygame.camera.list_cameras()
         if self.lcamaras:
             self.cam = pygame.camera.Camera(self.lcamaras[0], tamanioc, mode)
-            tamanioc = self.cam.get_size()
-            if not (tamanioc == (320, 240)):
-                self.cam = pygame.camera.Camera(self.lcamaras[0], (352, 288), mode)
             try:
-                #self.cam.set_controls(brightness = 129)
-                self.cam.set_controls(True, False)
                 self.cam.start()
+                self.cam.set_controls(True, False, 100)
                 res = self.cam.get_controls()
                 self.flip = res[0]
                 tamanioc = self.cam.get_size()
