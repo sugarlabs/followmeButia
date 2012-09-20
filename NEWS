@@ -1,3 +1,22 @@
+7
+* Se agrega posibilidad de setear el brillo a la cámara.
+
+6
+* Inicialización de la cámara mas robusta
+* Se arregla método deprecado en calibrar
+* Se arregla activity.info para Sugar 0.96
+* Se remueve la carpeta bin
+* Se corrige error en el wait for bobot
+* Nuevas traducciones
+* Add new butiaAPI (v11)
+* Add new system of movement
+* Add combo for select color mode (RGB, YUV or HSV)
+* New bars style (Sugar > 0.86)
+* Add threshold view for default
+* Translate all code to english
+* Rename labels when combo mode color changes
+* Some unecessary comments removed
+
 5
 * Se modifica la barra de Opciones y de Calibrar. Se agrega el color calibrado
 para ser mostrado en en sus 3 componenetes (RGB) y para ser introducido
