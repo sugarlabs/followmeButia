@@ -48,6 +48,7 @@ class Activity(activity.Activity):
 
         self.max_participants = 1
         self.pixels = 10
+        self.brightness = 128
         self.threshold = (25, 25, 25)
         self.colorC = (255, 255, 255)
         self.show_size = (960.0, 720.0)
@@ -332,6 +333,25 @@ class Activity(activity.Activity):
         separator1.props.draw = True
         barra_colors.insert(separator1, -1)
 
+        item_l = gtk.ToolItem()
+        label4 = gtk.Label()
+        label4.set_text(_('Brightness'))
+        item_l.add(label4)
+        barra_colors.insert(item_l, -1)
+        
+        item = gtk.ToolItem()
+        brightness_spin = gtk.SpinButton()
+        brightness_spin.set_range(-1, 255)
+        brightness_spin.set_increments(1, 10)
+        brightness_spin.props.value = int(self.brightness)
+        brightness_spin.connect('notify::value', self.brightness_spin_change)
+        item.add(brightness_spin)
+        barra_colors.insert(item, -1)
+
+        separator2 = gtk.SeparatorToolItem()
+        separator2.props.draw = True
+        barra_colors.insert(separator2, -1)
+
         item3 = gtk.ToolItem()
         label3 = gtk.Label()
         label3.set_text(_('Show threshold view'))
@@ -400,6 +420,12 @@ class Activity(activity.Activity):
     def pixels_value(self, pixels, value):
         self.pixels = int(pixels.props.value)
         self.followme_activity.put_pixels(self.pixels)
+
+    # BRIGHTNESS
+    def brightness_spin_change(self, spin, value):
+        b = int(spin.props.value)
+        self.brightness = b
+        self.followme_activity.put_brightness(self.brightness)
 
     # THRESHOLDS
     def red_spin_threshold(self, red, value):
