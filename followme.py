@@ -51,6 +51,7 @@ class Captura(object):
         else:
             self.display = pygame.display.set_mode((1200, 900))
         self.use_threshold_view = True
+        self.brightness = 128
         self.cam = None
         self.get_camera(mode)
         self.calc((960, 720))
@@ -68,9 +69,7 @@ class Captura(object):
             self.cam = pygame.camera.Camera(self.lcamaras[0], tamanioc, mode)
             try:
                 self.cam.start()
-                self.cam.set_controls(True, False, 100)
-                res = self.cam.get_controls()
-                self.flip = res[0]
+                self.set_camera_flags()
                 tamanioc = self.cam.get_size()
                 self.captura = pygame.surface.Surface(tamanioc, 0, self.display)
                 self.captura_aux = pygame.surface.Surface(tamanioc, 0, self.display)
@@ -79,6 +78,11 @@ class Captura(object):
                 print _('Error on initialization of the camera')
         else:
             print _('No cameras was found')
+
+    def set_camera_flags(self):
+        self.cam.set_controls(True, False, self.brightness)
+        res = self.cam.get_controls()
+        self.flip = res[0]
 
     def calc(self, tamanio):
         self.show_size = tamanio
@@ -315,6 +319,10 @@ class FollowMe:
 
     def put_threshold_view(self, view):
         self.c.use_threshold_view = view
+
+    def put_brightness(self, brightness):
+        self.c.brightness = brightness
+        self.c.set_camera_flags()
 
     def run(self):
         self.r = Robot()
