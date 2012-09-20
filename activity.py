@@ -318,7 +318,7 @@ class Activity(activity.Activity):
 
         item1 = gtk.ToolItem()
         label1 = gtk.Label()
-        label1.set_text(_('Color mode'))
+        label1.set_text(_('Color mode') + ' ')
         item1.add(label1)
         barra_colors.insert(item1, -1)
 
@@ -335,7 +335,7 @@ class Activity(activity.Activity):
 
         item_l = gtk.ToolItem()
         label4 = gtk.Label()
-        label4.set_text(_('Brightness'))
+        label4.set_text(_('Brightness') + ' ')
         item_l.add(label4)
         barra_colors.insert(item_l, -1)
         
