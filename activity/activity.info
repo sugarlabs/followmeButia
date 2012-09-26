@@ -6,3 +6,4 @@ exec = sugar-activity activity.Activity
 show_launcher = yes
 icon = followme
 license = GPLv3+
+summary = An object tracker activity
