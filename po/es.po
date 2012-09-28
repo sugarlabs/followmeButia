@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-06 00:32-0400\n"
-"PO-Revision-Date: 2012-08-06 22:49+0200\n"
+"POT-Creation-Date: 2012-09-20 00:33-0400\n"
+"PO-Revision-Date: 2012-09-27 07:50+0200\n"
 "Last-Translator: AlanJAS <alanjas@hotmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: es\n"
@@ -21,131 +21,135 @@ msgstr ""
 msgid "FollowMe Butia"
 msgstr "FollowMe Butiá"
 
-#: activity.py:85
-msgid "Calibrate/Follow"
-msgstr "Calibrar/Seguir"
-
-#: activity.py:90 activity.py:459
-msgid "Stop"
-msgstr "Parar"
-
-#: activity.py:101 activity.py:357 activity.py:366 activity.py:375
-msgid "Calibrated color:"
-msgstr "Color calibrado:"
-
-#: activity.py:101 activity.py:177 activity.py:357 activity.py:361
-msgid "Red"
-msgstr "Rojo"
-
-#: activity.py:116 activity.py:192 activity.py:358 activity.py:362
-msgid "Green"
-msgstr "Verde"
-
-#: activity.py:131 activity.py:207 activity.py:359 activity.py:363
-msgid "Blue"
-msgstr "Azul"
-
-#: activity.py:145
-msgid "Calibrate"
-msgstr "Calibrar"
-
-#: activity.py:158
-msgid "Pixels"
-msgstr "Píxeles"
-
-#: activity.py:177 activity.py:361 activity.py:370 activity.py:379
-msgid "Threshold:"
-msgstr "Umbral:"
-
-#: activity.py:221
-msgid "Options"
-msgstr "Opciones"
-
-#: activity.py:234
-msgid "Show size"
-msgstr "Mostrar tamaño"
-
-#: activity.py:268
-msgid "Show grid"
-msgstr "Mostrar grilla"
-
-#: activity.py:282
-msgid "Show captures"
-msgstr "Mostrar capturas"
-
-#: activity.py:288 activity.py:469
-msgid "Hide"
-msgstr "Ocultar"
-
-#: activity.py:292
-msgid "Resolution"
-msgstr "Resolución"
-
-#: activity.py:304
-msgid "Color mode"
-msgstr "Modo de color"
-
-#: activity.py:320
-msgid "Show threshold view"
-msgstr "Mostrar vista umbral"
-
-#: activity.py:326 activity.py:390
-msgid "Yes"
-msgstr "Si"
-
-#: activity.py:329
-msgid "Colors"
-msgstr "Colores"
-
-#: activity.py:345
+#: activity.py:87
 msgid "<Ctrl>Q"
 msgstr "<Ctrl>Q"
 
-#: activity.py:366 activity.py:370
+#: activity.py:102
+msgid "Calibrate/Follow"
+msgstr "Calibrar/Seguir"
+
+#: activity.py:107 activity.py:484
+msgid "Stop"
+msgstr "Parar"
+
+#: activity.py:118 activity.py:376 activity.py:385 activity.py:394
+msgid "Calibrated color:"
+msgstr "Color calibrado:"
+
+#: activity.py:118 activity.py:194 activity.py:376 activity.py:380
+msgid "Red"
+msgstr "Rojo"
+
+#: activity.py:133 activity.py:209 activity.py:377 activity.py:381
+msgid "Green"
+msgstr "Verde"
+
+#: activity.py:148 activity.py:224 activity.py:378 activity.py:382
+msgid "Blue"
+msgstr "Azul"
+
+#: activity.py:162
+msgid "Calibrate"
+msgstr "Calibrar"
+
+#: activity.py:175
+msgid "Pixels"
+msgstr "Píxeles"
+
+#: activity.py:194 activity.py:380 activity.py:389 activity.py:398
+msgid "Threshold:"
+msgstr "Umbral:"
+
+#: activity.py:238
+msgid "Options"
+msgstr "Opciones"
+
+#: activity.py:251
+msgid "Show size"
+msgstr "Mostrar tamaño"
+
+#: activity.py:285
+msgid "Show grid"
+msgstr "Mostrar grilla"
+
+#: activity.py:299
+msgid "Show captures"
+msgstr "Mostrar capturas"
+
+#: activity.py:305 activity.py:494
+msgid "Hide"
+msgstr "Ocultar"
+
+#: activity.py:309
+msgid "Resolution"
+msgstr "Resolución"
+
+#: activity.py:321
+msgid "Color mode"
+msgstr "Modo de color"
+
+#: activity.py:338
+msgid "Brightness"
+msgstr "Brillo"
+
+#: activity.py:357
+msgid "Show threshold view"
+msgstr "Mostrar vista umbral"
+
+#: activity.py:363 activity.py:409
+msgid "Yes"
+msgstr "Si"
+
+#: activity.py:367
+msgid "Colors"
+msgstr "Colores"
+
+#: activity.py:385 activity.py:389
 msgid "Luma"
 msgstr "Luma"
 
-#: activity.py:367 activity.py:371
+#: activity.py:386 activity.py:390
 msgid "U"
 msgstr "U"
 
-#: activity.py:368 activity.py:372
+#: activity.py:387 activity.py:391
 msgid "V"
 msgstr "V"
 
-#: activity.py:375 activity.py:379
+#: activity.py:394 activity.py:398
 msgid "Hue"
 msgstr "Hue"
 
-#: activity.py:376 activity.py:380
+#: activity.py:395 activity.py:399
 msgid "Saturation"
 msgstr "Saturación"
 
-#: activity.py:377 activity.py:381
+#: activity.py:396 activity.py:400
 msgid "Value"
 msgstr "Valor"
 
-#: activity.py:393
+#: activity.py:412
 msgid "No"
 msgstr "No"
 
-#: activity.py:456
+#: activity.py:481
 msgid "Start"
 msgstr "Empezar"
 
-#: activity.py:472
+#: activity.py:497
 msgid "Show"
 msgstr "Mostrar"
 
-#: followme.py:65
+#: followme.py:66
 msgid "Error in stop camera"
 msgstr "Error en detener cámara"
 
-#: followme.py:83
+#: followme.py:78
 msgid "Error on initialization of the camera"
 msgstr "Error en la inicialización de la cámara"
 
-#: followme.py:85
+#: followme.py:80
 msgid "No cameras was found"
 msgstr "No se encontraron cámaras"
 
