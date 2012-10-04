@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-06 00:32-0400\n"
-"PO-Revision-Date: 2012-07-16 01:00+0200\n"
+"POT-Creation-Date: 2012-09-27 14:56-0400\n"
+"PO-Revision-Date: 2012-10-04 14:04+0200\n"
 "Last-Translator: Aputsiaq Niels <aj@isit.gl>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: da\n"
@@ -17,135 +17,144 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.0.5\n"
 
-#: activity/activity.info:2
+#. TRANS: "name" option from activity.info file
 msgid "FollowMe Butia"
 msgstr "FølgMig Butia"
 
-#: activity.py:85
-msgid "Calibrate/Follow"
-msgstr "Kalibrér/følg"
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid "An object tracker activity"
+msgstr "En aktivitet som følger objekter"
 
-#: activity.py:90 activity.py:459
-msgid "Stop"
-msgstr "Stop"
-
-#: activity.py:101 activity.py:357 activity.py:366 activity.py:375
-msgid "Calibrated color:"
-msgstr "Kalibreret farve:"
-
-#: activity.py:101 activity.py:177 activity.py:357 activity.py:361
-msgid "Red"
-msgstr "Rød"
-
-#: activity.py:116 activity.py:192 activity.py:358 activity.py:362
-msgid "Green"
-msgstr "Grøn"
-
-#: activity.py:131 activity.py:207 activity.py:359 activity.py:363
-msgid "Blue"
-msgstr "Blå"
-
-#: activity.py:145
-msgid "Calibrate"
-msgstr "Kalibrér"
-
-#: activity.py:158
-msgid "Pixels"
-msgstr "Billedpunkter"
-
-#: activity.py:177 activity.py:361 activity.py:370 activity.py:379
-msgid "Threshold:"
-msgstr "Grænseværdi:"
-
-#: activity.py:221
-msgid "Options"
-msgstr "Indstillinger"
-
-#: activity.py:234
-msgid "Show size"
-msgstr "Vis størrelse"
-
-#: activity.py:268
-msgid "Show grid"
-msgstr "Vis gitter"
-
-#: activity.py:282
-msgid "Show captures"
-msgstr "Vis optagelser"
-
-#: activity.py:288 activity.py:469
-msgid "Hide"
-msgstr "Skjul"
-
-#: activity.py:292
-msgid "Resolution"
-msgstr "Opløsning"
-
-#: activity.py:304
-msgid "Color mode"
-msgstr "Farvetilstand"
-
-#: activity.py:320
-msgid "Show threshold view"
-msgstr "Vis grænseværdi-visning"
-
-#: activity.py:326 activity.py:390
-msgid "Yes"
-msgstr "Ja"
-
-#: activity.py:329
-msgid "Colors"
-msgstr "Farver"
-
-#: activity.py:345
+#: activity.py:87
 msgid "<Ctrl>Q"
 msgstr "<Ctrl>Q"
 
-#: activity.py:366 activity.py:370
+#: activity.py:102
+msgid "Calibrate/Follow"
+msgstr "Kalibrér/følg"
+
+#: activity.py:107 activity.py:484
+msgid "Stop"
+msgstr "Stop"
+
+#: activity.py:118 activity.py:376 activity.py:385 activity.py:394
+msgid "Calibrated color:"
+msgstr "Kalibreret farve:"
+
+#: activity.py:118 activity.py:194 activity.py:376 activity.py:380
+msgid "Red"
+msgstr "Rød"
+
+#: activity.py:133 activity.py:209 activity.py:377 activity.py:381
+msgid "Green"
+msgstr "Grøn"
+
+#: activity.py:148 activity.py:224 activity.py:378 activity.py:382
+msgid "Blue"
+msgstr "Blå"
+
+#: activity.py:162
+msgid "Calibrate"
+msgstr "Kalibrér"
+
+#: activity.py:175
+msgid "Pixels"
+msgstr "Billedpunkter"
+
+#: activity.py:194 activity.py:380 activity.py:389 activity.py:398
+msgid "Threshold:"
+msgstr "Grænseværdi:"
+
+#: activity.py:238
+msgid "Options"
+msgstr "Indstillinger"
+
+#: activity.py:251
+msgid "Show size"
+msgstr "Vis størrelse"
+
+#: activity.py:285
+msgid "Show grid"
+msgstr "Vis gitter"
+
+#: activity.py:299
+msgid "Show captures"
+msgstr "Vis optagelser"
+
+#: activity.py:305 activity.py:494
+msgid "Hide"
+msgstr "Skjul"
+
+#: activity.py:309
+msgid "Resolution"
+msgstr "Opløsning"
+
+#: activity.py:321
+msgid "Color mode"
+msgstr "Farvetilstand"
+
+#: activity.py:338
+msgid "Brightness"
+msgstr "Lysstyrke"
+
+#: activity.py:357
+msgid "Show threshold view"
+msgstr "Vis grænseværdi-visning"
+
+#: activity.py:363 activity.py:409
+msgid "Yes"
+msgstr "Ja"
+
+#: activity.py:367
+msgid "Colors"
+msgstr "Farver"
+
+#: activity.py:385 activity.py:389
 msgid "Luma"
 msgstr "Luma"
 
-#: activity.py:367 activity.py:371
+#: activity.py:386 activity.py:390
 msgid "U"
 msgstr "U"
 
-#: activity.py:368 activity.py:372
+#: activity.py:387 activity.py:391
 msgid "V"
 msgstr "V"
 
-#: activity.py:375 activity.py:379
+#: activity.py:394 activity.py:398
 msgid "Hue"
 msgstr "Tone"
 
-#: activity.py:376 activity.py:380
+#: activity.py:395 activity.py:399
 msgid "Saturation"
 msgstr "Mætning"
 
-#: activity.py:377 activity.py:381
+#: activity.py:396 activity.py:400
 msgid "Value"
 msgstr "Værdi"
 
-#: activity.py:393
+#: activity.py:412
 msgid "No"
 msgstr "Nej"
 
-#: activity.py:456
+#: activity.py:481
 msgid "Start"
 msgstr "Start"
 
-#: activity.py:472
+#: activity.py:497
 msgid "Show"
 msgstr "Vis"
 
-#: followme.py:65
+#: followme.py:66
 msgid "Error in stop camera"
 msgstr "Fejl ved stop af kamera"
 
-#: followme.py:83
+#: followme.py:78
 msgid "Error on initialization of the camera"
 msgstr "Fejl ved initialisering af kameraet"
 
-#: followme.py:85
+#: followme.py:80
 msgid "No cameras was found"
 msgstr "Der blev ikke fundet et kamera"
 
