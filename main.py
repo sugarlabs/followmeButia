@@ -26,7 +26,13 @@
 # Aylen Ricca <ar18_90@hotmail.com>
 # Rodrigo Dearmas <piegrande46@hotmail.com>
 
-   
+import gtk
+import pygame
+import robot
+from robot import Robot
+import followme
+from followme import FollowMe
+from gettext import gettext as _
 
 class Main:
 
@@ -80,14 +86,14 @@ class Main:
         self.c.set_camera_flags()
 
     def run(self):
-        self.r = Robot()
+        self.r = Robot((320, 240))
         self.threshold = (25, 25, 25)
         self.colorC = (255, 255, 255)
         self.pixels = 10
         self.show_size = (960, 720)
         self.show = True
         self.mode = 'RGB'
-        self.c = Captura(self.mode, self.parent)
+        self.c = FollowMe(self.mode, self.parent)
         if (self.c.cam == None):
             while gtk.events_pending():
                 gtk.main_iteration()

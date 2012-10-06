@@ -26,7 +26,11 @@
 # Aylen Ricca <ar18_90@hotmail.com>
 # Rodrigo Dearmas <piegrande46@hotmail.com>
 
-
+import time
+import commands
+import butiaAPI
+import subprocess
+from gettext import gettext as _
 
 class Robot(object):
 

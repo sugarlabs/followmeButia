@@ -38,6 +38,8 @@ from sugar.activity.widgets import ActivityToolbarButton
 from sugar.activity.widgets import StopButton
 from sugar.graphics.toolbarbox import ToolbarButton
 import sugargame.canvas
+import main
+import robot
 import followme
 from gettext import gettext as _
 
@@ -58,7 +60,7 @@ class Activity(activity.Activity):
         self.use_threshold_view = True
         self.mode = 'RGB'
 
-        self.followme_activity = followme.FollowMe(self)
+        self.followme_activity = main.Main(self)
         self.build_toolbar()
         self._pygamecanvas = sugargame.canvas.PygameCanvas(self)
         self.set_canvas(self._pygamecanvas)

@@ -26,14 +26,11 @@
 # Aylen Ricca <ar18_90@hotmail.com>
 # Rodrigo Dearmas <piegrande46@hotmail.com>
 
-
+import gtk
+import time
 import pygame
 import pygame.camera
 import gtk
-import butiaAPI
-import time
-import subprocess
-import commands
 from gettext import gettext as _
 
 # seteamos el tamaño de captura
