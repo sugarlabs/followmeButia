@@ -26,11 +26,8 @@
 # Aylen Ricca <ar18_90@hotmail.com>
 # Rodrigo Dearmas <piegrande46@hotmail.com>
 
-import gtk
-import time
 import pygame
 import pygame.camera
-import gtk
 from gettext import gettext as _
 
 # seteamos el tamaño de captura
@@ -114,9 +111,11 @@ class FollowMe(object):
         self.display.blit(self.captura_to_show, (self.xblit, self.yblit))
         #FIXME: cambiar posición en función de la pantalla
         
-        rect = pygame.draw.rect(self.display, (255,0,0), (self.xcm,self.ycm,50,50), 4)
+        #rect = pygame.draw.rect(self.display, (255,0,0), (self.xcm,self.ycm,50,50), 4)
+        pygame.draw.rect(self.display, (255,0,0), (self.xcm,self.ycm,50,50), 4)
+
         self.display.fill(color, (0,0,120,120))
-        rect = pygame.draw.rect(self.display, (0,0,0), (0,0,120,120), 4)
+        pygame.draw.rect(self.display, (0,0,0), (0,0,120,120), 4)
         return color
 
     def get_position(self, color, threshold, pixels):
@@ -158,19 +157,19 @@ class FollowMe(object):
    
         x, y = pos.centroid()
 
-        rect = pygame.draw.rect(self.captura_to_show, (255,0,0), (x*self.c1, y*self.c2, 20, 20), 16)
+        pygame.draw.rect(self.captura_to_show, (255,0,0), (x*self.c1, y*self.c2, 20, 20), 16)
         self.show_outline(pos)
         self.show_rects(pos)
 
     def show_outline(self, pos):
         l = pos.outline()
         for i in l:
-            rect = pygame.draw.rect(self.captura_to_show, (0,0,255), (i[0]*self.c1, i[1]*self.c2, 5, 5), 5)
+            pygame.draw.rect(self.captura_to_show, (0,0,255), (i[0]*self.c1, i[1]*self.c2, 5, 5), 5)
 
     def show_rects(self, pos):
         r = pos.get_bounding_rects()
         for i in r:
-            rect = pygame.draw.rect(self.captura_to_show, (0,255,0), (i[0]*self.c1, i[1]*self.c2, i[2]*self.c1, i[3]*self.c2), 5)
+            pygame.draw.rect(self.captura_to_show, (0,255,0), (i[0]*self.c1, i[1]*self.c2, i[2]*self.c1, i[3]*self.c2), 5)
 
     def show_position3(self, color):
         self.display.fill((84,185,72))
@@ -179,19 +178,19 @@ class FollowMe(object):
             self.draw_grid()
         self.display.blit(self.captura_to_show, (self.xblit, self.yblit))
         #self.display.fill(color, (0,0,120,120))
-        rect = pygame.draw.rect(self.display, (0,0,0), (0,0,120,120), 4)
+        pygame.draw.rect(self.display, (0,0,0), (0,0,120,120), 4)
 
     def draw_grid(self):
         # draw verticals
-        r0 = pygame.draw.line(self.captura_to_show, (250, 40, 40), (0, self.tyd), (self.show_size[0],self.tyd), 3)
-        r1 = pygame.draw.line(self.captura_to_show, (250, 40, 40), (0, 2*self.tyd), (self.show_size[0], 2*self.tyd), 3)
+        pygame.draw.line(self.captura_to_show, (250, 40, 40), (0, self.tyd), (self.show_size[0],self.tyd), 3)
+        pygame.draw.line(self.captura_to_show, (250, 40, 40), (0, 2*self.tyd), (self.show_size[0], 2*self.tyd), 3)
         # draw horizontals
-        r2 = pygame.draw.line(self.captura_to_show, (250, 40, 40), (2*self.txd, 0), (2*self.txd, self.show_size[1]), 3)
-        r3 = pygame.draw.line(self.captura_to_show, (250, 40, 40), (4*self.txd, 0), (4*self.txd, self.show_size[1]), 3)
-        r4 = pygame.draw.line(self.captura_to_show, (250, 40, 40), (6*self.txd, 0), (6*self.txd, self.show_size[1]), 3)
-        r5 = pygame.draw.line(self.captura_to_show, (250, 40, 40), (9*self.txd, 0), (9*self.txd, self.show_size[1]), 3)
-        r6 = pygame.draw.line(self.captura_to_show, (250, 40, 40), (11*self.txd, 0), (11*self.txd, self.show_size[1]), 3)
-        r7 = pygame.draw.line(self.captura_to_show, (250, 40, 40), (13*self.txd, 0), (13*self.txd, self.show_size[1]), 3)
+        pygame.draw.line(self.captura_to_show, (250, 40, 40), (2*self.txd, 0), (2*self.txd, self.show_size[1]), 3)
+        pygame.draw.line(self.captura_to_show, (250, 40, 40), (4*self.txd, 0), (4*self.txd, self.show_size[1]), 3)
+        pygame.draw.line(self.captura_to_show, (250, 40, 40), (6*self.txd, 0), (6*self.txd, self.show_size[1]), 3)
+        pygame.draw.line(self.captura_to_show, (250, 40, 40), (9*self.txd, 0), (9*self.txd, self.show_size[1]), 3)
+        pygame.draw.line(self.captura_to_show, (250, 40, 40), (11*self.txd, 0), (11*self.txd, self.show_size[1]), 3)
+        pygame.draw.line(self.captura_to_show, (250, 40, 40), (13*self.txd, 0), (13*self.txd, self.show_size[1]), 3)
         
 
     def clean(self):

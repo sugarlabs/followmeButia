@@ -28,11 +28,8 @@
 
 import gtk
 import pygame
-import robot
 from robot import Robot
-import followme
 from followme import FollowMe
-from gettext import gettext as _
 
 class Main:
 

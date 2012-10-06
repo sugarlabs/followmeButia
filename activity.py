@@ -27,7 +27,6 @@
 # Rodrigo Dearmas <piegrande46@hotmail.com>
 
 
-import os
 import sys
 sys.path.insert(0, "lib")
 import gtk
@@ -39,8 +38,6 @@ from sugar.activity.widgets import StopButton
 from sugar.graphics.toolbarbox import ToolbarButton
 import sugargame.canvas
 import main
-import robot
-import followme
 from gettext import gettext as _
 
 class Activity(activity.Activity):
