@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-20 23:00-0200\n"
+"POT-Creation-Date: 2012-09-27 14:56-0400\n"
 "PO-Revision-Date: 2012-06-29 11:15+0200\n"
 "Last-Translator: jui <appukonrad@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,91 +17,150 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Pootle 2.0.5\n"
 
-#: activity/activity.info:2
+#. TRANS: "name" option from activity.info file
 msgid "FollowMe Butia"
 msgstr "Následuj Butiu"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/followme.py:83
-msgid "Error on initialization of the camera"
-msgstr "Chyba při inicializaci kamery"
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid "An object tracker activity"
+msgstr ""
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/followme.py:90
-msgid "Camera was not found"
-msgstr "Kamera nebyla nalezena"
+#: activity.py:87
+msgid "<Ctrl>Q"
+msgstr ""
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/followme.py:228
-msgid "Butia robot was not detected"
-msgstr "Butia robot nebyl zjištěn"
-
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:102
+#: activity.py:102
 msgid "Calibrate/Follow"
 msgstr "Kalibrace / Sledování"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:111
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:539
+#: activity.py:107 activity.py:484
 msgid "Stop"
 msgstr "Zastavit"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:131
+#: activity.py:118 activity.py:376 activity.py:385 activity.py:394
 msgid "Calibrated color:"
 msgstr "Kalibrace barev:"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:131
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:257
+#: activity.py:118 activity.py:194 activity.py:376 activity.py:380
 msgid "Red"
 msgstr "Červená"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:159
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:285
+#: activity.py:133 activity.py:209 activity.py:377 activity.py:381
 msgid "Green"
 msgstr "Zelená"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:187
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:313
+#: activity.py:148 activity.py:224 activity.py:378 activity.py:382
 msgid "Blue"
 msgstr "Modrá"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:211
+#: activity.py:162
 msgid "Calibrate"
 msgstr "Kalibrovat"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:222
+#: activity.py:175
 msgid "Pixels"
 msgstr "Pixely"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:257
+#: activity.py:194 activity.py:380 activity.py:389 activity.py:398
 msgid "Threshold:"
 msgstr "Prahová hodnota:"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:337
+#: activity.py:238
 msgid "Options"
 msgstr "Možnosti"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:348
+#: activity.py:251
 msgid "Show size"
 msgstr "Zobrazovat velikosti"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:400
+#: activity.py:285
 msgid "Show grid"
 msgstr "Zobrazit mřížku"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:416
+#: activity.py:299
 msgid "Show captures"
 msgstr "Zobrazit snímání"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:426
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:560
+#: activity.py:305 activity.py:494
 msgid "Hide"
 msgstr "Skrýt"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:431
+#: activity.py:309
 msgid "Resolution"
 msgstr "Rozlišení"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:534
+#: activity.py:321
+msgid "Color mode"
+msgstr ""
+
+#: activity.py:338
+msgid "Brightness"
+msgstr ""
+
+#: activity.py:357
+msgid "Show threshold view"
+msgstr ""
+
+#: activity.py:363 activity.py:409
+msgid "Yes"
+msgstr ""
+
+#: activity.py:367
+msgid "Colors"
+msgstr ""
+
+#: activity.py:385 activity.py:389
+msgid "Luma"
+msgstr ""
+
+#: activity.py:386 activity.py:390
+msgid "U"
+msgstr ""
+
+#: activity.py:387 activity.py:391
+msgid "V"
+msgstr ""
+
+#: activity.py:394 activity.py:398
+msgid "Hue"
+msgstr ""
+
+#: activity.py:395 activity.py:399
+msgid "Saturation"
+msgstr ""
+
+#: activity.py:396 activity.py:400
+msgid "Value"
+msgstr ""
+
+#: activity.py:412
+msgid "No"
+msgstr ""
+
+#: activity.py:481
 msgid "Start"
 msgstr "Spustit"
 
-#: /home/alan/Documentos/GIT/followmeButia/mainline/activity.py:555
+#: activity.py:497
 msgid "Show"
 msgstr "Zobrazit"
+
+#: followme.py:66
+msgid "Error in stop camera"
+msgstr ""
+
+#: followme.py:78
+msgid "Error on initialization of the camera"
+msgstr "Chyba při inicializaci kamery"
+
+#: followme.py:80
+msgid "No cameras was found"
+msgstr ""
+
+#: followme.py:201
+msgid "Butia robot was not detected"
+msgstr "Butia robot nebyl zjištěn"
+
+#~ msgid "Camera was not found"
+#~ msgstr "Kamera nebyla nalezena"
