@@ -27,7 +27,9 @@ import string
 import math
 import threading
 
-ERROR_SENSOR_READ = -1 
+ERROR_SENSOR_READ = -1
+
+BUTIA_1 = 20
 
 BOBOT_HOST = 'localhost'
 BOBOT_PORT = 2009
@@ -44,7 +46,9 @@ class robot:
         self.port = port
         self.client = None
         self.fclient = None
+        self.ver = BUTIA_1
         self.reconnect()
+        self.getVersion()
 
        
     def doCommand(self, msg):
@@ -53,7 +57,7 @@ class robot:
         @param msg message to be executed
         """
         msg = msg +'\n'
-        ret = -1
+        ret = ERROR_SENSOR_READ
         self.lock.acquire()
         try:     
             self.client.send(msg) 
@@ -78,18 +82,16 @@ class robot:
             #bobot server instance is running, but we have to check for new or remove hardware
             self.doCommand(msg)
         except:
-            return -1
+            return ERROR_SENSOR_READ
         return 0
 
     # ask bobot for refresh is state of devices connected
     def refresh(self):
-        msg = 'INIT'
-        #bobot server instance is running, but we have to check for new or remove hardware
-        result = self.doCommand(msg)
-        if (result == ERROR_SENSOR_READ):
-                result = self.reconnect()
-        #return result
-
+        if (self.ver == BUTIA_1) or (self.ver == ERROR_SENSOR_READ):
+            msg = 'INIT'
+        else:
+            msg = 'REFRESH'
+        return self.doCommand(msg)
 
     # close the comunication with the bobot
     def close(self):
@@ -101,24 +103,25 @@ class robot:
                 self.client.close()
                 self.client = None
         except:
-            return -1
+            return ERROR_SENSOR_READ
         return 0
 
     #######################################################################
     ### Operations to the principal module
     #######################################################################
 
-    # open the module 'modulename'
-    def openModule(self, modulename):
-        msg = 'OPEN ' + modulename
-        return self.doCommand(msg)
 
     # call the module 'modulename'
     def callModule(self, modulename, function , params = ''):
         msg = 'CALL ' + modulename + ' ' + function
         if params != '' :
             msg += ' ' + params
-        return self.doCommand(msg)
+        ret = self.doCommand(msg)
+        try:
+            ret = int(ret)
+        except:
+            ret = ERROR_SENSOR_READ
+        return ret
 
     # Close bobot service
     def closeService(self):
@@ -137,20 +140,21 @@ class robot:
     # returns a list of modules
     def get_modules_list(self):
         msg = 'LIST'
+        l = []
         ret = self.doCommand(msg)
-        if not (ret == '' or ret == -1):
-            return ret.split(',')
-        else:
-           return []
+        if not (ret == '' or ret == ERROR_SENSOR_READ):
+            l = ret.split(',')
+        return l
 
     # loopBack: send a message to butia and wait to recibe the same
     def loopBack(self, data):
         msg = 'lback send ' + data
         ret = self.doCommand(msg)
         if ret != -1 :
-            return self.callModule('lback', 'read')
+            msg = 'CALL lback read'
+            return self.doCommand(msg)
         else:
-            return -1
+            return ERROR_SENSOR_READ
             
 
     #######################################################################
@@ -158,12 +162,59 @@ class robot:
     #######################################################################
 
     def set2MotorSpeed(self, leftSense = '0', leftSpeed = '0', rightSense = '0', rightSpeed = '0'):
-            msg = leftSense + ' ' + leftSpeed + ' ' + rightSense + ' ' + rightSpeed
+        msg = leftSense + ' ' + leftSpeed + ' ' + rightSense + ' ' + rightSpeed
+        if self.ver == BUTIA_1:
             return self.callModule('motores', 'setvel2mtr', msg)
+        else:
+            return self.callModule('motors', 'setvel2mtr', msg)
      
     def setMotorSpeed(self, idMotor = '0', sense = '0', speed = '0'):
-            msg = idMotor + ' ' + sense + ' ' + speed
+        msg = idMotor + ' ' + sense + ' ' + speed
+        if self.ver == BUTIA_1:
             return self.callModule('motores', 'setvelmtr', msg)
+        else:
+            return self.callModule('motors', 'setvelmtr', msg)
+
+    #######################################################################
+    ### Operations for ax.lua driver
+    #######################################################################
+
+    def wheel_mode(self, idMotor = '0'):
+        msg = idMotor
+        if self.ver == BUTIA_1:
+            return self.callModule('ax', 'wheel_mode', msg) ##TODO implement
+        else:
+            return self.callModule('ax', 'wheel_mode', msg)
+     
+    def joint_mode(self, idMotor = '0', min = '0', max = '1023'):
+        msg = idMotor + ' ' + min + ' ' + max
+        if self.ver == BUTIA_1:
+            return self.callModule('ax', 'joint_mode', msg) ##TODO implement
+        else:
+            return self.callModule('ax', 'joint_mode', msg)
+
+	def set_speed(self, idMotor = '0', speed = '0'):
+		msg = idMotor + ' ' + speed 
+        if self.ver == BUTIA_1:
+            return self.callModule('ax', 'set_speed', msg) ##TODO implement
+        else:
+            return self.callModule('ax', 'set_speed', msg)
+
+    def set_position(self, idMotor = '0', pos = '0'):
+        msg = idMotor + ' ' + pos
+        if self.ver == BUTIA_1:
+            return self.callModule('ax', 'set_position', msg) ##TODO implement
+        else:
+            return self.callModule('ax', 'set_position', msg)
+
+    def get_position(self, idMotor = '0'):
+        msg = idMotor
+        if self.ver == BUTIA_1:
+            return self.callModule('ax', 'get_position', msg) ##TODO implement
+        else:
+            return self.callModule('ax', 'get_position', msg)
+
+
 
     #######################################################################
     ### Operations for butia.lua driver
@@ -174,17 +225,14 @@ class robot:
 
     # returns the approximate charge of the battery        
     def getBatteryCharge(self):
-        bat = ERROR_SENSOR_READ
-        try:
-            bat = self.callModule('butia', 'get_volt')
-            bat = int(bat)
-        except:
-            pass
-        return bat
+        return self.callModule('butia', 'get_volt')
 
     # returns the firmware version 
     def getVersion(self):
-        return self.callModule('butia', 'read_ver')
+        ver = self.callModule('butia', 'read_ver')
+        if not(ver == ERROR_SENSOR_READ):
+            self.ver = ver
+        return ver
     
     # set de motor idMotor on determinate angle
     def setPosition(self, idMotor = 0, angle = 0):
@@ -193,44 +241,81 @@ class robot:
     
     # return the value of button: 1 if pressed, 0 otherwise
     def getButton(self, number=''):
-        return self.callModule('boton' + str(number), 'getBoton')
-    
+        if self.ver == BUTIA_1:
+            return self.callModule('boton' + str(number), 'getValue')
+        else:
+            return self.callModule('button:' + str(number), 'getValue')
+
     # return the value en ambient light sensor
     def getAmbientLight(self, number=''):
-        return self.callModule('luz' + str(number), 'getLuz')
+        if self.ver == BUTIA_1:
+            return self.callModule('luz' + str(number), 'getValue')
+        else:
+            return self.callModule('light:' + str(number), 'getValue')
 
     # return the value of the distance sensor
     def getDistance(self, number=''):
-        return self.callModule('dist' + str(number), 'getDistancia')
+        if self.ver == BUTIA_1:
+            return self.callModule('dist' + str(number), 'getValue')
+        else:
+            return self.callModule('distanc:' + str(number), 'getValue')
     
     # return the value of the grayscale sensor
     def getGrayScale(self, number=''):
-        return self.callModule('grises' + str(number), 'getLevel')
+        if self.ver == BUTIA_1:
+            return self.callModule('grises' + str(number), 'getValue')
+        else:
+            return self.callModule('grey:' + str(number), 'getValue')
 
     # return the value of the temperature sensor
     def getTemperature(self, number=''):
-        return self.callModule('temp' + str(number), 'getTemp')
+        if self.ver == BUTIA_1:
+            return self.callModule('temp' + str(number), 'getValue')
+        else:
+            return self.callModule('temp:' + str(number), 'getValue')
 
     # return the value of the vibration sensor
     def getVibration(self, number=''):
-        return self.callModule('vibra' + str(number), 'getVibra')
+        if self.ver == BUTIA_1:
+            return self.callModule('vibra' + str(number), 'getValue')
+        else:
+            return self.callModule('vibra:' + str(number), 'getValue')
+
+    # return the value of the resistance sensor
+    def getResistance(self, number=''):
+        if self.ver == BUTIA_1:
+            return self.callModule('resist' + str(number), 'getValue') #TODO implement
+        else:
+            return self.callModule('resist:' + str(number), 'getValue')
 
     # return the value of the tilt sensor
     def getTilt(self, number=''):
-        return self.callModule('tilt' + str(number), 'getTilt')
+        if self.ver == BUTIA_1:
+            return self.callModule('tilt' + str(number), 'getValue')
+        else:
+            return self.callModule('tilt:' + str(number), 'getValue')
 
     # FIXME: the name of the module and the function...
     # return the value of the capacitive touch sensor
     def getCapacitive(self, number=''):
-        return self.callModule('capacitive' + str(number), 'getCapa')
+        if self.ver == BUTIA_1:
+            return self.callModule('capacitive' + str(number), 'getValue')
+        else:
+            return self.callModule('capacitive:' + str(number), 'getValue')
 
     # return the value of the magnetic induction sensor
     def getMagneticInduction(self, number=''):
-        return self.callModule('magnet' + str(number), 'getCampo')
+        if self.ver == BUTIA_1:
+            return self.callModule('magnet' + self.aux + str(number), 'getValue')
+        else:
+            return self.callModule('magnet:' + self.aux + str(number), 'getValue')
 
     # set the led intensity
-    def setLed(self, number= '', nivel = 255):
-        return self.callModule('led' + str(number), 'setLight', str(math.trunc(nivel)))
+    def setLed(self, nivel = 255, number= ''):
+        if self.ver == BUTIA_1:
+            return self.callModule('led' + self.aux + str(number), 'setLight', str(math.trunc(nivel)))
+        else:
+            return self.callModule('led:' + self.aux + str(number), 'setLight', str(math.trunc(nivel)))
 
     # FIXME: check the lenght of text?
     # write a text in LCD display
