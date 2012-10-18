@@ -37,7 +37,7 @@ class Robot(object):
     def __init__(self, tamanioc):
         self.z1 = tamanioc[0] / 15.0
         self.z2 = tamanioc[1] / 3.0
-        self.vel_anterior = (0, 0, 0, 0)
+        self.vel_actual = (0, 0, 0, 0)
         self.butia = None
         self.bobot = None
         self.bobot_launch()
@@ -51,7 +51,7 @@ class Robot(object):
         else:
             try:
                 print 'creating bobot'
-                self.bobot = subprocess.Popen(['./lua', 'bobot-server.lua'], cwd='./lib/butia_support')
+                self.bobot = subprocess.Popen(['./lua', 'bobot-server.lua'], cwd='./lib/support')
             except:
                 print 'ERROR creating bobot'
 
@@ -69,8 +69,6 @@ class Robot(object):
     def move_robot(self, pos):
 
         x,y = pos
-
-        vel_actual = (0, 0, 0, 0)
 
         if (x >= 0) and (x <= (2*self.z1)):
             if (y >= 0) and (y <= self.z2) :
@@ -133,9 +131,6 @@ class Robot(object):
                 vel_actual = (0, 600, 0, 900)
 
 
-        # para evitar envios de velocidad innecesarios al robot
-        if not(vel_actual == self.vel_anterior):
-            self.vel_anterior = vel_actual
-            self.butia.set2MotorSpeed(str(vel_actual[0]), str(vel_actual[1]), str(vel_actual[2]), str(vel_actual[3]))
+        self.butia.set2MotorSpeed(str(vel_actual[0]), str(vel_actual[1]), str(vel_actual[2]), str(vel_actual[3]))
 
 
