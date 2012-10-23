@@ -133,4 +133,6 @@ class Robot(object):
 
         self.butia.set2MotorSpeed(str(vel_actual[0]), str(vel_actual[1]), str(vel_actual[2]), str(vel_actual[3]))
 
+    def stop_robot(self):
+        self.butia.set2MotorSpeed('0', '0', '0', '0')
 

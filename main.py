@@ -117,10 +117,10 @@ class Main:
                     if self.parent:
                         self.parent.put_color(self.colorC)
                 else:
-                    mask = self.c.get_position(self.colorC, self.threshold, self.pixels)
+                    mask, pos = self.c.get_position(self.colorC, self.threshold, self.pixels)
                     self.c.generate_capture_to_show()
                     if self.show:
-                        self.c.show_centroid_position(mask)
+                        self.c.show_centroid_position(pos)
                         if self.c.use_outline_view:
                             self.c.show_outline(mask)
                         if self.c.use_rects_view:

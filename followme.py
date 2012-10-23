@@ -134,7 +134,12 @@ class FollowMe(object):
             
         conexa = mascara.connected_component()
 
-        return conexa
+        if (conexa.count() > pixels):
+            x, y = conexa.centroid()
+        else:
+            x, y = (-1, -1)
+
+        return conexa, (x, y)
 
     def generate_capture_to_show(self):
         if self.use_threshold_view:
@@ -142,9 +147,8 @@ class FollowMe(object):
         else:
             self.captura_to_show = pygame.transform.scale(self.captura, (int(self.show_size[0]), int(self.show_size[1])))
 
-    def show_centroid_position(self, mask):
-        x, y = mask.centroid()
-        pygame.draw.rect(self.captura_to_show, (255,0,0), (x*self.c1, y*self.c2, 20, 20), 16)
+    def show_centroid_position(self, pos):
+        pygame.draw.rect(self.captura_to_show, (255,0,0), (pos[0]*self.c1, pos[1]*self.c2, 20, 20), 16)
 
     def show_outline(self, mask):
         points = mask.outline()
