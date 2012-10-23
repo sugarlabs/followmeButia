@@ -61,7 +61,6 @@ class FollowMe(object):
             try:
                 self.cam.start()
                 self.set_camera_flags()
-                self.tamanioc = self.cam.get_size()
                 self.captura = pygame.surface.Surface(self.tamanioc, 0, self.display)
                 self.captura_aux = pygame.surface.Surface(self.tamanioc, 0, self.display)
                 self.captura_aux2 = pygame.surface.Surface(self.tamanioc, 0, self.display)
@@ -75,6 +74,7 @@ class FollowMe(object):
         self.cam.set_controls(True, False, self.brightness)
         res = self.cam.get_controls()
         self.flip = res[0]
+        self.tamanioc = self.cam.get_size()
 
     def calc(self, tamanio):
         self.show_size = tamanio
@@ -106,20 +106,18 @@ class FollowMe(object):
         self.display.fill((84,185,72))
         self.captura_to_show = pygame.transform.scale(self.captura, (int(self.show_size[0]), int(self.show_size[1])))
         self.display.blit(self.captura_to_show, (self.xblit, self.yblit))
-        #FIXME: cambiar posición en función de la pantalla
-        
-        #rect = pygame.draw.rect(self.display, (255,0,0), (self.xcm,self.ycm,50,50), 4)
+
         pygame.draw.rect(self.display, (255,0,0), (self.xcm,self.ycm,50,50), 4)
 
         self.display.fill(color, (0,0,120,120))
         pygame.draw.rect(self.display, (0,0,0), (0,0,120,120), 4)
+
         return color
 
     def get_position(self, color, threshold, pixels):
         self.captura = self.cam.get_image(self.captura)
-
         if not(self.flip):
-            self.captura = pygame.transform.flip(self.captura,True,False)
+            self.captura = pygame.transform.flip(self.captura, True, False)
         
         if self.use_threshold_view:
             pygame.transform.threshold(self.captura_aux2, self.captura, color, (threshold[0],threshold[1], threshold[2]), (0,0,0))
@@ -129,44 +127,33 @@ class FollowMe(object):
             mascara = pygame.mask.from_threshold(self.captura, color, (10, 10, 10))
             
         conexa = mascara.connected_component()
-        #conexa = mascara.connected_components(pixels)
-        #print conexa
 
-        """if conexa == []:
-            return (-1)
-        else:
-            l = []
-            for p in conexa:
-                if p.count > pixels:
-                    l.append(p)
-            return l"""
         return conexa
 
     def show_position(self):
         
-
         if self.use_threshold_view:
             self.captura_to_show = pygame.transform.scale(self.captura_aux, (int(self.show_size[0]), int(self.show_size[1])))
         else:
             self.captura_to_show = pygame.transform.scale(self.captura, (int(self.show_size[0]), int(self.show_size[1])))
 
-    def show_position2(self, pos, color):
+    def show_position2(self, mask, color):
    
-        x, y = pos.centroid()
+        x, y = mask.centroid()
 
         pygame.draw.rect(self.captura_to_show, (255,0,0), (x*self.c1, y*self.c2, 20, 20), 16)
-        self.show_outline(pos)
-        self.show_rects(pos)
+        self.show_outline(mask)
+        self.show_rects(mask)
 
-    def show_outline(self, pos):
-        l = pos.outline()
-        for i in l:
-            pygame.draw.rect(self.captura_to_show, (0,0,255), (i[0]*self.c1, i[1]*self.c2, 5, 5), 5)
+    def show_outline(self, mask):
+        points = mask.outline()
+        for p in points:
+            pygame.draw.rect(self.captura_to_show, (0,0,255), (p[0]*self.c1, p[1]*self.c2, 5, 5), 5)
 
-    def show_rects(self, pos):
-        r = pos.get_bounding_rects()
-        for i in r:
-            pygame.draw.rect(self.captura_to_show, (0,255,0), (i[0]*self.c1, i[1]*self.c2, i[2]*self.c1, i[3]*self.c2), 5)
+    def show_rects(self, mask):
+        rects = mask.get_bounding_rects()
+        for r in rects:
+            pygame.draw.rect(self.captura_to_show, (0,255,0), (r[0]*self.c1, r[1]*self.c2, r[2]*self.c1, r[3]*self.c2), 5)
 
     def show_position3(self, color):
         self.display.fill((84,185,72))
