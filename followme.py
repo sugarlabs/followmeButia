@@ -33,7 +33,7 @@ from gettext import gettext as _
 
 class FollowMe(object):
 
-    def __init__(self, mode, parent):
+    def __init__(self, parent):
         
         pygame.init()
         pygame.camera.init()
@@ -42,19 +42,17 @@ class FollowMe(object):
         else:
             self.display = pygame.display.set_mode((1200, 900))
         self.use_threshold_view = True
+        self.use_outline_view = True
+        self.use_rects_view = True
         self.tamanioc = (320, 240)
         self.brightness = 128
         self.cam = None
-        self.get_camera(mode)
+        self.get_camera()
         self.calc((960, 720))
         self.show_grid = False
     
-    def get_camera(self, mode):
-        if self.cam:
-            try:
-                self.cam.stop()
-            except:
-                print _('Error in stop camera')
+    def get_camera(self, mode='RGB'):
+        self.stop_camera()
         self.lcamaras = pygame.camera.list_cameras()
         if self.lcamaras:
             self.cam = pygame.camera.Camera(self.lcamaras[0], self.tamanioc, mode)
@@ -69,6 +67,14 @@ class FollowMe(object):
                 print _('Error on initialization of the camera')
         else:
             print _('No cameras was found')
+
+    def stop_camera(self):
+        if self.cam:
+            try:
+                self.cam.stop()
+                self.cam = None
+            except:
+                print _('Error in stop camera')
 
     def set_camera_flags(self):
         self.cam.set_controls(True, False, self.brightness)
@@ -130,20 +136,15 @@ class FollowMe(object):
 
         return conexa
 
-    def show_position(self):
-        
+    def generate_capture_to_show(self):
         if self.use_threshold_view:
             self.captura_to_show = pygame.transform.scale(self.captura_aux, (int(self.show_size[0]), int(self.show_size[1])))
         else:
             self.captura_to_show = pygame.transform.scale(self.captura, (int(self.show_size[0]), int(self.show_size[1])))
 
-    def show_position2(self, mask, color):
-   
+    def show_centroid_position(self, mask):
         x, y = mask.centroid()
-
         pygame.draw.rect(self.captura_to_show, (255,0,0), (x*self.c1, y*self.c2, 20, 20), 16)
-        self.show_outline(mask)
-        self.show_rects(mask)
 
     def show_outline(self, mask):
         points = mask.outline()
@@ -155,13 +156,11 @@ class FollowMe(object):
         for r in rects:
             pygame.draw.rect(self.captura_to_show, (0,255,0), (r[0]*self.c1, r[1]*self.c2, r[2]*self.c1, r[3]*self.c2), 5)
 
-    def show_position3(self, color):
+    def show_in_screen(self, color):
         self.display.fill((84,185,72))
-
         if (self.show_grid == True):
             self.draw_grid()
         self.display.blit(self.captura_to_show, (self.xblit, self.yblit))
-        #self.display.fill(color, (0,0,120,120))
         pygame.draw.rect(self.display, (0,0,0), (0,0,120,120), 4)
 
     def draw_grid(self):
@@ -179,7 +178,5 @@ class FollowMe(object):
 
     def clean(self):
         self.display.fill((84, 185, 72))
-
-
 
 

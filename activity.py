@@ -55,6 +55,8 @@ class Activity(activity.Activity):
         self.show_capture = True
         self.calibrating = True
         self.use_threshold_view = True
+        self.use_outline_view = True
+        self.use_rects_view = True
         self.mode = 'RGB'
 
         self.followme_activity = main.Main(self)
@@ -353,7 +355,7 @@ class Activity(activity.Activity):
 
         item3 = gtk.ToolItem()
         label3 = gtk.Label()
-        label3.set_text(_('Show threshold view'))
+        label3.set_text(_('Threshold view'))
         item3.add(label3)
         barra_colors.insert(item3, -1)
 
@@ -361,6 +363,36 @@ class Activity(activity.Activity):
         threshold_view.connect('clicked', self.threshold_view)
         threshold_view.set_tooltip(_('Yes'))
         barra_colors.insert(threshold_view, -1)
+
+        separator3 = gtk.SeparatorToolItem()
+        separator3.props.draw = True
+        barra_colors.insert(separator3, -1)
+
+        item4 = gtk.ToolItem()
+        label4 = gtk.Label()
+        label4.set_text(_('Outline'))
+        item4.add(label4)
+        barra_colors.insert(item4, -1)
+
+        outline_view = ToolButton('media-playback-stop')
+        outline_view.connect('clicked', self.outline_view)
+        outline_view.set_tooltip(_('Yes'))
+        barra_colors.insert(outline_view, -1)
+
+        separator4 = gtk.SeparatorToolItem()
+        separator4.props.draw = True
+        barra_colors.insert(separator4, -1)
+
+        item5 = gtk.ToolItem()
+        label5 = gtk.Label()
+        label5.set_text(_('Rects'))
+        item5.add(label5)
+        barra_colors.insert(item5, -1)
+
+        rects_view = ToolButton('media-playback-stop')
+        rects_view.connect('clicked', self.rects_view)
+        rects_view.set_tooltip(_('Yes'))
+        barra_colors.insert(rects_view, -1)
 
         barra_colors.show_all()
         colors_button = ToolbarButton(label=_('Colors'),
@@ -404,6 +436,26 @@ class Activity(activity.Activity):
         self.use_threshold_view = not self.use_threshold_view
         self.followme_activity.put_threshold_view(self.use_threshold_view)
         if not self.use_threshold_view:
+            button.set_icon('media-playback-start')
+            button.set_tooltip(_('Yes'))
+        else:
+            button.set_icon('media-playback-stop')
+            button.set_tooltip(_('No'))
+
+    def outline_view(self, button):
+        self.use_outline_view = not self.use_outline_view
+        self.followme_activity.put_outline_view(self.use_outline_view)
+        if not self.use_outline_view:
+            button.set_icon('media-playback-start')
+            button.set_tooltip(_('Yes'))
+        else:
+            button.set_icon('media-playback-stop')
+            button.set_tooltip(_('No'))
+
+    def rects_view(self, button):
+        self.use_rects_view = not self.use_rects_view
+        self.followme_activity.put_rects_view(self.use_rects_view)
+        if not self.use_rects_view:
             button.set_icon('media-playback-start')
             button.set_tooltip(_('Yes'))
         else:

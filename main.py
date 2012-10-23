@@ -78,6 +78,12 @@ class Main:
     def put_threshold_view(self, view):
         self.c.use_threshold_view = view
 
+    def put_outline_view(self, outline):
+        self.c.use_outline_view = outline
+
+    def put_rects_view(self, rects):
+        self.c.use_rects_view = rects
+
     def put_brightness(self, brightness):
         self.c.brightness = brightness
         self.c.set_camera_flags()
@@ -90,16 +96,13 @@ class Main:
         self.show_size = (960, 720)
         self.show = True
         self.mode = 'RGB'
-        self.c = FollowMe(self.mode, self.parent)
+        self.c = FollowMe(self.parent)
         if (self.c.cam == None):
             while gtk.events_pending():
                 gtk.main_iteration()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    # salgo
                     break
-                #elif event.type == pygame.VIDEORESIZE:
-                #    pygame.display.set_mode(event.size, pygame.RESIZABLE)
         else:
             run = True            
             while run:
@@ -108,25 +111,28 @@ class Main:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         run = False
-                    #elif event.type == pygame.VIDEORESIZE:
-                    #    pygame.display.set_mode(event.size, pygame.RESIZABLE)
 
                 if (self.calibrating):
                     self.colorC = self.c.calibrate()
                     if self.parent:
                         self.parent.put_color(self.colorC)
                 else:
-                    pos = self.c.get_position(self.colorC, self.threshold, self.pixels)
-                    self.c.show_position()
-                    if self.show and not(pos == -1):
-                        #for p in pos:
-                        self.c.show_position2(pos, self.colorC)
-                    self.c.show_position3(self.colorC)
+                    mask = self.c.get_position(self.colorC, self.threshold, self.pixels)
+                    self.c.generate_capture_to_show()
+                    if self.show:
+                        self.c.show_centroid_position(mask)
+                        if self.c.use_outline_view:
+                            self.c.show_outline(mask)
+                        if self.c.use_rects_view:
+                            self.c.show_rects(mask)
+                        self.c.show_in_screen(self.colorC)
                     if (self.r != None and self.r.modules != []):
                         self.r.move_robot(pos)
 
                 pygame.display.flip()
                 self.clock.tick(10)
+
+        self.c.stop_camera()
 
         if self.r:
             if self.r.butia:
@@ -134,10 +140,5 @@ class Main:
                 self.r.butia.closeService()
             if self.r.bobot:
                 self.r.bobot.kill()
-        if self.c.cam:
-            try:
-                self.cam.stop()
-            except:
-                pass
 
 
