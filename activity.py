@@ -52,7 +52,6 @@ class Activity(activity.Activity):
         self.colorC = (255, 255, 255)
         self.show_size = (960.0, 720.0)
         self.show_grid = False
-        self.show_capture = True
         self.calibrating = True
         self.use_threshold_view = True
         self.use_outline_view = True
@@ -291,21 +290,6 @@ class Activity(activity.Activity):
         grid.connect('clicked', self.grid_click)
         resolution_bar.insert(grid, -1)
 
-        separador2 = gtk.SeparatorToolItem()
-        separador2.props.draw = True
-        resolution_bar.insert(separador2, -1)
-
-        item6 = gtk.ToolItem()
-        label6 = gtk.Label()
-        label6.set_text(' ' + _('Show captures') + ' ')
-        item6.add(label6)
-        resolution_bar.insert(item6, -1)
-
-        stop_show = ToolButton('media-playback-stop')
-        stop_show.connect('clicked', self.stop_show)
-        stop_show.set_tooltip(_('Hide'))
-        resolution_bar.insert(stop_show, -1)
-
         resolution_bar.show_all()
         resolution_button = ToolbarButton(label=_('Resolution'),
                 page=resolution_bar,
@@ -537,16 +521,6 @@ class Activity(activity.Activity):
     def grid_click(self, button):
         self.show_grid = not self.show_grid
         self.followme_activity.put_grid(self.show_grid)
-
-    def stop_show(self, button):
-        self.show = not self.show
-        if self.show:
-            button.set_icon('media-playback-stop')
-            button.set_tooltip(_('Hide'))
-        else:
-            button.set_icon('media-playback-start')
-            button.set_tooltip(_('Show'))
-        self.followme_activity.put_show(self.show)
 
 
 class Combo(gtk.ComboBox):

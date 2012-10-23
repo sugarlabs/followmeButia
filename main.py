@@ -45,9 +45,7 @@ class Main:
         self.calibrating = calibrating
         if self.calibrating:
             if (self.r != None and self.r.modules != []):
-                self.r.butia.set2MotorSpeed('0', '0', '0', '0')
-        if (self.show == False):
-            self.c.limpiar()
+                self.r.stop_robot()
 
     def put_threshold(self, threshold):
         self.threshold = threshold
@@ -65,11 +63,6 @@ class Main:
 
     def put_grid(self, grid):
         self.c.show_grid = grid
-
-    def put_show(self, show):
-        self.show = show
-        if (self.show == False):
-            self.c.clean()
 
     def put_color_mode(self, mode):
         self.mode = mode
@@ -94,7 +87,6 @@ class Main:
         self.colorC = (255, 255, 255)
         self.pixels = 10
         self.show_size = (960, 720)
-        self.show = True
         self.mode = 'RGB'
         self.c = FollowMe(self.parent)
         if (self.c.cam == None):
@@ -119,13 +111,12 @@ class Main:
                 else:
                     mask, pos = self.c.get_position(self.colorC, self.threshold, self.pixels)
                     self.c.generate_capture_to_show()
-                    if self.show:
-                        self.c.show_centroid_position(pos)
-                        if self.c.use_outline_view:
-                            self.c.show_outline(mask)
-                        if self.c.use_rects_view:
-                            self.c.show_rects(mask)
-                        self.c.show_in_screen(self.colorC)
+                    self.c.show_centroid_position(pos)
+                    if self.c.use_outline_view:
+                        self.c.show_outline(mask)
+                    if self.c.use_rects_view:
+                        self.c.show_rects(mask)
+                    self.c.show_in_screen(self.colorC)
                     if (self.r != None and self.r.modules != []):
                         self.r.move_robot(pos)
 
