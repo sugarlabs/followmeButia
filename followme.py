@@ -30,9 +30,6 @@ import pygame
 import pygame.camera
 from gettext import gettext as _
 
-# seteamos el tamaño de captura
-tamanioc = (320, 240)
-
 
 class FollowMe(object):
 
@@ -45,6 +42,7 @@ class FollowMe(object):
         else:
             self.display = pygame.display.set_mode((1200, 900))
         self.use_threshold_view = True
+        self.tamanioc = (320, 240)
         self.brightness = 128
         self.cam = None
         self.get_camera(mode)
@@ -52,7 +50,6 @@ class FollowMe(object):
         self.show_grid = False
     
     def get_camera(self, mode):
-        global tamanioc
         if self.cam:
             try:
                 self.cam.stop()
@@ -60,15 +57,15 @@ class FollowMe(object):
                 print _('Error in stop camera')
         self.lcamaras = pygame.camera.list_cameras()
         if self.lcamaras:
-            self.cam = pygame.camera.Camera(self.lcamaras[0], tamanioc, mode)
+            self.cam = pygame.camera.Camera(self.lcamaras[0], self.tamanioc, mode)
             try:
                 self.cam.start()
                 self.set_camera_flags()
-                tamanioc = self.cam.get_size()
-                self.captura = pygame.surface.Surface(tamanioc, 0, self.display)
-                self.captura_aux = pygame.surface.Surface(tamanioc, 0, self.display)
-                self.captura_aux2 = pygame.surface.Surface(tamanioc, 0, self.display)
-                self.captura_to_show = pygame.surface.Surface(tamanioc, 0, self.display)
+                self.tamanioc = self.cam.get_size()
+                self.captura = pygame.surface.Surface(self.tamanioc, 0, self.display)
+                self.captura_aux = pygame.surface.Surface(self.tamanioc, 0, self.display)
+                self.captura_aux2 = pygame.surface.Surface(self.tamanioc, 0, self.display)
+                self.captura_to_show = pygame.surface.Surface(self.tamanioc, 0, self.display)
             except:
                 print _('Error on initialization of the camera')
         else:
@@ -82,18 +79,18 @@ class FollowMe(object):
     def calc(self, tamanio):
         self.show_size = tamanio
         pantalla_x, pantalla_y = self.display.get_size()
-        self.c1 = (self.show_size[0] / tamanioc[0])
-        self.c2 = (self.show_size[1] / tamanioc[1])
-        self.xc = (tamanioc[0] - 50) / 2.0
-        self.yc = (tamanioc[1] - 50) / 2.0
+        self.c1 = (self.show_size[0] / self.tamanioc[0])
+        self.c2 = (self.show_size[1] / self.tamanioc[1])
+        self.xc = (self.tamanioc[0] - 50) / 2.0
+        self.yc = (self.tamanioc[1] - 50) / 2.0
         self.xcm = (pantalla_x - 50) / 2.0
         self.ycm = (pantalla_y - 50) / 2.0
         self.xblit = (pantalla_x - self.show_size[0]) / 2
         self.yblit = (pantalla_y - self.show_size[1]) / 2
         self.txd = self.show_size[0] / 15.0
         self.tyd = self.show_size[1] / 3.0
-        self.x_c_square = int(tamanioc[0] / 2)
-        self.y_c_square = int(tamanioc[1] / 2)
+        self.x_c_square = int(self.tamanioc[0] / 2)
+        self.y_c_square = int(self.tamanioc[1] / 2)
 
     def calibrate(self):
         self.captura = self.cam.get_image(self.captura)
