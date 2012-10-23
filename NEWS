@@ -1,3 +1,10 @@
+8
+*Se agrega butiaAPI para butia 1.0 y 2.0
+*Se agrega vista de "outline"
+*Se agrega vista de "rects"
+*Se corrigen varios bugs
+*Se separa FollowMe como libreria aparte
+
 7
 * Se agrega posibilidad de setear el brillo a la cámara.
 
