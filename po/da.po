@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-27 14:56-0400\n"
-"PO-Revision-Date: 2012-10-04 14:04+0200\n"
+"POT-Creation-Date: 2012-10-24 00:32-0400\n"
+"PO-Revision-Date: 2012-10-25 03:39+0200\n"
 "Last-Translator: Aputsiaq Niels <aj@isit.gl>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: da\n"
@@ -34,23 +34,23 @@ msgstr "<Ctrl>Q"
 msgid "Calibrate/Follow"
 msgstr "Kalibrér/følg"
 
-#: activity.py:107 activity.py:484
+#: activity.py:107 activity.py:519
 msgid "Stop"
 msgstr "Stop"
 
-#: activity.py:118 activity.py:376 activity.py:385 activity.py:394
+#: activity.py:118 activity.py:391 activity.py:400 activity.py:409
 msgid "Calibrated color:"
 msgstr "Kalibreret farve:"
 
-#: activity.py:118 activity.py:194 activity.py:376 activity.py:380
+#: activity.py:118 activity.py:194 activity.py:391 activity.py:395
 msgid "Red"
 msgstr "Rød"
 
-#: activity.py:133 activity.py:209 activity.py:377 activity.py:381
+#: activity.py:133 activity.py:209 activity.py:392 activity.py:396
 msgid "Green"
 msgstr "Grøn"
 
-#: activity.py:148 activity.py:224 activity.py:378 activity.py:382
+#: activity.py:148 activity.py:224 activity.py:393 activity.py:397
 msgid "Blue"
 msgstr "Blå"
 
@@ -62,7 +62,7 @@ msgstr "Kalibrér"
 msgid "Pixels"
 msgstr "Billedpunkter"
 
-#: activity.py:194 activity.py:380 activity.py:389 activity.py:398
+#: activity.py:194 activity.py:395 activity.py:404 activity.py:413
 msgid "Threshold:"
 msgstr "Grænseværdi:"
 
@@ -78,89 +78,98 @@ msgstr "Vis størrelse"
 msgid "Show grid"
 msgstr "Vis gitter"
 
-#: activity.py:299
-msgid "Show captures"
-msgstr "Vis optagelser"
-
-#: activity.py:305 activity.py:494
-msgid "Hide"
-msgstr "Skjul"
-
-#: activity.py:309
+#: activity.py:294
 msgid "Resolution"
 msgstr "Opløsning"
 
-#: activity.py:321
+#: activity.py:306
 msgid "Color mode"
 msgstr "Farvetilstand"
 
-#: activity.py:338
+#: activity.py:323
 msgid "Brightness"
 msgstr "Lysstyrke"
 
-#: activity.py:357
-msgid "Show threshold view"
-msgstr "Vis grænseværdi-visning"
+#: activity.py:342
+msgid "Threshold view"
+msgstr "Visning af grænseværdi"
 
-#: activity.py:363 activity.py:409
+#: activity.py:348 activity.py:363 activity.py:378 activity.py:424
+#: activity.py:434 activity.py:444
 msgid "Yes"
 msgstr "Ja"
 
-#: activity.py:367
+#: activity.py:357
+msgid "Outline"
+msgstr "Skitsering"
+
+#: activity.py:372
+msgid "Rects"
+msgstr "Rektangler"
+
+#: activity.py:382
 msgid "Colors"
 msgstr "Farver"
 
-#: activity.py:385 activity.py:389
+#: activity.py:400 activity.py:404
 msgid "Luma"
 msgstr "Luma"
 
-#: activity.py:386 activity.py:390
+#: activity.py:401 activity.py:405
 msgid "U"
 msgstr "U"
 
-#: activity.py:387 activity.py:391
+#: activity.py:402 activity.py:406
 msgid "V"
 msgstr "V"
 
-#: activity.py:394 activity.py:398
+#: activity.py:409 activity.py:413
 msgid "Hue"
 msgstr "Tone"
 
-#: activity.py:395 activity.py:399
+#: activity.py:410 activity.py:414
 msgid "Saturation"
 msgstr "Mætning"
 
-#: activity.py:396 activity.py:400
+#: activity.py:411 activity.py:415
 msgid "Value"
 msgstr "Værdi"
 
-#: activity.py:412
+#: activity.py:427 activity.py:437 activity.py:447
 msgid "No"
 msgstr "Nej"
 
-#: activity.py:481
+#: activity.py:516
 msgid "Start"
 msgstr "Start"
 
-#: activity.py:497
-msgid "Show"
-msgstr "Vis"
-
-#: followme.py:66
-msgid "Error in stop camera"
-msgstr "Fejl ved stop af kamera"
-
-#: followme.py:78
+#: followme.py:67
 msgid "Error on initialization of the camera"
 msgstr "Fejl ved initialisering af kameraet"
 
-#: followme.py:80
+#: followme.py:69
 msgid "No cameras was found"
 msgstr "Der blev ikke fundet et kamera"
 
-#: followme.py:201
+#: followme.py:77
+msgid "Error in stop camera"
+msgstr "Fejl ved stop af kamera"
+
+#: robot.py:67
 msgid "Butia robot was not detected"
 msgstr "Butia-robot blev ikke registereret"
+
+#~ msgid "Show captures"
+#~ msgstr "Vis optagelser"
+
+#~ msgid "Hide"
+#~ msgstr "Skjul"
+
+#~ msgid "Show threshold view"
+#~ msgstr "Vis grænseværdi-visning"
+
+#~ msgid "Show"
+#~ msgstr "Vis"
 
 #~ msgid "Camera was not found"
 #~ msgstr "Kamera blev ikke fundet"
