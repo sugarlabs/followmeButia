@@ -108,7 +108,7 @@ class Robot(object):
             if (y >= 0) and (y <= self.z2) :
                 vel_actual = (1, 0, 1, 300)
             elif (y > self.z2) and (y < 2*self.z2):
-                vel_actual = (0, 300, 1, 300)
+                vel_actual = (1, 300, 0, 300)
             elif (y >= 2*self.z2):
                 vel_actual = (0, 0, 0, 300)
 
@@ -117,7 +117,7 @@ class Robot(object):
             if (y >= 0) and (y <= self.z2) :
                 vel_actual = (1, 300, 1, 600)
             elif (y > self.z2) and (y < 2*self.z2):
-                vel_actual = (0, 600, 1, 600)
+                vel_actual = (1, 600, 0, 600)
             elif (y >= 2*self.z2):
                 vel_actual = (0, 300, 0, 600)
 
@@ -126,7 +126,7 @@ class Robot(object):
             if (y >= 0) and (y <= self.z2) :
                 vel_actual = (1, 600, 1, 900)
             elif (y > self.z2) and (y < 2*self.z2):
-                vel_actual = (0, 900, 1, 900)
+                vel_actual = (1, 900, 0, 900)
             elif (y >= 2*self.z2):
                 vel_actual = (0, 600, 0, 900)
 
