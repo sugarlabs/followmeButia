@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-27 14:56-0400\n"
-"PO-Revision-Date: 2012-10-06 05:24+0200\n"
-"Last-Translator: lite <litekok@gmail.com>\n"
+"POT-Creation-Date: 2012-10-24 00:32-0400\n"
+"PO-Revision-Date: 2012-11-04 10:13+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
@@ -34,23 +34,23 @@ msgstr "<Ctrl>Q"
 msgid "Calibrate/Follow"
 msgstr "校准/跟随"
 
-#: activity.py:107 activity.py:484
+#: activity.py:107 activity.py:519
 msgid "Stop"
 msgstr "停止"
 
-#: activity.py:118 activity.py:376 activity.py:385 activity.py:394
+#: activity.py:118 activity.py:391 activity.py:400 activity.py:409
 msgid "Calibrated color:"
 msgstr "校准颜色："
 
-#: activity.py:118 activity.py:194 activity.py:376 activity.py:380
+#: activity.py:118 activity.py:194 activity.py:391 activity.py:395
 msgid "Red"
 msgstr "红"
 
-#: activity.py:133 activity.py:209 activity.py:377 activity.py:381
+#: activity.py:133 activity.py:209 activity.py:392 activity.py:396
 msgid "Green"
 msgstr "绿"
 
-#: activity.py:148 activity.py:224 activity.py:378 activity.py:382
+#: activity.py:148 activity.py:224 activity.py:393 activity.py:397
 msgid "Blue"
 msgstr "蓝"
 
@@ -62,7 +62,7 @@ msgstr "校准"
 msgid "Pixels"
 msgstr "像素"
 
-#: activity.py:194 activity.py:380 activity.py:389 activity.py:398
+#: activity.py:194 activity.py:395 activity.py:404 activity.py:413
 msgid "Threshold:"
 msgstr "阈值"
 
@@ -78,89 +78,98 @@ msgstr "显示大小"
 msgid "Show grid"
 msgstr "显示网格"
 
-#: activity.py:299
-msgid "Show captures"
-msgstr "显示捕获"
-
-#: activity.py:305 activity.py:494
-msgid "Hide"
-msgstr "隐藏"
-
-#: activity.py:309
+#: activity.py:294
 msgid "Resolution"
 msgstr "分辨率"
 
-#: activity.py:321
+#: activity.py:306
 msgid "Color mode"
 msgstr "颜色模式"
 
-#: activity.py:338
+#: activity.py:323
 msgid "Brightness"
 msgstr "亮度"
 
-#: activity.py:357
-msgid "Show threshold view"
-msgstr "显示阈值视图"
+#: activity.py:342
+msgid "Threshold view"
+msgstr "阈值视图"
 
-#: activity.py:363 activity.py:409
+#: activity.py:348 activity.py:363 activity.py:378 activity.py:424
+#: activity.py:434 activity.py:444
 msgid "Yes"
 msgstr "是"
 
-#: activity.py:367
+#: activity.py:357
+msgid "Outline"
+msgstr "概述"
+
+#: activity.py:372
+msgid "Rects"
+msgstr "方框"
+
+#: activity.py:382
 msgid "Colors"
 msgstr "颜色"
 
-#: activity.py:385 activity.py:389
+#: activity.py:400 activity.py:404
 msgid "Luma"
 msgstr "亮度"
 
-#: activity.py:386 activity.py:390
+#: activity.py:401 activity.py:405
 msgid "U"
 msgstr "U"
 
-#: activity.py:387 activity.py:391
+#: activity.py:402 activity.py:406
 msgid "V"
 msgstr "V"
 
-#: activity.py:394 activity.py:398
+#: activity.py:409 activity.py:413
 msgid "Hue"
 msgstr "色调"
 
-#: activity.py:395 activity.py:399
+#: activity.py:410 activity.py:414
 msgid "Saturation"
 msgstr "饱和"
 
-#: activity.py:396 activity.py:400
+#: activity.py:411 activity.py:415
 msgid "Value"
 msgstr "值"
 
-#: activity.py:412
+#: activity.py:427 activity.py:437 activity.py:447
 msgid "No"
 msgstr "否"
 
-#: activity.py:481
+#: activity.py:516
 msgid "Start"
 msgstr "开始"
 
-#: activity.py:497
-msgid "Show"
-msgstr "显示"
-
-#: followme.py:66
-msgid "Error in stop camera"
-msgstr "停止摄像头出错"
-
-#: followme.py:78
+#: followme.py:67
 msgid "Error on initialization of the camera"
 msgstr "摄像头初始化出错"
 
-#: followme.py:80
+#: followme.py:69
 msgid "No cameras was found"
 msgstr "没有找到摄像头"
 
-#: followme.py:201
+#: followme.py:77
+msgid "Error in stop camera"
+msgstr "停止摄像头出错"
+
+#: robot.py:67
 msgid "Butia robot was not detected"
 msgstr "没检测到机器人布提"
+
+#~ msgid "Show captures"
+#~ msgstr "显示捕获"
+
+#~ msgid "Hide"
+#~ msgstr "隐藏"
+
+#~ msgid "Show threshold view"
+#~ msgstr "显示阈值视图"
+
+#~ msgid "Show"
+#~ msgstr "显示"
 
 #~ msgid "Camera was not found"
 #~ msgstr "没找到摄像头"
