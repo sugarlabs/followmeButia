@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # FollowMe Butia - Robot
-# Copyright (C) 2010, 2011, 2012
+# Copyright (C) 2010-2013
 # This program was created to use with the robot Butia.
 # Butia is a project from Facultad de Ingenieria - Uruguay
 # Facultad de Ingenieria web site: <http://www.fing.edu.uy/>
@@ -28,7 +28,7 @@
 
 import time
 import commands
-import butiaAPI
+from pybot import usb4butia
 import subprocess
 from gettext import gettext as _
 
@@ -45,19 +45,8 @@ class Robot(object):
     def bobot_launch(self):
 
         print 'Initialising butia...'
-        output = commands.getoutput('ps -ax | grep lua')
-        if 'bobot-server' in output:
-            print 'bobot is alive!'
-        else:
-            try:
-                print 'creating bobot'
-                self.bobot = subprocess.Popen(['./lua', 'bobot-server.lua'], cwd='./lib/support')
-            except:
-                print 'ERROR creating bobot'
 
-        time.sleep(1)
-
-        self.butia = butiaAPI.robot()
+        self.butia = usb4butia.USB4Butia()
 
         self.modules = self.butia.get_modules_list()
 
@@ -131,8 +120,8 @@ class Robot(object):
                 vel_actual = (0, 600, 0, 900)
 
 
-        self.butia.set2MotorSpeed(str(vel_actual[0]), str(vel_actual[1]), str(vel_actual[2]), str(vel_actual[3]))
+        self.butia.set2MotorSpeed(vel_actual[0], vel_actual[1], vel_actual[2], vel_actual[3])
 
     def stop_robot(self):
-        self.butia.set2MotorSpeed('0', '0', '0', '0')
+        self.butia.set2MotorSpeed(0, 0, 0, 0)
 

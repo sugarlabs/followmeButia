@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # FollowMe Butia
-# Copyright (C) 2010, 2011, 2012
+# Copyright (C) 2010-2013
 # This program was created to use with the robot Butia.
 # Butia is a project from Facultad de Ingenieria - Uruguay
 # Facultad de Ingenieria web site: <http://www.fing.edu.uy/>
