@@ -27,8 +27,6 @@
 # Rodrigo Dearmas <piegrande46@hotmail.com>
 
 
-import sys
-sys.path.insert(0, "lib")
 import gtk
 from sugar.activity import activity
 from sugar.graphics.toolbarbox import ToolbarBox
