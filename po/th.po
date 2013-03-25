@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-27 14:56-0400\n"
+"POT-Creation-Date: 2012-10-24 00:32-0400\n"
 "PO-Revision-Date: 2012-03-08 12:11+0200\n"
 "Last-Translator: Meechai <malaku38@hotmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,23 +34,23 @@ msgstr ""
 msgid "Calibrate/Follow"
 msgstr "เปรียบเทียบ/ทำตาม"
 
-#: activity.py:107 activity.py:484
+#: activity.py:107 activity.py:519
 msgid "Stop"
 msgstr "หยุด"
 
-#: activity.py:118 activity.py:376 activity.py:385 activity.py:394
+#: activity.py:118 activity.py:391 activity.py:400 activity.py:409
 msgid "Calibrated color:"
 msgstr "เปรียบเทียบสี:"
 
-#: activity.py:118 activity.py:194 activity.py:376 activity.py:380
+#: activity.py:118 activity.py:194 activity.py:391 activity.py:395
 msgid "Red"
 msgstr "สีแดง"
 
-#: activity.py:133 activity.py:209 activity.py:377 activity.py:381
+#: activity.py:133 activity.py:209 activity.py:392 activity.py:396
 msgid "Green"
 msgstr "สีเขียว"
 
-#: activity.py:148 activity.py:224 activity.py:378 activity.py:382
+#: activity.py:148 activity.py:224 activity.py:393 activity.py:397
 msgid "Blue"
 msgstr "สีน้ำเงิน"
 
@@ -62,7 +62,7 @@ msgstr "เปรียบเทียบ"
 msgid "Pixels"
 msgstr "พิกเซล"
 
-#: activity.py:194 activity.py:380 activity.py:389 activity.py:398
+#: activity.py:194 activity.py:395 activity.py:404 activity.py:413
 msgid "Threshold:"
 msgstr "จุดเริ่มต้น:"
 
@@ -78,89 +78,95 @@ msgstr "แสดงขนาด"
 msgid "Show grid"
 msgstr "แสดงเส้นตาราง"
 
-#: activity.py:299
-msgid "Show captures"
-msgstr "แสดงภาพที่ถ่ายไว้"
-
-#: activity.py:305 activity.py:494
-msgid "Hide"
-msgstr "ซ่อน"
-
-#: activity.py:309
+#: activity.py:294
 msgid "Resolution"
 msgstr "ความละเอียด"
 
-#: activity.py:321
+#: activity.py:306
 msgid "Color mode"
 msgstr ""
 
-#: activity.py:338
+#: activity.py:323
 msgid "Brightness"
 msgstr ""
 
-#: activity.py:357
-msgid "Show threshold view"
+#: activity.py:342
+msgid "Threshold view"
 msgstr ""
 
-#: activity.py:363 activity.py:409
+#: activity.py:348 activity.py:363 activity.py:378 activity.py:424
+#: activity.py:434 activity.py:444
 msgid "Yes"
 msgstr ""
 
-#: activity.py:367
+#: activity.py:357
+msgid "Outline"
+msgstr ""
+
+#: activity.py:372
+msgid "Rects"
+msgstr ""
+
+#: activity.py:382
 msgid "Colors"
 msgstr ""
 
-#: activity.py:385 activity.py:389
+#: activity.py:400 activity.py:404
 msgid "Luma"
 msgstr ""
 
-#: activity.py:386 activity.py:390
+#: activity.py:401 activity.py:405
 msgid "U"
 msgstr ""
 
-#: activity.py:387 activity.py:391
+#: activity.py:402 activity.py:406
 msgid "V"
 msgstr ""
 
-#: activity.py:394 activity.py:398
+#: activity.py:409 activity.py:413
 msgid "Hue"
 msgstr ""
 
-#: activity.py:395 activity.py:399
+#: activity.py:410 activity.py:414
 msgid "Saturation"
 msgstr ""
 
-#: activity.py:396 activity.py:400
+#: activity.py:411 activity.py:415
 msgid "Value"
 msgstr ""
 
-#: activity.py:412
+#: activity.py:427 activity.py:437 activity.py:447
 msgid "No"
 msgstr ""
 
-#: activity.py:481
+#: activity.py:516
 msgid "Start"
 msgstr "เริ่ม"
 
-#: activity.py:497
-msgid "Show"
-msgstr "แสดง"
-
-#: followme.py:66
-msgid "Error in stop camera"
-msgstr ""
-
-#: followme.py:78
+#: followme.py:67
 msgid "Error on initialization of the camera"
 msgstr "เกิดข้อผิดพลาดขณะใช้งานของกล้อง"
 
-#: followme.py:80
+#: followme.py:69
 msgid "No cameras was found"
 msgstr ""
 
-#: followme.py:201
+#: followme.py:77
+msgid "Error in stop camera"
+msgstr ""
+
+#: robot.py:67
 msgid "Butia robot was not detected"
 msgstr "ตรวจไม่พบหุ่นยนต์ Butia"
+
+#~ msgid "Show captures"
+#~ msgstr "แสดงภาพที่ถ่ายไว้"
+
+#~ msgid "Hide"
+#~ msgstr "ซ่อน"
+
+#~ msgid "Show"
+#~ msgstr "แสดง"
 
 #~ msgid "Camera was not found"
 #~ msgstr "ไม่พบกล้อง"
