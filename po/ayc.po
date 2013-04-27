@@ -2,159 +2,159 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-24 00:32-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2013-04-25 02:40+0200\n"
+"Last-Translator: EdgarQuispeChambi <quispedgar@yahoo.es>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: ayc\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
 
 #. TRANS: "name" option from activity.info file
 msgid "FollowMe Butia"
-msgstr ""
+msgstr "FollowMe Butiá wakichata"
 
 #. TRANS: "summary" option from activity.info file
 #. TRANS: "description" option from activity.info file
 msgid "An object tracker activity"
-msgstr ""
+msgstr "Yänakaru arkiri luräwi"
 
 #: activity.py:87
 msgid "<Ctrl>Q"
-msgstr ""
+msgstr "<Ctrl>Q wakichata"
 
 #: activity.py:102
 msgid "Calibrate/Follow"
-msgstr ""
+msgstr "Millk'thapiña/Arkaña"
 
 #: activity.py:107 activity.py:519
 msgid "Stop"
-msgstr ""
+msgstr "Sayt'ayaña"
 
 #: activity.py:118 activity.py:391 activity.py:400 activity.py:409
 msgid "Calibrated color:"
-msgstr ""
+msgstr "Millk'thapita sami:"
 
 #: activity.py:118 activity.py:194 activity.py:391 activity.py:395
 msgid "Red"
-msgstr ""
+msgstr "Wila"
 
 #: activity.py:133 activity.py:209 activity.py:392 activity.py:396
 msgid "Green"
-msgstr ""
+msgstr "Ch'uxña"
 
 #: activity.py:148 activity.py:224 activity.py:393 activity.py:397
 msgid "Blue"
-msgstr ""
+msgstr "Larama"
 
 #: activity.py:162
 msgid "Calibrate"
-msgstr ""
+msgstr "Millk'thapiña"
 
 #: activity.py:175
 msgid "Pixels"
-msgstr ""
+msgstr "Samichirinaka"
 
 #: activity.py:194 activity.py:395 activity.py:404 activity.py:413
 msgid "Threshold:"
-msgstr ""
+msgstr "Thurinchiri:"
 
 #: activity.py:238
 msgid "Options"
-msgstr ""
+msgstr "Maya mayanaka"
 
 #: activity.py:251
 msgid "Show size"
-msgstr ""
+msgstr "Taña uñachayaña"
 
 #: activity.py:285
 msgid "Show grid"
-msgstr ""
+msgstr "Suk'u suk'u uñachayaña"
 
 #: activity.py:294
 msgid "Resolution"
-msgstr ""
+msgstr "Wali qhana"
 
 #: activity.py:306
 msgid "Color mode"
-msgstr ""
+msgstr "Samina uñanaqapa"
 
 #: activity.py:323
 msgid "Brightness"
-msgstr ""
+msgstr "lliphi"
 
 #: activity.py:342
 msgid "Threshold view"
-msgstr ""
+msgstr "Thurinchiri uñanaqa"
 
 #: activity.py:348 activity.py:363 activity.py:378 activity.py:424
 #: activity.py:434 activity.py:444
 msgid "Yes"
-msgstr ""
+msgstr "Jïsa"
 
 #: activity.py:357
 msgid "Outline"
-msgstr ""
+msgstr "Muyuqa"
 
 #: activity.py:372
 msgid "Rects"
-msgstr ""
+msgstr "Wiskhalla"
 
 #: activity.py:382
 msgid "Colors"
-msgstr ""
+msgstr "Saminaka"
 
 #: activity.py:400 activity.py:404
 msgid "Luma"
-msgstr ""
+msgstr "Luma quqa"
 
 #: activity.py:401 activity.py:405
 msgid "U"
-msgstr ""
+msgstr "U qillqa"
 
 #: activity.py:402 activity.py:406
 msgid "V"
-msgstr ""
+msgstr "V qillqa"
 
 #: activity.py:409 activity.py:413
 msgid "Hue"
-msgstr ""
+msgstr "Hue wakichata"
 
 #: activity.py:410 activity.py:414
 msgid "Saturation"
-msgstr ""
+msgstr "Ch'ajaqi"
 
 #: activity.py:411 activity.py:415
 msgid "Value"
-msgstr ""
+msgstr "Chani"
 
 #: activity.py:427 activity.py:437 activity.py:447
 msgid "No"
-msgstr ""
+msgstr "Janiwa"
 
 #: activity.py:516
 msgid "Start"
-msgstr ""
+msgstr "Qalltaña"
 
 #: followme.py:67
 msgid "Error on initialization of the camera"
-msgstr ""
+msgstr "Cámara wakichata qalltäwina pantjata"
 
 #: followme.py:69
 msgid "No cameras was found"
-msgstr ""
+msgstr "cámara wakichatanaka janiwa katuyasiti"
 
 #: followme.py:77
 msgid "Error in stop camera"
-msgstr ""
+msgstr "cámara wakichata sayt'ayañana pantjata"
 
 #: robot.py:67
 msgid "Butia robot was not detected"
-msgstr ""
+msgstr "uka robot Butiá janiwa katuyasiti"
