@@ -1,19 +1,19 @@
 
+import math
+
 RD_VERSION = 0x00
 GET_VALUE = 0x01
 
-f1 = {
-    'name': 'getVersion',
-    'call': RD_VERSION,
-    'params': 0,
-    'read': 3
-}
+VCC = 65536
 
-f2 = {
-    'name': 'getValue',
-    'call': GET_VALUE,
-    'params': 0,
-    'read': 3
-}
+def getVersion(dev):
+    dev.send([RD_VERSION])
+    raw = dev.read(3)
+    return raw[1] + raw[2] * 256
 
-FUNCTIONS = [f1, f2]
+def getValue(dev):
+    dev.send([GET_VALUE])
+    raw = dev.read(3)
+    volt = (raw[1] + raw[2] * 256) * 5.0 / VCC
+    return math.floor(volt * 1000.0) / 1000
+

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 #
+# Copyright (c) 2012-2013 Alan Aguiar alanjas@hotmail.com
 # Copyright (c) 2012-2013 Butiá Team butia@fing.edu.uy 
 # Butia is a free and open robotic platform
 # www.fing.edu.uy/inco/proyectos/butia
@@ -23,5 +24,9 @@
 import os
 import sys
 # Make sure that can import all files
-sys.path.insert(0, os.path.dirname(__file__))
+abs_path = os.path.abspath(os.path.dirname(__file__))
+sys.path.insert(0, abs_path)
+
+# version = 0.turtlebots_version.secondary_number
+__version__ = '0.21.0'
 

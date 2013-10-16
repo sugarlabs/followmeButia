@@ -3,6 +3,7 @@
 #
 # Device abstraction for USB4butia
 #
+# Copyright (c) 2012-2013 Alan Aguiar alanjas@hotmail.com
 # Copyright (c) 2012-2013 Butiá Team butia@fing.edu.uy 
 # Butia is a free and open robotic platform
 # www.fing.edu.uy/inco/proyectos/butia
@@ -26,12 +27,9 @@ NULL_BYTE = 0x00
 OPEN_COMMAND = 0x00
 CLOSE_COMMAND = 0x01
 HEADER_PACKET_SIZE = 0x06
-
 ADMIN_HANDLER_SEND_COMMAND = 0x00
-
 OPEN_RESPONSE_PACKET_SIZE = 5
-CLOSE_RESPONSE_PACKET_SIZE = 2
-
+CLOSE_RESPONSE_PACKET_SIZE = 5
 READ_HEADER_SIZE = 3
 MAX_BYTES = 64
 
@@ -39,116 +37,107 @@ ERROR = -1
 
 class Device():
 
-    def __init__(self, baseboard, name, handler=None):
+    def __init__(self, baseboard, name, handler=None, func=None):
         self.baseboard = baseboard
         self.name = name
         self.handler = handler
+        self.shifted = None
         if not(self.handler == None):
-            self.handler_tosend = self.handler * 8
-        self.functions = {}
+            self.shifted = self.handler * 8
+        self.functions = func
         self.debug = False
 
-    def add_functions(self, func_list):
-        """
-        Add the functions to current device
-        """
-        for f in func_list:
-            self.functions[f['name']] = f
+    def _debug(self, message, err=''):
+        if self.debug:
+            print message, err
 
-    def module_send(self, call, params_length, params):
+    def send(self, msg):
         """
         Send to the device the specifiy call and parameters
         """
-        if len(params) == 1:
-            if type(params[0]) == str:
-                params = to_ord(params[0])
-
-        send_packet_length = 0x04 + len(params)
-
-        w = []
-        w.append(self.handler_tosend)
-        w.append(send_packet_length)
-        w.append(NULL_BYTE)
-        w.append(call)
-        for p in params:
-            w.append(p)
-
+        w = [self.shifted, 0x03 + len(msg), NULL_BYTE] + msg
         self.baseboard.dev.write(w)
 
-    def module_read(self):
+    def read(self, lenght):
         """
         Read the device data
         """
-        raw = self.baseboard.dev.read(MAX_BYTES)
-        if self.debug:
-            print 'device:module_rad return', raw
-        if raw[1] == 5:
-            if raw[4] == 255:
-                return -1
-            else:
-                return raw[4]
-        elif raw[1] == 6:
-            return raw[4] + raw[5] * 256
-        else:
-            ret = ''
-            for r in raw[4:]:
-                if not(r == 0):
-                    ret = ret + chr(r)
-            return ret
+        raw = self.baseboard.dev.read(0x03 + lenght)
+        return raw[3:]
 
     def module_open(self):
         """
         Open this device. Return the handler
         """
-        module_name = to_ord(self.name)
-        module_name.append(0)
-        
-        open_packet_length = HEADER_PACKET_SIZE + len(module_name) 
+        module_name = self.to_ord(self.name)
+        module_name.append(NULL_BYTE)
 
-        module_in_endpoint  = 0x01
-        module_out_endpoint = 0x01
-
-        w = []
-        w.append(ADMIN_HANDLER_SEND_COMMAND)
-        w.append(open_packet_length)
+        w = [ADMIN_HANDLER_SEND_COMMAND]
+        w.append(HEADER_PACKET_SIZE + len(module_name))
         w.append(NULL_BYTE)
         w.append(OPEN_COMMAND)
-        w.append(module_in_endpoint)
-        w.append(module_out_endpoint)
-        w = w + module_name
-        self.baseboard.dev.write(w)
+        w.append(0x01)
+        w.append(0x01)
+        self.baseboard.dev.write(w + module_name)
 
         raw = self.baseboard.dev.read(OPEN_RESPONSE_PACKET_SIZE)
 
-        if self.debug:
-            print 'device:module_open return', raw
+        self._debug('device:module_open', raw)
 
-        h = raw[4]
-        self.handler = h
-        self.handler_tosend = self.handler * 8
-        return h
+        if not(raw[4] == 255):
+            self.handler = raw[4]
+            self.shifted = self.handler * 8
+            return self.handler
+        else:
+            self._debug('device:module_open:cannot open module:', self.name)
+            return 255
+
+    def module_close(self):
+        w = [ADMIN_HANDLER_SEND_COMMAND, 0x05, NULL_BYTE, CLOSE_COMMAND, self.handler]
+        self.baseboard.dev.write(w)
+        raw = self.baseboard.dev.read(CLOSE_RESPONSE_PACKET_SIZE)
+        return raw[4]
 
     def has_function(self, func):
         """
         Check if this device has func function
         """
-        return self.functions.has_key(func)
+        return hasattr(self.functions, func)
 
     def call_function(self, func, params):
         """
         Call specify func function with params parameters
         """
-        self.module_send(self.functions[func]['call'], self.functions[func]['params'], params)
-        return self.module_read()
+        f = getattr(self.functions, func)
+        if func == 'send':
+            return f(self, params)
+        else:
+            par = []
+            for e in params:
+                par.append(int(e))
+            if func == 'sendPacket':
+                return f(self, par)
+            else:
+                return f(self, *par)
 
-def to_ord(string):
-    """
-    Useful function to convert characters into ordinal Unicode
-    """
-    s = []
-    for l in string:
-        o = ord(l)
-        if not(o == 0):
-            s.append(o)
-    return s
+    def to_ord(self, string):
+        """
+        Useful function to convert characters into ordinal Unicode
+        """
+        s = []
+        for l in string:
+            o = ord(l)
+            if not(o == 0):
+                s.append(o)
+        return s
+
+    def to_text(self, raw):
+        """
+        Useful function to convert ordinal Unicode into text
+        """
+        ret = ''
+        for r in raw:
+            if not(r == 0):
+                ret = ret + chr(r)
+        return ret
 

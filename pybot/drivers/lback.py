@@ -2,18 +2,14 @@
 RD_VERSION = 0x00
 SEND_DATA = 0x01
 
-f1 = {
-    'name': 'getVersion',
-    'call': RD_VERSION,
-    'params': 0,
-    'read': 3
-}
+def getVersion(dev):
+    dev.send([RD_VERSION])
+    raw = dev.read(3)
+    return raw[1] + raw[2] * 256
 
-f2 = {
-    'name': 'send',
-    'call': SEND_DATA,
-    'params': 1,
-    'read': 1
-}
+def send(dev, data):
+    msg = [SEND_DATA] + dev.to_ord(data[0])
+    dev.send(msg)
+    raw = dev.read(len(msg))
+    return dev.to_text(raw[1:])
 
-FUNCTIONS = [f1, f2]

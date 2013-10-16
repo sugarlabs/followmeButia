@@ -3,6 +3,7 @@
 #
 # USB comunication with USB4butia (USB4all) board
 #
+# Copyright (c) 2012-2013 Alan Aguiar alanjas@hotmail.com
 # Copyright (c) 2012-2013 Butiá Team butia@fing.edu.uy 
 # Butia is a free and open robotic platform
 # www.fing.edu.uy/inco/proyectos/butia
@@ -20,7 +21,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
 
 import usb
 
@@ -41,48 +41,39 @@ ERROR = -1
 class usb_device():
 
     def __init__(self, dev):
-        self.device = dev
-        self.handle = None
-        self.debug = True
+        self.dev = dev
+        self.debug = False
+
+    def _debug(self, message, err=''):
+        if self.debug:
+            print message, err
 
     def open_device(self):
         """
         Open the baseboard, configure the interface
         """
         try:
-            self.handle = self.device.open()
-            self.handle.setConfiguration(USB4ALL_CONFIGURATION)
-            self.handle.claimInterface(USB4ALL_INTERFACE)
+            if self.dev.is_kernel_driver_active(USB4ALL_INTERFACE):
+                self.dev.detach_kernel_driver(USB4ALL_INTERFACE)
+            self.dev.set_configuration(USB4ALL_CONFIGURATION)
         except usb.USBError, err:
-            if self.debug:
-                print err
-            self.handle = None
+            self._debug('ERROR:com_usb:open_device', err)
             raise
-        return self.handle
 
     def close_device(self):
         """
         Close the comunication with the baseboard
         """
-        try:
-            if self.handle:
-                self.handle.releaseInterface()
-        except Exception, err:
-            if self.debug:
-                print err
-            raise
-        self.handle = None
-        self.device = None
+        self.dev = None
 
-    def read(self, length):
+    def read(self, size):
         """
         Read from the device length bytes
         """
         try:
-            return self.handle.bulkRead(ADMIN_MODULE_OUT_ENDPOINT, length, TIMEOUT)
-        except:
-            if self.debug:
-                print 'Exception in read usb'
+            return self.dev.read(ADMIN_MODULE_OUT_ENDPOINT, size, USB4ALL_INTERFACE, TIMEOUT)
+        except Exception, err:
+            self._debug('ERROR:com_usb:read', err)
             raise
  
     def write(self, data):
@@ -90,24 +81,31 @@ class usb_device():
         Write in the device: data
         """
         try:
-            return self.handle.bulkWrite(ADMIN_MODULE_IN_ENDPOINT, data, TIMEOUT)
-        except:
-            if self.debug:
-                print 'Exception in write usb'
+            return self.dev.write(ADMIN_MODULE_IN_ENDPOINT, data, USB4ALL_INTERFACE, TIMEOUT)
+        except Exception, err:
+            self._debug('ERROR:com_usb:write', err)
             raise
+
+    def get_address(self):
+        """
+        Get unique address for the usb
+        """
+        if self.dev is not None:
+            return self.dev.address
+        else:
+            return None
 
     def get_info(self):
         """
         Get the device info such as manufacturer, etc
         """
         try:
-            names = self.handle.getString(1, 255)
-            copy = self.handle.getString(2, 255)
-            sn = self.handle.getString(3, 255)
+            names = usb.util.get_string(self.dev, 255, 1, None).encode('ascii')
+            copy = usb.util.get_string(self.dev, 255, 2, None).encode('ascii')
+            sn = usb.util.get_string(self.dev, 255, 3, None).encode('ascii')
             return [names, copy, sn]
         except Exception, err:
-            if self.debug:
-                print 'Exception in get_info', err
+            self._debug('ERROR:com_usb:get_info', err)
             raise
 
 def find():
@@ -115,13 +113,7 @@ def find():
     List all busses and returns a list of baseboards detected
     """
     l = []
-    try:
-        for bus in usb.busses():
-            for dev in bus.devices:
-                if dev.idVendor == USB4ALL_VENDOR and dev.idProduct == USB4ALL_PRODUCT:
-                    l.append(usb_device(dev))
-    except Exception, err:
-        if self.debug:
-            print 'find gives the error:', err
+    for b in usb.core.find(find_all=True, idVendor=USB4ALL_VENDOR, idProduct=USB4ALL_PRODUCT):
+        l.append(usb_device(b))
     return l
 

@@ -1,11 +1,8 @@
 
 RD_VERSION = 0x00
 
-f1 = {
-    'name': 'getVersion',
-    'call': RD_VERSION,
-    'params': 0,
-    'read': 3
-}
+def getVersion(dev):
+    dev.send([RD_VERSION])
+    raw = dev.read(3)
+    return raw[1] + raw[2] * 256
 
-FUNCTIONS = [f1]

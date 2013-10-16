@@ -1,19 +1,18 @@
 
 RD_VERSION = 0x00
 GET_VALUE = 0x01
+ERROR = -1
 
-f1 = {
-    'name': 'getVersion',
-    'call': RD_VERSION,
-    'params': 0,
-    'read': 3
-}
+def getVersion(dev):
+    dev.send([RD_VERSION])
+    raw = dev.read(3)
+    return raw[1] + raw[2] * 256
 
-f2 = {
-    'name': 'getValue',
-    'call': GET_VALUE,
-    'params': 0,
-    'read': 2
-}
+def getValue(dev):
+    dev.send([GET_VALUE])
+    raw = dev.read(2)
+    if not(raw[1] == 255):
+        return (1 - raw[1])
+    else:
+        return ERROR
 
-FUNCTIONS = [f1, f2]

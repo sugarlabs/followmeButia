@@ -3,6 +3,7 @@
 #
 # Pybot server
 #
+# Copyright (c) 2012-2013 Alan Aguiar alanjas@hotmail.com
 # Copyright (c) 2012-2013 Butiá Team butia@fing.edu.uy 
 # Butia is a free and open robotic platform
 # www.fing.edu.uy/inco/proyectos/butia
@@ -22,44 +23,40 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import sys
+import imp
 import select
 import socket
 import usb4butia
+import com_chotox
 
 argv = sys.argv[:]
 
-PYBOT_HOST = 'localhost'
 PYBOT_PORT = 2009
 BUFSIZ = 1024
 MAX_CLIENTS = 4
 
-
 class Server():
 
-    def __init__(self, debug=False):
+    def __init__(self, debug=False, chotox=False):
         self.debug = debug
+        self.run = True
+        self.comms = imp.load_source('server_functions', 'server_functions.py')
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.socket.bind((PYBOT_HOST, PYBOT_PORT))
+        self.socket.bind(("", PYBOT_PORT))
         self.socket.listen(MAX_CLIENTS)
         self.clients = {}
-        self.robot = usb4butia.USB4Butia(self.debug)
-
-    def call_aux(self, modulename, board_number, number, function, params):
-        if modulename == 'lback':
-            par = params
+        self.chotox_mode = chotox
+        if self.chotox_mode:
+            self.robot = com_chotox.Chotox(debug=self.debug)
         else:
-            par = []
-            for e in params:
-                par.append(int(e))
-        return self.robot.callModule(modulename, board_number, number, function, par)
+            self.robot = usb4butia.USB4Butia(debug=self.debug)
 
     def init_server(self):
 
         inputs = [self.socket]
 
-        run = True
-        while run:
+        while self.run:
 
             try:
                 inputready,outputready,exceptready = select.select(inputs, [], [])
@@ -77,49 +74,16 @@ class Server():
                     data = s.recv(BUFSIZ)
                     if data:
                         result = ''
-                        # remove end line characters if become from telnet
+
                         r = data.replace('\r', '')
                         r = r.replace('\n', '')
                         r = r.split(' ')
 
-                        #print 'split', r
-
                         if len(r) > 0:
-                            if r[0] == 'QUIT':
-                                result = 'BYE'
-                                run = False
-                            elif r[0] == 'CLIENTS':
-                                first = True
-                                for c in self.clients:
-                                    addr = self.clients[c]
-                                    if first:
-                                        result = result + str(addr[0]) + ', ' + str(addr[1]) 
-                                        first = False
-                                    else:
-                                        result = result + '\n' + str(addr[0]) + ', ' + str(addr[1]) 
-                            elif r[0] == 'LIST':
-                                l = self.robot.get_modules_list()
-                                result = ','.join(l)
-                            elif r[0] == 'REFRESH':
-                                self.robot.refresh()
-                            elif r[0] == 'BUTIA_COUNT':
-                                result = self.robot.get_butia_count()
-                            elif r[0] == 'CALL':
-                                if len(r) >= 3:
-                                    board = 0
-                                    number = 0
-                                    mbn = r[1]
-                                    if mbn.count('@') > 0:
-                                        modulename, bn = mbn.split('@')
-                                        board, number = bn.split(':')
-                                    else:
-                                        if mbn.count(':') > 0:
-                                            modulename, number = mbn.split(':')
-                                        else:
-                                            modulename = mbn
-                                    function = r[2]
-                                    par = r[3:]
-                                    result = self.call_aux(modulename, int(board), int(number), function, par)
+                            com = r[0]
+                            if hasattr(self.comms, com):
+                                f = getattr(self.comms, com)
+                                result = f(self, r)
 
                         result = str(result)
                         try:
@@ -136,11 +100,9 @@ class Server():
         self.socket.close()
         self.robot.close()
 
-
 if __name__ == "__main__":
-    if 'DEBUG' in argv:
-        s = Server(True)
-    else:
-        s = Server()
+    chotox = 'chotox' in argv
+    debug = 'DEBUG' in argv
+    s = Server(debug, chotox)
     s.init_server()
 
