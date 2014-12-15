@@ -48,7 +48,7 @@ class Robot(object):
 
         self.butia = usb4butia.USB4Butia()
 
-        self.modules = self.butia.get_modules_list()
+        self.modules = self.butia.getModulesList()
 
         if (self.modules != []):
             print self.modules
