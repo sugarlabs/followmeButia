@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-24 00:32-0400\n"
-"PO-Revision-Date: 2012-09-14 02:31+0200\n"
-"Last-Translator: Kamila <kamilafilipowska@yahoo.com>\n"
+"PO-Revision-Date: 2015-02-19 13:42+0000\n"
+"Last-Translator: Tymon <dwgipk@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Pootle 2.0.5\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1424353360.000000\n"
 
 #. TRANS: "name" option from activity.info file
 msgid "FollowMe Butia"
@@ -25,7 +26,7 @@ msgstr "Śledź mnie"
 #. TRANS: "summary" option from activity.info file
 #. TRANS: "description" option from activity.info file
 msgid "An object tracker activity"
-msgstr ""
+msgstr "Aktywność śledząca obiekt"
 
 #: activity.py:87
 msgid "<Ctrl>Q"
@@ -85,15 +86,15 @@ msgstr "Rozdzielczość"
 
 #: activity.py:306
 msgid "Color mode"
-msgstr ""
+msgstr "Tryb koloru"
 
 #: activity.py:323
 msgid "Brightness"
-msgstr ""
+msgstr "Jasność"
 
 #: activity.py:342
 msgid "Threshold view"
-msgstr ""
+msgstr "Widoku progu"
 
 #: activity.py:348 activity.py:363 activity.py:378 activity.py:424
 #: activity.py:434 activity.py:444
@@ -102,11 +103,11 @@ msgstr "Tak"
 
 #: activity.py:357
 msgid "Outline"
-msgstr ""
+msgstr "Obrys"
 
 #: activity.py:372
 msgid "Rects"
-msgstr ""
+msgstr "Prostokąty"
 
 #: activity.py:382
 msgid "Colors"
@@ -114,7 +115,7 @@ msgstr "Kolory"
 
 #: activity.py:400 activity.py:404
 msgid "Luma"
-msgstr ""
+msgstr "Luminacja"
 
 #: activity.py:401 activity.py:405
 msgid "U"
@@ -154,7 +155,7 @@ msgstr "Nie znaleziono kamery"
 
 #: followme.py:77
 msgid "Error in stop camera"
-msgstr ""
+msgstr "Błąd w zatrzymywaniu kamery"
 
 #: robot.py:67
 msgid "Butia robot was not detected"
