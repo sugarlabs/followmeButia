@@ -2,31 +2,31 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-24 00:32-0400\n"
-"PO-Revision-Date: 2017-10-18 03:31+0000\n"
+"PO-Revision-Date: 2017-10-18 03:24+0000\n"
 "Last-Translator: Chris <cjl@sugarlabs.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: sq\n"
+"Language: gug\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Pootle 2.5.1.1\n"
-"X-POOTLE-MTIME: 1508297463.000000\n"
+"X-POOTLE-MTIME: 1508297058.000000\n"
 
 #. TRANS: "name" option from activity.info file
-#, fuzzy
 msgid "FollowMe Butia"
 msgstr "FollowMe Butia"
 
 #. TRANS: "summary" option from activity.info file
 #. TRANS: "description" option from activity.info file
 msgid "An object tracker activity"
-msgstr "Veprimtari për ndjekje objektesh"
+msgstr "Peteĩ tembiapo mba'e muñaha"
 
 #: activity.py:87
 msgid "<Ctrl>Q"
@@ -34,84 +34,84 @@ msgstr "<Ctrl>Q"
 
 #: activity.py:102
 msgid "Calibrate/Follow"
-msgstr ""
+msgstr "Ha'ã/Muña"
 
 #: activity.py:107 activity.py:519
 msgid "Stop"
-msgstr "Ndale"
+msgstr "Pyta"
 
 #: activity.py:118 activity.py:391 activity.py:400 activity.py:409
 msgid "Calibrated color:"
-msgstr "Ngjyrë e kalibruar:"
+msgstr "Sa'y ha'ãpyre:"
 
 #: activity.py:118 activity.py:194 activity.py:391 activity.py:395
 msgid "Red"
-msgstr "E kuqe"
+msgstr "Pytã"
 
 #: activity.py:133 activity.py:209 activity.py:392 activity.py:396
 msgid "Green"
-msgstr "E gjelbër"
+msgstr "Aky"
 
 #: activity.py:148 activity.py:224 activity.py:393 activity.py:397
 msgid "Blue"
-msgstr "Blu"
+msgstr "Hovy"
 
 #: activity.py:162
 msgid "Calibrate"
-msgstr "Kalibrojeni"
+msgstr "Ha'ã"
 
 #: activity.py:175
 msgid "Pixels"
-msgstr "Piksel"
+msgstr "Pixels"
 
 #: activity.py:194 activity.py:395 activity.py:404 activity.py:413
 msgid "Threshold:"
-msgstr "Prag:"
+msgstr "Jeikeha:"
 
 #: activity.py:238
 msgid "Options"
-msgstr "Mundësi"
+msgstr "Poravokuaa"
 
 #: activity.py:251
 msgid "Show size"
-msgstr "Shfaq madhësi"
+msgstr "Tuicakue hechauka"
 
 #: activity.py:285
 msgid "Show grid"
-msgstr "Shfaq rrjetë"
+msgstr "Grilla hechauca"
 
 #: activity.py:294
 msgid "Resolution"
-msgstr "Qartësi"
+msgstr "Tendahesaperã porãngue"
 
 #: activity.py:306
 msgid "Color mode"
-msgstr "Mënyrë ngjyre"
+msgstr "Sa'y teko"
 
 #: activity.py:323
 msgid "Brightness"
-msgstr "Ndriçim"
+msgstr "Vera"
 
 #: activity.py:342
 msgid "Threshold view"
-msgstr ""
+msgstr "Jeikeha jehecha"
 
 #: activity.py:348 activity.py:363 activity.py:378 activity.py:424
 #: activity.py:434 activity.py:444
 msgid "Yes"
-msgstr "Po"
+msgstr "Hẽe"
 
 #: activity.py:357
 msgid "Outline"
-msgstr ""
+msgstr "Jere"
 
 #: activity.py:372
 msgid "Rects"
-msgstr ""
+msgstr "Takamby irundyjoja"
 
 #: activity.py:382
 msgid "Colors"
-msgstr "Ngjyra"
+msgstr "Sa'ykuéra"
 
 #: activity.py:400 activity.py:404
 msgid "Luma"
@@ -119,44 +119,44 @@ msgstr "Luma"
 
 #: activity.py:401 activity.py:405
 msgid "U"
-msgstr ""
+msgstr "U"
 
 #: activity.py:402 activity.py:406
 msgid "V"
-msgstr ""
+msgstr "V"
 
 #: activity.py:409 activity.py:413
 msgid "Hue"
-msgstr ""
+msgstr "Hue"
 
 #: activity.py:410 activity.py:414
 msgid "Saturation"
-msgstr "Ngopje"
+msgstr "Ruru"
 
 #: activity.py:411 activity.py:415
 msgid "Value"
-msgstr "Vlerë"
+msgstr "Tepy"
 
 #: activity.py:427 activity.py:437 activity.py:447
 msgid "No"
-msgstr "Jo"
+msgstr "Nahániri"
 
 #: activity.py:516
 msgid "Start"
-msgstr "Nise"
+msgstr "Ñepyrũ"
 
 #: followme.py:67
 msgid "Error on initialization of the camera"
-msgstr "Gabim në gatitjen e kamerës"
+msgstr "Jejavy ñepyrũhápe ta'anga guenoheha"
 
 #: followme.py:69
 msgid "No cameras was found"
-msgstr "S’u gjet kamera"
+msgstr "Ndo jetopái ta'anga guenoheha"
 
 #: followme.py:77
 msgid "Error in stop camera"
-msgstr "Gabim në ndaljen e kamerës"
+msgstr "Jejavy ta'anga guenoheha pytape"
 
 #: robot.py:67
 msgid "Butia robot was not detected"
-msgstr "S’u pikas robot Butia"
+msgstr "Robot Butia ndo jetopái"
