@@ -128,7 +128,6 @@ class Main:
         if self.r:
             if self.r.butia:
                 self.r.butia.close()
-                self.r.butia.closeService()
             if self.r.bobot:
                 self.r.bobot.kill()
 
