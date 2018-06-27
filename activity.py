@@ -27,15 +27,17 @@
 # Rodrigo Dearmas <piegrande46@hotmail.com>
 
 
-import gtk
-from sugar.activity import activity
-from sugar.graphics.toolbarbox import ToolbarBox
-from sugar.graphics.toolbutton import ToolButton
-from sugar.activity.widgets import ActivityToolbarButton
-from sugar.activity.widgets import StopButton
-from sugar.graphics.toolbarbox import ToolbarButton
+from gi.repository import Gtk
+from gi.repository import GObject
+from sugar3.activity import activity
+from sugar3.graphics.toolbarbox import ToolbarBox
+from sugar3.graphics.toolbutton import ToolButton
+from sugar3.activity.widgets import ActivityToolbarButton
+from sugar3.activity.widgets import StopButton
+from sugar3.graphics.toolbarbox import ToolbarButton
 import sugargame.canvas
 import main
+import pygame
 from gettext import gettext as _
 
 class Activity(activity.Activity):
@@ -57,11 +59,12 @@ class Activity(activity.Activity):
         self.mode = 'RGB'
 
         self.followme_activity = main.Main(self)
+        self.followme_activity.canvas = sugargame.canvas.PygameCanvas(
+                self,
+                main=self.followme_activity.run,
+                modules=[pygame.display, pygame.font])
+        self.set_canvas(self.followme_activity.canvas)
         self.build_toolbar()
-        self._pygamecanvas = sugargame.canvas.PygameCanvas(self)
-        self.set_canvas(self._pygamecanvas)
-        self._pygamecanvas.run_pygame(self.followme_activity.run)
-
 
     def build_toolbar(self):
 
@@ -76,7 +79,7 @@ class Activity(activity.Activity):
         self.build_resolution_toolbar(toolbox)
         self.build_colors_toolbar(toolbox)
 
-        separador13 = gtk.SeparatorToolItem()
+        separador13 = Gtk.SeparatorToolItem()
         separador13.props.draw = False
         separador13.set_expand(True)
         toolbox.toolbar.insert(separador13, -1)
@@ -86,17 +89,17 @@ class Activity(activity.Activity):
         toolbox.toolbar.insert(stop_button, -1)
         stop_button.show()
 
-        self.set_toolbox(toolbox)
+        self.set_toolbar_box(toolbox)
         toolbox.show()
 
         self.show_all()
 
     def build_calibrate_toolbar(self, toolbox):
 
-        calibrate_bar = gtk.Toolbar()
+        calibrate_bar = Gtk.Toolbar()
 
-        item1 = gtk.ToolItem()
-        label1 = gtk.Label()
+        item1 = Gtk.ToolItem()
+        label1 = Gtk.Label()
         label1.set_text(' ' + _('Calibrate/Follow') + ' ')
         item1.add(label1)
         calibrate_bar.insert(item1, -1)
@@ -107,18 +110,18 @@ class Activity(activity.Activity):
         stop_calibrate.connect('clicked', self.stop_execute)
         calibrate_bar.insert(stop_calibrate, -1)
 
-        separator1 = gtk.SeparatorToolItem()
+        separator1 = Gtk.SeparatorToolItem()
         separator1.props.draw = True
         calibrate_bar.insert(separator1, -1)
 
-        item3 = gtk.ToolItem()
-        self.label_color_red = gtk.Label()
+        item3 = Gtk.ToolItem()
+        self.label_color_red = Gtk.Label()
         self.label_color_red.set_text(' ' + _('Calibrated color:') + ' ' + _('Red') + ' ')
         item3.add(self.label_color_red)
         calibrate_bar.insert(item3, -1)
 
-        item4 = gtk.ToolItem()
-        self.red_spin = gtk.SpinButton()
+        item4 = Gtk.ToolItem()
+        self.red_spin = Gtk.SpinButton()
         self.red_spin.set_range(0, 255)
         self.red_spin.set_increments(1, 10)
         self.red_spin.props.value = self.colorC[0]
@@ -126,14 +129,14 @@ class Activity(activity.Activity):
         item4.add(self.red_spin)
         calibrate_bar.insert(item4, -1)
 
-        item5 = gtk.ToolItem()
-        self.label_color_green = gtk.Label()
+        item5 = Gtk.ToolItem()
+        self.label_color_green = Gtk.Label()
         self.label_color_green.set_text(' ' + _('Green') + ' ')
         item5.add(self.label_color_green)
         calibrate_bar.insert(item5, -1)
 
-        item6 = gtk.ToolItem()
-        self.green_spin = gtk.SpinButton()
+        item6 = Gtk.ToolItem()
+        self.green_spin = Gtk.SpinButton()
         self.green_spin.set_range(0, 255)
         self.green_spin.set_increments(1, 10)
         self.green_spin.props.value = self.colorC[1]
@@ -141,14 +144,14 @@ class Activity(activity.Activity):
         item6.add(self.green_spin)
         calibrate_bar.insert(item6, -1)
 
-        item7 = gtk.ToolItem()
-        self.label_color_blue = gtk.Label()
+        item7 = Gtk.ToolItem()
+        self.label_color_blue = Gtk.Label()
         self.label_color_blue.set_text(' ' + _('Blue') + ' ')
         item7.add(self.label_color_blue)
         calibrate_bar.insert(item7, -1)
 
-        item8 = gtk.ToolItem()
-        self.blue_spin = gtk.SpinButton()
+        item8 = Gtk.ToolItem()
+        self.blue_spin = Gtk.SpinButton()
         self.blue_spin.set_range(0, 255)
         self.blue_spin.set_increments(1, 10)
         self.blue_spin.props.value = self.colorC[2]
@@ -166,16 +169,16 @@ class Activity(activity.Activity):
 
     def build_options_toolbar(self, toolbox):
 
-        options_bar = gtk.Toolbar()
+        options_bar = Gtk.Toolbar()
 
-        item1 = gtk.ToolItem()
-        label1 = gtk.Label()
+        item1 = Gtk.ToolItem()
+        label1 = Gtk.Label()
         label1.set_text(' ' + _('Pixels') + ' ')
         item1.add(label1)
         options_bar.insert(item1, -1)
 
-        item2 = gtk.ToolItem()
-        pixels = gtk.SpinButton()
+        item2 = Gtk.ToolItem()
+        pixels = Gtk.SpinButton()
         pixels.set_range(0, 1000)
         pixels.set_increments(1, 10)
         pixels.props.value = self.pixels
@@ -183,18 +186,18 @@ class Activity(activity.Activity):
         item2.add(pixels)
         options_bar.insert(item2, -1)
 
-        separator1 = gtk.SeparatorToolItem()
+        separator1 = Gtk.SeparatorToolItem()
         separator1.props.draw = True
         options_bar.insert(separator1, -1)
 
-        item3 = gtk.ToolItem()
-        self.label_threshold_red = gtk.Label()
+        item3 = Gtk.ToolItem()
+        self.label_threshold_red = Gtk.Label()
         self.label_threshold_red.set_text(' ' + _('Threshold:') + ' ' + _('Red') + ' ')
         item3.add(self.label_threshold_red)
         options_bar.insert(item3, -1)
 
-        item4 = gtk.ToolItem()
-        red_spin = gtk.SpinButton()
+        item4 = Gtk.ToolItem()
+        red_spin = Gtk.SpinButton()
         red_spin.set_range(0, 255)
         red_spin.set_increments(1, 10)
         red_spin.props.value = self.threshold[0]
@@ -202,14 +205,14 @@ class Activity(activity.Activity):
         item4.add(red_spin)
         options_bar.insert(item4, -1)
 
-        item5 = gtk.ToolItem()
-        self.label_threshold_green = gtk.Label()
+        item5 = Gtk.ToolItem()
+        self.label_threshold_green = Gtk.Label()
         self.label_threshold_green.set_text(' ' + _('Green') + ' ')
         item5.add(self.label_threshold_green)
         options_bar.insert(item5, -1)
 
-        item6 = gtk.ToolItem()
-        green_spin = gtk.SpinButton()
+        item6 = Gtk.ToolItem()
+        green_spin = Gtk.SpinButton()
         green_spin.set_range(0, 255)
         green_spin.set_increments(1, 10)
         green_spin.props.value = self.threshold[1]
@@ -217,14 +220,14 @@ class Activity(activity.Activity):
         item6.add(green_spin)
         options_bar.insert(item6, -1)
 
-        item7 = gtk.ToolItem()
-        self.label_threshold_blue = gtk.Label()
+        item7 = Gtk.ToolItem()
+        self.label_threshold_blue = Gtk.Label()
         self.label_threshold_blue.set_text(' ' + _('Blue') + ' ')
         item7.add(self.label_threshold_blue)
         options_bar.insert(item7, -1)
 
-        item8 = gtk.ToolItem()
-        blue_spin = gtk.SpinButton()
+        item8 = Gtk.ToolItem()
+        blue_spin = Gtk.SpinButton()
         blue_spin.set_range(0, 255)
         blue_spin.set_increments(1, 10)
         blue_spin.props.value = self.threshold[2]
@@ -242,16 +245,16 @@ class Activity(activity.Activity):
 
     def build_resolution_toolbar(self, toolbox):
 
-        resolution_bar = gtk.Toolbar()
+        resolution_bar = Gtk.Toolbar()
 
-        item1 = gtk.ToolItem()
-        label1 = gtk.Label()
+        item1 = Gtk.ToolItem()
+        label1 = Gtk.Label()
         label1.set_text(' ' + _('Show size') + ' ')
         item1.add(label1)
         resolution_bar.insert(item1, -1)
 
-        item2 = gtk.ToolItem()
-        x_size_spin = gtk.SpinButton()
+        item2 = Gtk.ToolItem()
+        x_size_spin = Gtk.SpinButton()
         x_size_spin.set_range(160, 1200)
         x_size_spin.set_increments(1, 10)
         x_size_spin.props.value = int(self.show_size[0])
@@ -259,14 +262,14 @@ class Activity(activity.Activity):
         item2.add(x_size_spin)
         resolution_bar.insert(item2, -1)
 
-        item3 = gtk.ToolItem()
-        label3 = gtk.Label()
+        item3 = Gtk.ToolItem()
+        label3 = Gtk.Label()
         label3.set_text(' X ')
         item3.add(label3)
         resolution_bar.insert(item3, -1)
 
-        item4 = gtk.ToolItem()
-        y_size_spin = gtk.SpinButton()
+        item4 = Gtk.ToolItem()
+        y_size_spin = Gtk.SpinButton()
         y_size_spin.set_range(120, 900)
         y_size_spin.set_increments(1, 10)
         y_size_spin.props.value = int(self.show_size[1])
@@ -274,12 +277,12 @@ class Activity(activity.Activity):
         item4.add(y_size_spin)
         resolution_bar.insert(item4, -1)
 
-        separator1 = gtk.SeparatorToolItem()
+        separator1 = Gtk.SeparatorToolItem()
         separator1.props.draw = True
         resolution_bar.insert(separator1, -1)
 
-        item5 = gtk.ToolItem()
-        label5 = gtk.Label()
+        item5 = Gtk.ToolItem()
+        label5 = Gtk.Label()
         label5.set_text(' ' + _('Show grid'))
         item5.add(label5)
         resolution_bar.insert(item5, -1)
@@ -297,33 +300,33 @@ class Activity(activity.Activity):
 
     def build_colors_toolbar(self, toolbox):
 
-        barra_colors = gtk.Toolbar()
+        barra_colors = Gtk.Toolbar()
 
-        item1 = gtk.ToolItem()
-        label1 = gtk.Label()
+        item1 = Gtk.ToolItem()
+        label1 = Gtk.Label()
         label1.set_text(_('Color mode') + ' ')
         item1.add(label1)
         barra_colors.insert(item1, -1)
 
-        item2 = gtk.ToolItem()
+        item2 = Gtk.ToolItem()
         modes = ('RGB', 'YUV', 'HSV')
         combo = Combo(modes)
         item2.add(combo)
         combo.connect('changed', self.change_combo)
         barra_colors.insert(item2, -1)
 
-        separator1 = gtk.SeparatorToolItem()
+        separator1 = Gtk.SeparatorToolItem()
         separator1.props.draw = True
         barra_colors.insert(separator1, -1)
 
-        item_l = gtk.ToolItem()
-        label4 = gtk.Label()
+        item_l = Gtk.ToolItem()
+        label4 = Gtk.Label()
         label4.set_text(_('Brightness') + ' ')
         item_l.add(label4)
         barra_colors.insert(item_l, -1)
         
-        item = gtk.ToolItem()
-        brightness_spin = gtk.SpinButton()
+        item = Gtk.ToolItem()
+        brightness_spin = Gtk.SpinButton()
         brightness_spin.set_range(-1, 255)
         brightness_spin.set_increments(1, 10)
         brightness_spin.props.value = int(self.brightness)
@@ -331,12 +334,12 @@ class Activity(activity.Activity):
         item.add(brightness_spin)
         barra_colors.insert(item, -1)
 
-        separator2 = gtk.SeparatorToolItem()
+        separator2 = Gtk.SeparatorToolItem()
         separator2.props.draw = True
         barra_colors.insert(separator2, -1)
 
-        item3 = gtk.ToolItem()
-        label3 = gtk.Label()
+        item3 = Gtk.ToolItem()
+        label3 = Gtk.Label()
         label3.set_text(_('Threshold view'))
         item3.add(label3)
         barra_colors.insert(item3, -1)
@@ -346,12 +349,12 @@ class Activity(activity.Activity):
         threshold_view.set_tooltip(_('Yes'))
         barra_colors.insert(threshold_view, -1)
 
-        separator3 = gtk.SeparatorToolItem()
+        separator3 = Gtk.SeparatorToolItem()
         separator3.props.draw = True
         barra_colors.insert(separator3, -1)
 
-        item4 = gtk.ToolItem()
-        label4 = gtk.Label()
+        item4 = Gtk.ToolItem()
+        label4 = Gtk.Label()
         label4.set_text(_('Outline'))
         item4.add(label4)
         barra_colors.insert(item4, -1)
@@ -361,12 +364,12 @@ class Activity(activity.Activity):
         outline_view.set_tooltip(_('Yes'))
         barra_colors.insert(outline_view, -1)
 
-        separator4 = gtk.SeparatorToolItem()
+        separator4 = Gtk.SeparatorToolItem()
         separator4.props.draw = True
         barra_colors.insert(separator4, -1)
 
-        item5 = gtk.ToolItem()
-        label5 = gtk.Label()
+        item5 = Gtk.ToolItem()
+        label5 = Gtk.Label()
         label5.set_text(_('Rects'))
         item5.add(label5)
         barra_colors.insert(item5, -1)
@@ -521,18 +524,18 @@ class Activity(activity.Activity):
         self.followme_activity.put_grid(self.show_grid)
 
 
-class Combo(gtk.ComboBox):
+class Combo(Gtk.ComboBox):
 
     def __init__(self, options):
 
-        self.liststore = gtk.ListStore(str)
+        self.liststore = Gtk.ListStore(str)
 
         for o in options:
             self.liststore.append([o])
 
-        gtk.ComboBox.__init__(self, self.liststore)
+        GObject.GObject.__init__(self)
 
-        cell = gtk.CellRendererText()
+        cell = Gtk.CellRendererText()
         self.pack_start(cell, True)
         self.add_attribute(cell, 'text', 0)
 

@@ -26,7 +26,7 @@
 # Aylen Ricca <ar18_90@hotmail.com>
 # Rodrigo Dearmas <piegrande46@hotmail.com>
 
-import gtk
+from gi.repository import Gtk
 import pygame
 from robot import Robot
 from followme import FollowMe
@@ -90,16 +90,16 @@ class Main:
         self.mode = 'RGB'
         self.c = FollowMe(self.parent)
         if (self.c.cam == None):
-            while gtk.events_pending():
-                gtk.main_iteration()
+            while Gtk.events_pending():
+                Gtk.main_iteration()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     break
         else:
             run = True            
             while run:
-                while gtk.events_pending():
-                    gtk.main_iteration()
+                while Gtk.events_pending():
+                    Gtk.main_iteration()
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         run = False
