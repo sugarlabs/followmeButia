@@ -26,7 +26,8 @@
 # Aylen Ricca <ar18_90@hotmail.com>
 # Rodrigo Dearmas <piegrande46@hotmail.com>
 
-
+import gi
+gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import GObject
 from sugar3.activity import activity
@@ -421,30 +422,30 @@ class Activity(activity.Activity):
         self.use_threshold_view = not self.use_threshold_view
         self.followme_activity.put_threshold_view(self.use_threshold_view)
         if not self.use_threshold_view:
-            button.set_icon('media-playback-start')
+            button.set_icon_name('media-playback-start')
             button.set_tooltip(_('Yes'))
         else:
-            button.set_icon('media-playback-stop')
+            button.set_icon_name('media-playback-stop')
             button.set_tooltip(_('No'))
 
     def outline_view(self, button):
         self.use_outline_view = not self.use_outline_view
         self.followme_activity.put_outline_view(self.use_outline_view)
         if not self.use_outline_view:
-            button.set_icon('media-playback-start')
+            button.set_icon_name('media-playback-start')
             button.set_tooltip(_('Yes'))
         else:
-            button.set_icon('media-playback-stop')
+            button.set_icon_name('media-playback-stop')
             button.set_tooltip(_('No'))
 
     def rects_view(self, button):
         self.use_rects_view = not self.use_rects_view
         self.followme_activity.put_rects_view(self.use_rects_view)
         if not self.use_rects_view:
-            button.set_icon('media-playback-start')
+            button.set_icon_name('media-playback-start')
             button.set_tooltip(_('Yes'))
         else:
-            button.set_icon('media-playback-stop')
+            button.set_icon_name('media-playback-stop')
             button.set_tooltip(_('No'))
 
     def put_color(self, color):
@@ -513,10 +514,10 @@ class Activity(activity.Activity):
         self.calibrating = not self.calibrating
         self.followme_activity.mode_calibrating(self.calibrating)
         if not self.calibrating:
-            button.set_icon('media-playback-start')
+            button.set_icon_name('media-playback-start')
             button.set_tooltip(_('Start'))
         else:
-            button.set_icon('media-playback-stop')
+            button.set_icon_name('media-playback-stop')
             button.set_tooltip(_('Stop'))
 
     def grid_click(self, button):
