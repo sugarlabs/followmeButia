@@ -1,0 +1,159 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-24 00:32-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. TRANS: "name" option from activity.info file
+msgid "FollowMe Butia"
+msgstr ""
+
+#. TRANS: "summary" option from activity.info file
+#. TRANS: "description" option from activity.info file
+msgid "An object tracker activity"
+msgstr ""
+
+#: activity.py:87
+msgid "<Ctrl>Q"
+msgstr ""
+
+#: activity.py:102
+msgid "Calibrate/Follow"
+msgstr ""
+
+#: activity.py:107 activity.py:519
+msgid "Stop"
+msgstr ""
+
+#: activity.py:118 activity.py:391 activity.py:400 activity.py:409
+msgid "Calibrated color:"
+msgstr ""
+
+#: activity.py:118 activity.py:194 activity.py:391 activity.py:395
+msgid "Red"
+msgstr ""
+
+#: activity.py:133 activity.py:209 activity.py:392 activity.py:396
+msgid "Green"
+msgstr ""
+
+#: activity.py:148 activity.py:224 activity.py:393 activity.py:397
+msgid "Blue"
+msgstr ""
+
+#: activity.py:162
+msgid "Calibrate"
+msgstr ""
+
+#: activity.py:175
+msgid "Pixels"
+msgstr ""
+
+#: activity.py:194 activity.py:395 activity.py:404 activity.py:413
+msgid "Threshold:"
+msgstr ""
+
+#: activity.py:238
+msgid "Options"
+msgstr ""
+
+#: activity.py:251
+msgid "Show size"
+msgstr ""
+
+#: activity.py:285
+msgid "Show grid"
+msgstr ""
+
+#: activity.py:294
+msgid "Resolution"
+msgstr ""
+
+#: activity.py:306
+msgid "Color mode"
+msgstr ""
+
+#: activity.py:323
+msgid "Brightness"
+msgstr ""
+
+#: activity.py:342
+msgid "Threshold view"
+msgstr ""
+
+#: activity.py:348 activity.py:363 activity.py:378 activity.py:424
+#: activity.py:434 activity.py:444
+msgid "Yes"
+msgstr ""
+
+#: activity.py:357
+msgid "Outline"
+msgstr ""
+
+#: activity.py:372
+msgid "Rects"
+msgstr ""
+
+#: activity.py:382
+msgid "Colors"
+msgstr ""
+
+#: activity.py:400 activity.py:404
+msgid "Luma"
+msgstr ""
+
+#: activity.py:401 activity.py:405
+msgid "U"
+msgstr ""
+
+#: activity.py:402 activity.py:406
+msgid "V"
+msgstr ""
+
+#: activity.py:409 activity.py:413
+msgid "Hue"
+msgstr ""
+
+#: activity.py:410 activity.py:414
+msgid "Saturation"
+msgstr ""
+
+#: activity.py:411 activity.py:415
+msgid "Value"
+msgstr ""
+
+#: activity.py:427 activity.py:437 activity.py:447
+msgid "No"
+msgstr ""
+
+#: activity.py:516
+msgid "Start"
+msgstr ""
+
+#: followme.py:67
+msgid "Error on initialization of the camera"
+msgstr ""
+
+#: followme.py:69
+msgid "No cameras was found"
+msgstr ""
+
+#: followme.py:77
+msgid "Error in stop camera"
+msgstr ""
+
+#: robot.py:67
+msgid "Butia robot was not detected"
+msgstr ""
