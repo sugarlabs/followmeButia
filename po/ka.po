@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-24 00:32-0400\n"
-"PO-Revision-Date: 2026-06-23 01:17+0000\n"
+"PO-Revision-Date: 2026-07-27 21:01+0000\n"
 "Last-Translator: NF <rkavt@smartprojects.ge>\n"
 "Language-Team: Georgian <http://weblate.sugarlabs.org/projects/"
 "sugar-activities/followmebutia/ka/>\n"
@@ -42,7 +42,7 @@ msgstr "გაჩერება"
 
 #: activity.py:118 activity.py:391 activity.py:400 activity.py:409
 msgid "Calibrated color:"
-msgstr ""
+msgstr "დაკალიბრებული ფერი:"
 
 #: activity.py:118 activity.py:194 activity.py:391 activity.py:395
 msgid "Red"
@@ -74,11 +74,11 @@ msgstr "მორგება"
 
 #: activity.py:251
 msgid "Show size"
-msgstr ""
+msgstr "ზომის ჩვენება"
 
 #: activity.py:285
 msgid "Show grid"
-msgstr ""
+msgstr "ბადის ჩვენება"
 
 #: activity.py:294
 msgid "Resolution"
@@ -86,7 +86,7 @@ msgstr "გარჩევადობა"
 
 #: activity.py:306
 msgid "Color mode"
-msgstr ""
+msgstr "ფერის რეჟიმი"
 
 #: activity.py:323
 msgid "Brightness"
@@ -94,7 +94,7 @@ msgstr "სიკაშკაშე"
 
 #: activity.py:342
 msgid "Threshold view"
-msgstr ""
+msgstr "ზღვრის ხედი"
 
 #: activity.py:348 activity.py:363 activity.py:378 activity.py:424
 #: activity.py:434 activity.py:444
@@ -147,16 +147,16 @@ msgstr "გაშვება"
 
 #: followme.py:67
 msgid "Error on initialization of the camera"
-msgstr ""
+msgstr "კამერის ინიციალიზაციის შეცდომა"
 
 #: followme.py:69
 msgid "No cameras was found"
-msgstr ""
+msgstr "კამერა აღმოჩენილი არაა"
 
 #: followme.py:77
 msgid "Error in stop camera"
-msgstr ""
+msgstr "შეცდომა კამერის გაჩერებისას"
 
 #: robot.py:67
 msgid "Butia robot was not detected"
-msgstr ""
+msgstr "რობოტი Butia აღმოჩენილი არაა"
